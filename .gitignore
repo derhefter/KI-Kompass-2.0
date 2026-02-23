@@ -1,0 +1,13 @@
+﻿node_modules/
+.next/
+.env.local
+.env
+*.log
+.DS_Store
+out/
+.vercel/
+.claude/
+nul
+*.docx
+.~lock.*
+setup.bat
