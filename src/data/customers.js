@@ -19,17 +19,6 @@
 // ============================================================
 
 export const customers = [
-  // --- DEMO-ZUGANG (kann gelöscht werden) ---
-  {
-    code: 'DEMO2026',                               // Passwort im Link
-    name: 'Max Mustermann',                          // Kundenname
-    email: 'max@example.com',                        // E-Mail für Ergebnis-Versand
-    company: 'Muster GmbH',                          // Firmenname
-    plan: 'premium',                                 // 'premium' oder 'strategie'
-    expiresAt: '2099-12-31T23:59:59.000Z',           // Demo läuft nicht ab
-    createdAt: '2026-02-15T00:00:00.000Z',           // Erstellungsdatum
-  },
-
   // --- ECHTE KUNDEN HIER EINTRAGEN ---
   // {
   //   code: 'FIRMA-A3F2B1',

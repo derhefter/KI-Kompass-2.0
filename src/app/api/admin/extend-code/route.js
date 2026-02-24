@@ -50,6 +50,7 @@ export async function POST(request) {
     })
     return NextResponse.json({ success: true, code, newExpiry: newExpiry.toISOString(), message: 'Code verlaengert bis ' + newExpiry.toLocaleDateString('de-DE') })
   } catch (err) {
-    return NextResponse.json({ error: 'Serverfehler: ' + err.message }, { status: 500 })
+    console.error('Extend-Code Fehler:', err.message)
+    return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })
   }
 }

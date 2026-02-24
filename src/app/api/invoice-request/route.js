@@ -27,7 +27,7 @@ function generateAccessCode(companyName) {
     .replace(/[^a-zA-Z0-9]/g, '')
     .slice(0, 6)
     .toUpperCase()
-  const suffix = crypto.randomBytes(3).toString('hex').toUpperCase()
+  const suffix = crypto.randomBytes(8).toString('hex').toUpperCase()
   return `${prefix}-${suffix}`
 }
 

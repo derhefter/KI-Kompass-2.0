@@ -51,7 +51,7 @@ export async function sendNotificationToOwner({ subject, html, attachments }) {
 }
 
 // Bestätigungsmail an den Kunden senden
-export async function sendConfirmationToCustomer({ to, subject, html }) {
+export async function sendConfirmationToCustomer({ to, subject, html, attachments }) {
   const transporter = getTransporter()
   if (!transporter) {
     console.error('E-Mail nicht konfiguriert – Bestätigung konnte nicht gesendet werden')
@@ -59,13 +59,17 @@ export async function sendConfirmationToCustomer({ to, subject, html }) {
   }
 
   try {
-    await transporter.sendMail({
+    const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
       to,
       replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
       subject,
       html,
-    })
+    }
+    if (attachments && attachments.length > 0) {
+      mailOptions.attachments = attachments
+    }
+    await transporter.sendMail(mailOptions)
     return true
   } catch (err) {
     console.error('Fehler beim E-Mail-Versand:', err.message)

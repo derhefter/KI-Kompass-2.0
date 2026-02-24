@@ -36,6 +36,10 @@ export async function POST(request) {
     if (!customer) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
     }
+    // Ablauf prüfen
+    if (customer.expiresAt && new Date(customer.expiresAt) < new Date()) {
+      return NextResponse.json({ error: 'Zugangscode abgelaufen' }, { status: 403 })
+    }
 
     const safeName = (contactName || '').slice(0, 200).replace(/[<>\r\n]/g, '')
     const safeCompany = (companyName || '').slice(0, 200).replace(/[<>\r\n]/g, '')

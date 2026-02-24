@@ -15,9 +15,20 @@ function escapeHtml(text) {
 
 function generateAccessCode(companyName) {
   const prefix = (companyName || 'KUNDE').replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase()
-  const suffix = crypto.randomBytes(3).toString('hex').toUpperCase()
+  const suffix = crypto.randomBytes(8).toString('hex').toUpperCase()
   return prefix + '-' + suffix
 }
+
+// Idempotenz: Bereits verarbeitete Payment-IDs zwischenspeichern
+const processedPayments = new Map()
+const PROCESSED_TTL = 24 * 60 * 60 * 1000
+
+setInterval(() => {
+  const now = Date.now()
+  for (const [key, timestamp] of processedPayments) {
+    if (now - timestamp > PROCESSED_TTL) processedPayments.delete(key)
+  }
+}, 10 * 60 * 1000)
 
 export async function POST(request) {
   try {
@@ -28,8 +39,16 @@ export async function POST(request) {
     const paymentId = formData.get('id')
     if (!paymentId || typeof paymentId !== 'string') return NextResponse.json({ error: 'Fehlende Payment-ID' }, { status: 400 })
 
+    // Idempotenz-Check
+    if (processedPayments.has(paymentId)) {
+      return NextResponse.json({ received: true, status: 'already_processed' })
+    }
+
     const payment = await mollieClient.payments.get(paymentId)
     if (payment.status !== 'paid') return NextResponse.json({ received: true, status: payment.status })
+
+    // Als verarbeitet markieren
+    processedPayments.set(paymentId, Date.now())
 
     const { plan, name, email, company, phone } = payment.metadata || {}
     const safeName = escapeHtml((name || '').slice(0, 200).replace(/[\r\n]/g, ''))

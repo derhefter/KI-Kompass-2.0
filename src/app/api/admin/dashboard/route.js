@@ -64,6 +64,7 @@ export async function GET(request) {
       freeLeads: leadList.reverse().slice(0, 50), followUps: followUpList.reverse().slice(0, 50), recentActivity,
     })
   } catch (err) {
-    return NextResponse.json({ error: 'Serverfehler: ' + err.message }, { status: 500 })
+    console.error('Admin Dashboard Fehler:', err.message)
+    return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })
   }
 }

@@ -7,6 +7,11 @@ import { premiumQuestions } from '../../../data/questions'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
+  return String(text || '').replace(/[&<>"]/g, (m) => map[m])
+}
+
 export async function POST(request) {
   try {
     const { allowed } = limiter(request)
@@ -35,6 +40,10 @@ export async function POST(request) {
     }
     if (!customer) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+    }
+    // Ablauf prüfen
+    if (customer.expiresAt && new Date(customer.expiresAt) < new Date()) {
+      return NextResponse.json({ error: 'Zugangscode abgelaufen' }, { status: 403 })
     }
 
     const safeName = (contactName || '').slice(0, 200).replace(/[<>\r\n]/g, '')
@@ -73,20 +82,20 @@ export async function POST(request) {
       .map(
         (cat) =>
           `<tr>
-            <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${cat.label}</td>
-            <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:bold;color:${cat.percentage > 60 ? '#22c55e' : cat.percentage > 35 ? '#f59e0b' : '#ef4444'}">${cat.percentage}%</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;">${escapeHtml(cat.label)}</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #e5e7eb;text-align:center;font-weight:bold;color:${cat.percentage > 60 ? '#22c55e' : cat.percentage > 35 ? '#f59e0b' : '#ef4444'}">${parseInt(cat.percentage) || 0}%</td>
           </tr>`
       )
       .join('')
 
     // Quick-Wins Liste
     const quickWinsList = (quickWins || [])
-      .map((qw) => `<li style="margin-bottom:8px;"><strong>${qw.title}</strong> (${qw.effort})<br/><span style="color:#6b7280;">${qw.desc}</span></li>`)
+      .map((qw) => `<li style="margin-bottom:8px;"><strong>${escapeHtml(qw.title)}</strong> (${escapeHtml(qw.effort)})<br/><span style="color:#6b7280;">${escapeHtml(qw.desc)}</span></li>`)
       .join('')
 
     // Empfehlungen Liste
     const recommendationsList = (recommendations || [])
-      .map((rec) => `<li style="margin-bottom:12px;"><strong>[${rec.priority.toUpperCase()}] ${rec.title}</strong> (${rec.category})<br/><ul>${rec.actions.map((a) => `<li style="color:#6b7280;">${a}</li>`).join('')}</ul></li>`)
+      .map((rec) => `<li style="margin-bottom:12px;"><strong>[${escapeHtml((rec.priority || '').toUpperCase())}] ${escapeHtml(rec.title)}</strong> (${escapeHtml(rec.category)})<br/><ul>${(rec.actions || []).map((a) => `<li style="color:#6b7280;">${escapeHtml(a)}</li>`).join('')}</ul></li>`)
       .join('')
 
     // Einzelantworten-Tabelle für Steffen-E-Mail
