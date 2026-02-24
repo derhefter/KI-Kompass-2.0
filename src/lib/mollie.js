@@ -11,7 +11,7 @@ let mollieInstance = null
 
 export function getMollieClient() {
   if (!mollieInstance) {
-    const apiKey = process.env.MOLLIE_API_KEY
+    const apiKey = (process.env.MOLLIE_API_KEY || '').trim()
     if (!apiKey) {
       console.error('MOLLIE_API_KEY nicht konfiguriert')
       return null

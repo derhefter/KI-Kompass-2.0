@@ -399,7 +399,7 @@ export async function POST(request) {
     const planPrice = planConfig[plan]?.price || '197'
 
     const accessCode = generateAccessCode(safeCompany)
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de'
+    const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de').trim()
     const accessLink = `${baseUrl}/premium?code=${accessCode}`
 
     // Ablaufdatum: 7 Tage ab jetzt

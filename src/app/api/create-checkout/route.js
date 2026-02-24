@@ -117,7 +117,7 @@ export async function POST(request) {
     recentRequests.set(dedupKey, Date.now())
 
     const product = PRODUCTS[plan]
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de'
+    const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de').trim()
 
     const payment = await mollieClient.payments.create({
       amount: {
