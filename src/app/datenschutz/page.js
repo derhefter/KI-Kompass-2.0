@@ -72,6 +72,29 @@ export default function Datenschutz() {
                   policies.google.com/privacy
                 </a>
               </p>
+              <h3 className="text-lg font-semibold text-gray-900 mt-4">Zahlungsabwicklung (Mollie)</h3>
+              <p>
+                F&uuml;r die Abwicklung von Online-Zahlungen nutzen wir den Zahlungsdienstleister
+                Mollie B.V., Keizersgracht 126, 1015 CW Amsterdam, Niederlande. Bei einer Zahlung
+                werden die folgenden Daten an Mollie &uuml;bermittelt: Name, E-Mail-Adresse, Firma,
+                Zahlungsbetrag sowie die von Ihnen gew&auml;hlte Zahlungsmethode (z.B. Kreditkarte,
+                SEPA-Lastschrift, Klarna, iDEAL). Die Verarbeitung erfolgt auf Grundlage von
+                Art. 6 Abs. 1 lit. b DSGVO (Vertragserf&uuml;llung). Mollie ist nach PSD2 reguliert
+                und unterliegt der Aufsicht der niederl&auml;ndischen Zentralbank (De Nederlandsche Bank).
+                Weitere Informationen:{' '}
+                <a href="https://www.mollie.com/privacy" className="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                  mollie.com/privacy
+                </a>
+              </p>
+
+              <h3 className="text-lg font-semibold text-gray-900 mt-4">Google Sheets (Datenspeicherung)</h3>
+              <p>
+                Zur Verwaltung von Kundendaten, Zugangscodes und Assessment-Ergebnissen nutzen wir
+                Google Sheets (Google Ireland Ltd., Gordon House, Barrow Street, Dublin 4, Irland).
+                Die gespeicherten Daten umfassen: Name, E-Mail-Adresse, Firma, Zahlungsinformationen
+                sowie Assessment-Ergebnisse. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1
+                lit. b DSGVO (Vertragserf&uuml;llung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse).
+              </p>
             </section>
 
             <section>

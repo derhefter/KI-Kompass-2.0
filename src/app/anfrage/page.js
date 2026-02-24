@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 
-const PAYPAL_ME = 'https://paypal.me/frimalo'
-
 const plans = {
   premium: {
     name: 'Premium Report',
@@ -58,7 +56,6 @@ export default function Anfrage() {
   }, [])
 
   const currentPlan = plans[plan]
-  const paypalLink = `${PAYPAL_ME}/${currentPlan.price}EUR`
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -75,16 +72,17 @@ export default function Anfrage() {
 
     setSending(true)
     try {
-      const res = await fetch('/api/purchase-request', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan, name, email, company, phone }),
       })
       const data = await res.json()
-      if (data.success) {
-        setSubmitted(true)
+      if (data.success && data.checkoutUrl) {
+        window.location.href = data.checkoutUrl
+        return
       } else {
-        setError('Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie mir direkt an steffenhefter@googlemail.com.')
+        setError(data.error || 'Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie mir direkt an steffenhefter@googlemail.com.')
       }
     } catch {
       setError('Verbindungsfehler. Bitte versuchen Sie es erneut.')
@@ -141,46 +139,12 @@ export default function Anfrage() {
               </svg>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-3">
-              Vielen Dank f&uuml;r Ihre Anfrage!
+              Rechnung anfordern
             </h1>
             <p className="text-gray-600 mb-6">
-              Wir haben Ihre Anfrage f&uuml;r den <strong>{currentPlan.name}</strong> erhalten.
-              Sie k&ouml;nnen jetzt direkt per PayPal auf unser Firmenkonto bezahlen oder auf unsere Rechnung per E-Mail warten.
+              Sie k&ouml;nnen f&uuml;r den <strong>{currentPlan.name}</strong> eine Rechnung anfordern
+              und bequem per &Uuml;berweisung bezahlen.
             </p>
-
-            {/* PayPal Zahlung */}
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-6">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <svg className="w-8 h-8 text-[#003087]" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.56A.859.859 0 0 1 5.79 1.84h7.708c2.555 0 4.335.55 5.283 1.633.444.508.735 1.04.898 1.63.17.616.21 1.35.117 2.241l-.01.078v.676l.526.298a3.58 3.58 0 0 1 1.07.863c.35.427.588.95.71 1.555.125.625.127 1.37.006 2.215-.14.974-.368 1.822-.681 2.525a5.265 5.265 0 0 1-1.09 1.645c-.448.455-.99.797-1.61 1.016-.6.213-1.29.32-2.054.32H15.53a1.08 1.08 0 0 0-1.067.915l-.038.233-.66 4.173-.03.169a.645.645 0 0 1-.637.543H7.076z"/>
-                  <path d="M18.283 7.326c-.01.07-.023.14-.038.21-.79 4.057-3.496 5.46-6.95 5.46h-1.76a.854.854 0 0 0-.845.724l-.9 5.715-.256 1.62a.45.45 0 0 0 .445.52h3.124c.37 0 .683-.27.742-.636l.03-.16.587-3.72.038-.206a.748.748 0 0 1 .74-.636h.468c3.023 0 5.39-1.228 6.081-4.78.29-1.484.14-2.723-.625-3.594a2.98 2.98 0 0 0-.86-.617z" opacity=".7"/>
-                </svg>
-                <h3 className="font-bold text-gray-900 text-lg">Jetzt direkt bezahlen</h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-4">
-                Bezahlen Sie bequem und sicher &uuml;ber PayPal. Nach Zahlungseingang
-                erhalten Sie umgehend Ihren Zugang.
-              </p>
-              <a
-                href={paypalLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-lg font-semibold text-white bg-[#0070ba] rounded-xl hover:bg-[#005ea6] transition-all shadow-lg"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.56A.859.859 0 0 1 5.79 1.84h7.708c2.555 0 4.335.55 5.283 1.633.444.508.735 1.04.898 1.63.17.616.21 1.35.117 2.241l-.01.078v.676l.526.298a3.58 3.58 0 0 1 1.07.863c.35.427.588.95.71 1.555.125.625.127 1.37.006 2.215-.14.974-.368 1.822-.681 2.525a5.265 5.265 0 0 1-1.09 1.645c-.448.455-.99.797-1.61 1.016-.6.213-1.29.32-2.054.32H15.53a1.08 1.08 0 0 0-1.067.915l-.038.233-.66 4.173-.03.169a.645.645 0 0 1-.637.543H7.076z"/>
-                </svg>
-                &euro;{currentPlan.price} mit PayPal bezahlen
-              </a>
-              <p className="text-xs text-gray-500 mt-3">
-                Sicher &uuml;ber PayPal &ndash; auch ohne PayPal-Konto mit Kreditkarte oder Lastschrift m&ouml;glich
-              </p>
-            </div>
-
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200" /></div>
-              <div className="relative flex justify-center"><span className="bg-white px-4 text-sm text-gray-400">oder</span></div>
-            </div>
 
             {/* Rechnung anfordern */}
             {!invoiceRequested ? (
@@ -347,11 +311,11 @@ export default function Anfrage() {
               <ol className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start">
                   <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">1</span>
-                  Zahlung per PayPal oder &Uuml;berweisung
+                  Zahlung per &Uuml;berweisung nach Rechnungserhalt
                 </li>
                 <li className="flex items-start">
                   <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">2</span>
-                  Nach Zahlungseingang schalten wir Ihren Zugang frei
+                  Nach Zahlungseingang erhalten Sie Ihren Zugangscode per E-Mail
                 </li>
                 <li className="flex items-start">
                   <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">3</span>
@@ -382,7 +346,7 @@ export default function Anfrage() {
             {currentPlan.name} bestellen
           </h1>
           <p className="text-gray-600">
-            F&uuml;llen Sie das Formular aus &ndash; im n&auml;chsten Schritt k&ouml;nnen Sie direkt per PayPal bezahlen.
+            F&uuml;llen Sie das Formular aus &ndash; im n&auml;chsten Schritt werden Sie zur sicheren Zahlung weitergeleitet.
           </p>
         </div>
 
@@ -485,7 +449,7 @@ export default function Anfrage() {
                   </span>
                 ) : (
                   <>
-                    Weiter zur Zahlung
+                    Jetzt sicher bezahlen
                     <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -494,8 +458,15 @@ export default function Anfrage() {
               </button>
 
               <p className="text-xs text-gray-500 mt-3 text-center">
-                Im n&auml;chsten Schritt k&ouml;nnen Sie per PayPal bezahlen oder eine Rechnung anfordern.
+                Sichere Zahlung via Mollie &ndash; Kreditkarte, SEPA, Klarna, iDEAL u.v.m.
               </p>
+              <button
+                type="button"
+                onClick={() => setSubmitted(true)}
+                className="mt-3 w-full text-sm text-amber-700 hover:text-amber-800 underline"
+              >
+                Lieber per Rechnung zahlen?
+              </button>
             </form>
           </div>
 
@@ -524,10 +495,10 @@ export default function Anfrage() {
 
               <div className="border-t border-gray-100 pt-4 space-y-2">
                 <div className="flex items-center text-sm text-gray-500">
-                  <svg className="w-4 h-4 mr-2 text-[#0070ba] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 2.56A.859.859 0 0 1 5.79 1.84h7.708c2.555 0 4.335.55 5.283 1.633.444.508.735 1.04.898 1.63.17.616.21 1.35.117 2.241l-.01.078v.676l.526.298a3.58 3.58 0 0 1 1.07.863c.35.427.588.95.71 1.555.125.625.127 1.37.006 2.215-.14.974-.368 1.822-.681 2.525a5.265 5.265 0 0 1-1.09 1.645c-.448.455-.99.797-1.61 1.016-.6.213-1.29.32-2.054.32H15.53a1.08 1.08 0 0 0-1.067.915l-.038.233-.66 4.173-.03.169a.645.645 0 0 1-.637.543H7.076z"/>
+                  <svg className="w-4 h-4 mr-2 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
-                  Zahlung per PayPal
+                  Kreditkarte, SEPA, Klarna, iDEAL
                 </div>
                 <div className="flex items-center text-sm text-gray-500">
                   <svg className="w-4 h-4 mr-2 text-accent-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -539,7 +510,7 @@ export default function Anfrage() {
                   <svg className="w-4 h-4 mr-2 text-accent-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  Sicher &amp; DSGVO-konform
+                  Sicher &amp; DSGVO-konform via Mollie
                 </div>
               </div>
             </div>
