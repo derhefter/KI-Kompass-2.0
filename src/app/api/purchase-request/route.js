@@ -31,7 +31,8 @@ export async function POST(request) {
     const { plan, name, email, company, phone } = await request.json()
 
     // Validierung
-    if (!plan || !['premium', 'strategie'].includes(plan)) {
+    const validPlans = ['premium', 'strategie', 'zertifikat', 'zertifikat-basic', 'kurs', 'benchmark', 'toolbox-starter', 'toolbox-pro', 'monitoring-basic', 'monitoring-pro']
+    if (!plan || !validPlans.includes(plan)) {
       return NextResponse.json({ error: 'Ungültiger Plan' }, { status: 400 })
     }
     if (!name || typeof name !== 'string' || name.length < 2) {
@@ -57,8 +58,20 @@ export async function POST(request) {
     const safeCompany = escapeHtml((company || '–').slice(0, 200).replace(/[\r\n]/g, ''))
     const safePhone = escapeHtml((phone || '–').slice(0, 50).replace(/[\r\n]/g, ''))
 
-    const planName = plan === 'premium' ? 'Premium Report (197 €)' : 'Strategie-Paket (497 €)'
-    const planPrice = plan === 'premium' ? '197' : '497'
+    const planConfig = {
+      premium: { name: 'Premium Report (197 €)', price: '197' },
+      strategie: { name: 'Strategie-Paket (497 €)', price: '497' },
+      zertifikat: { name: 'KI-Zertifikat Premium (97 €)', price: '97' },
+      'zertifikat-basic': { name: 'KI-Zertifikat Basic (47 €)', price: '47' },
+      kurs: { name: 'Online-Kurs (297 €)', price: '297' },
+      benchmark: { name: 'Branchen-Benchmark Report (297 €)', price: '297' },
+      'toolbox-starter': { name: 'KI-Toolbox Starter (29 €/Monat)', price: '29' },
+      'toolbox-pro': { name: 'KI-Toolbox Professional (49 €/Monat)', price: '49' },
+      'monitoring-basic': { name: 'KI-Monitoring Basic (49 €/Monat)', price: '49' },
+      'monitoring-pro': { name: 'KI-Monitoring Pro (99 €/Monat)', price: '99' },
+    }
+    const planName = planConfig[plan]?.name || 'Premium Report (197 €)'
+    const planPrice = planConfig[plan]?.price || '197'
     const paypalLink = `https://paypal.me/frimalo/${planPrice}EUR`
     const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || ''
 

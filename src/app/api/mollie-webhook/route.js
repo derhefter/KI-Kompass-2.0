@@ -56,7 +56,7 @@ export async function POST(request) {
     const safeCompany = escapeHtml((company || '').slice(0, 200).replace(/[\r\n]/g, ''))
     const safePhone = escapeHtml((phone || '').slice(0, 50).replace(/[\r\n]/g, ''))
 
-    const planNames = { premium: 'Premium Report', strategie: 'Strategie-Paket', zertifikat: 'KI-Zertifikat', kurs: 'Online-Kurs' }
+    const planNames = { premium: 'Premium Report', strategie: 'Strategie-Paket', zertifikat: 'KI-Zertifikat (Premium)', 'zertifikat-basic': 'KI-Zertifikat (Basic)', kurs: 'Online-Kurs', benchmark: 'Branchen-Benchmark Report', 'toolbox-starter': 'KI-Toolbox Starter', 'toolbox-pro': 'KI-Toolbox Professional', 'monitoring-basic': 'KI-Monitoring Basic', 'monitoring-pro': 'KI-Monitoring Pro' }
     const planName = planNames[plan] || 'Premium Report'
     const amount = payment.amount ? payment.amount.value : '0'
     const paymentMethod = payment.method || 'Online'

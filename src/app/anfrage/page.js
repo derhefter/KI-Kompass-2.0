@@ -28,6 +28,105 @@ const plans = {
       '30 Tage E-Mail-Support',
     ],
   },
+  zertifikat: {
+    name: 'KI-Readiness Zertifikat (Premium)',
+    price: '97',
+    color: 'primary',
+    features: [
+      'Digitales Zertifikat (PDF)',
+      'Level-Badge f\u00fcr Ihre Website',
+      'Online-Verifizierung',
+      'Detaillierte Score-Aufschl\u00fcsselung',
+      'Druckoptimiert (A4 Querformat)',
+      'Einrahmbar & repr\u00e4sentativ',
+    ],
+  },
+  'zertifikat-basic': {
+    name: 'KI-Readiness Basic Badge',
+    price: '47',
+    color: 'primary',
+    features: [
+      'Digitales Zertifikat (PDF)',
+      'Level-Badge f\u00fcr Ihre Website',
+      'Online-Verifizierung',
+    ],
+  },
+  kurs: {
+    name: 'Online-Kurs: KI-Einf\u00fchrung f\u00fcr KMU',
+    price: '297',
+    color: 'primary',
+    features: [
+      '7 Module Selbstlernkurs',
+      '\u00dcber 7 Stunden Videomaterial',
+      'Arbeitsbl\u00e4tter & Vorlagen',
+      '30+ Prompt-Templates',
+      'Teilnahme-Zertifikat',
+      '12 Monate Zugang',
+    ],
+  },
+  benchmark: {
+    name: 'Branchen-Benchmark Report',
+    price: '297',
+    color: 'primary',
+    features: [
+      'Anonymisierte Branchendaten',
+      'Vergleich mit Branchendurchschnitt',
+      'Spezifische Handlungsempfehlungen',
+      'Detaillierte Auswertung nach Bereichen',
+    ],
+  },
+  'toolbox-starter': {
+    name: 'KI-Toolbox Starter',
+    price: '29',
+    color: 'accent',
+    priceLabel: '/Monat',
+    features: [
+      'KI-Tool-Empfehlungen',
+      '50+ Prompt-Templates',
+      'Checklisten & Vorlagen',
+      'Monatliche Updates',
+    ],
+  },
+  'toolbox-pro': {
+    name: 'KI-Toolbox Professional',
+    price: '49',
+    color: 'accent',
+    priceLabel: '/Monat',
+    features: [
+      'Alles aus Starter',
+      'Video-Tutorials',
+      'Branchen-spezifische Vorlagen',
+      'Compliance-Templates (EU AI Act)',
+      'Priority Support',
+    ],
+  },
+  'monitoring-basic': {
+    name: 'KI-Monitoring Basic',
+    price: '49',
+    color: 'primary',
+    priceLabel: '/Monat',
+    features: [
+      'Quartalweises Re-Assessment',
+      'Fortschritts-Dashboard',
+      'Score-Verlauf \u00fcber Zeit',
+      'Monatlicher KI-Newsletter',
+      'Regulierungs-Updates (EU AI Act)',
+    ],
+  },
+  'monitoring-pro': {
+    name: 'KI-Monitoring Pro',
+    price: '99',
+    color: 'primary',
+    priceLabel: '/Monat',
+    features: [
+      'Alles aus Basic',
+      'Pers\u00f6nlicher KI-News-Digest',
+      'Branchen-Benchmark-Vergleich',
+      'Priority E-Mail-Support',
+      'Individuelle Tool-Empfehlungen',
+      'J\u00e4hrliches Strategie-Update-Call',
+    ],
+  },
 }
 
 export default function Anfrage() {
@@ -410,23 +509,9 @@ export default function Anfrage() {
                 {/* Plan-Auswahl */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Gew&auml;hltes Paket</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setPlan('premium')}
-                      className={`p-3 rounded-lg border-2 text-left transition-all ${plan === 'premium' ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-gray-300'}`}
-                    >
-                      <div className="font-semibold text-gray-900">Premium Report</div>
-                      <div className="text-sm text-gray-500">&euro;197 einmalig</div>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPlan('strategie')}
-                      className={`p-3 rounded-lg border-2 text-left transition-all ${plan === 'strategie' ? 'border-accent-500 bg-accent-50' : 'border-gray-200 hover:border-gray-300'}`}
-                    >
-                      <div className="font-semibold text-gray-900">Strategie-Paket</div>
-                      <div className="text-sm text-gray-500">&euro;497 einmalig</div>
-                    </button>
+                  <div className={`p-4 rounded-lg border-2 ${currentPlan.color === 'accent' ? 'border-accent-500 bg-accent-50' : 'border-primary-500 bg-primary-50'}`}>
+                    <div className="font-semibold text-gray-900">{currentPlan.name}</div>
+                    <div className="text-sm text-gray-500">&euro;{currentPlan.price}{currentPlan.priceLabel || ' einmalig'}</div>
                   </div>
                 </div>
               </div>
@@ -478,8 +563,8 @@ export default function Anfrage() {
               </h3>
 
               <div className={`p-4 rounded-xl mb-4 ${plan === 'strategie' ? 'bg-accent-50 border border-accent-100' : 'bg-primary-50 border border-primary-100'}`}>
-                <div className="text-2xl font-extrabold text-gray-900">&euro;{currentPlan.price}</div>
-                <div className="text-sm text-gray-600">{currentPlan.name} &ndash; einmalig</div>
+                <div className="text-2xl font-extrabold text-gray-900">&euro;{currentPlan.price}{currentPlan.priceLabel || ''}</div>
+                <div className="text-sm text-gray-600">{currentPlan.name} &ndash; {currentPlan.priceLabel ? 'Abo' : 'einmalig'}</div>
               </div>
 
               <ul className="space-y-2 mb-6">

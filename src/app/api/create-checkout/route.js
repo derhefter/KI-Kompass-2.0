@@ -36,16 +36,52 @@ const PRODUCTS = {
     priceDisplay: '497',
   },
   zertifikat: {
-    name: 'KI-Readiness Zertifikat',
-    description: 'Offizielles KI-Ready Zertifikat fuer Ihr Unternehmen - zum Teilen mit Kunden und Partnern',
+    name: 'KI-Readiness Zertifikat (Premium)',
+    description: 'Offizielles KI-Ready Zertifikat fuer Ihr Unternehmen - mit detaillierter Score-Aufschluesselung, druckoptimiert',
     price: '97.00',
     priceDisplay: '97',
+  },
+  'zertifikat-basic': {
+    name: 'KI-Readiness Basic Badge',
+    description: 'Digitales KI-Ready Zertifikat (PDF) mit Level-Badge fuer Ihre Website und Online-Verifizierung',
+    price: '47.00',
+    priceDisplay: '47',
   },
   kurs: {
     name: 'KI-Einfuehrung fuer KMU - Online-Kurs',
     description: '7 Module Selbstlernkurs mit Video-Lektionen, Arbeitsblaettern, Templates und Zertifikat',
     price: '297.00',
     priceDisplay: '297',
+  },
+  benchmark: {
+    name: 'Branchen-Benchmark Report',
+    description: 'Umfassender Branchen-Report mit anonymisierten Vergleichsdaten, Benchmark-Analyse und spezifischen Handlungsempfehlungen',
+    price: '297.00',
+    priceDisplay: '297',
+  },
+  'toolbox-starter': {
+    name: 'KI-Toolbox Starter (Monatsabo)',
+    description: 'Monatliches Abo: KI-Tool-Empfehlungen, 50+ Prompt-Templates, Checklisten und Vorlagen mit monatlichen Updates',
+    price: '29.00',
+    priceDisplay: '29',
+  },
+  'toolbox-pro': {
+    name: 'KI-Toolbox Professional (Monatsabo)',
+    description: 'Monatliches Abo: Alles aus Starter + Video-Tutorials, Branchen-spezifische Vorlagen, Compliance-Templates und Priority Support',
+    price: '49.00',
+    priceDisplay: '49',
+  },
+  'monitoring-basic': {
+    name: 'KI-Monitoring Basic (Monatsabo)',
+    description: 'Monatliches Abo: Quartalweises Re-Assessment, Fortschritts-Dashboard, Score-Verlauf, KI-Newsletter und Regulierungs-Updates',
+    price: '49.00',
+    priceDisplay: '49',
+  },
+  'monitoring-pro': {
+    name: 'KI-Monitoring Pro (Monatsabo)',
+    description: 'Monatliches Abo: Alles aus Basic + Persoenlicher KI-News-Digest, Branchen-Benchmark, Priority Support und jaehrliches Strategie-Update-Call',
+    price: '99.00',
+    priceDisplay: '99',
   },
 }
 
@@ -105,7 +141,13 @@ export async function POST(request) {
       checkoutUrl: payment.getCheckoutUrl(),
     })
   } catch (err) {
-    console.error('Mollie Payment-Erstellung fehlgeschlagen:', err.message)
-    return NextResponse.json({ error: 'Zahlungsfehler' }, { status: 500 })
+    console.error('Mollie Payment-Erstellung fehlgeschlagen:', err.message, err.stack)
+    // Detailliertere Fehlermeldung fuer bessere Diagnose
+    const errorMsg = err.message?.includes('Invalid API key')
+      ? 'Zahlungssystem-Konfiguration fehlerhaft. Bitte kontaktieren Sie uns.'
+      : err.message?.includes('webhookUrl')
+      ? 'Webhook-Konfiguration fehlerhaft. Bitte kontaktieren Sie uns.'
+      : 'Zahlungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie an steffenhefter@googlemail.com.'
+    return NextResponse.json({ error: errorMsg }, { status: 500 })
   }
 }

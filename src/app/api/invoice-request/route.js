@@ -40,9 +40,19 @@ function generateInvoiceHtml({ safeName, safeMail, safeCompany, safeStreet, safe
   const ust = (parseFloat(planPrice) * 0.19).toFixed(2)
   const brutto = (parseFloat(planPrice) * 1.19).toFixed(2)
 
-  const leistungsBeschreibung = plan === 'premium'
-    ? 'Premium Report &ndash; KI-Reifegradanalyse inkl. Roadmap, Use-Cases &amp; F&ouml;rdermittel&uuml;bersicht'
-    : 'Strategie-Paket &ndash; inkl. Premium Report, 60-Min. Strategiegespr&auml;ch, KI-Strategie, F&ouml;rdermittelberatung, 30 Tage Support'
+  const leistungsBeschreibungen = {
+    premium: 'Premium Report &ndash; KI-Reifegradanalyse inkl. Roadmap, Use-Cases &amp; F&ouml;rdermittel&uuml;bersicht',
+    strategie: 'Strategie-Paket &ndash; inkl. Premium Report, 60-Min. Strategiegespr&auml;ch, KI-Strategie, F&ouml;rdermittelberatung, 30 Tage Support',
+    zertifikat: 'KI-Readiness Zertifikat (Premium) &ndash; Digitales Zertifikat mit detaillierter Score-Aufschl&uuml;sselung, druckoptimiert (A4)',
+    'zertifikat-basic': 'KI-Readiness Basic Badge &ndash; Digitales Zertifikat (PDF) mit Level-Badge f&uuml;r Website und Online-Verifizierung',
+    kurs: 'Online-Kurs: KI-Einf&uuml;hrung f&uuml;r KMU &ndash; 7 Module Selbstlernkurs mit Video-Lektionen, Arbeitsbl&auml;ttern und Templates',
+    benchmark: 'Branchen-Benchmark Report &ndash; Umfassende Branchenanalyse mit anonymisierten Vergleichsdaten und Handlungsempfehlungen',
+    'toolbox-starter': 'KI-Toolbox Starter (Monatsabo) &ndash; KI-Tool-Empfehlungen, Prompt-Templates, Checklisten &amp; monatliche Updates',
+    'toolbox-pro': 'KI-Toolbox Professional (Monatsabo) &ndash; Starter-Inhalte + Video-Tutorials, Branchen-Vorlagen, Compliance-Templates &amp; Priority Support',
+    'monitoring-basic': 'KI-Monitoring Basic (Monatsabo) &ndash; Quartalweises Re-Assessment, Fortschritts-Dashboard, KI-Newsletter &amp; Regulierungs-Updates',
+    'monitoring-pro': 'KI-Monitoring Pro (Monatsabo) &ndash; Basic-Inhalte + Pers&ouml;nlicher KI-News-Digest, Branchen-Benchmark, Priority Support &amp; j&auml;hrliches Strategie-Update',
+  }
+  const leistungsBeschreibung = leistungsBeschreibungen[plan] || leistungsBeschreibungen.premium
 
   // Zahlungsziel: 14 Tage ab heute
   const zahlungsziel = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
@@ -335,7 +345,8 @@ export async function POST(request) {
 
     const { plan, name, email, company, street, plz, city } = await request.json()
 
-    if (!plan || !['premium', 'strategie'].includes(plan)) {
+    const validPlans = ['premium', 'strategie', 'zertifikat', 'zertifikat-basic', 'kurs', 'benchmark', 'toolbox-starter', 'toolbox-pro', 'monitoring-basic', 'monitoring-pro']
+    if (!plan || !validPlans.includes(plan)) {
       return NextResponse.json({ error: 'Ungültiger Plan' }, { status: 400 })
     }
     if (!name || typeof name !== 'string' || name.length < 2) {
@@ -372,9 +383,20 @@ export async function POST(request) {
     const safeCity = escapeHtml(city.slice(0, 200).replace(/[\r\n]/g, ''))
     const safePlzCity = `${safePlz} ${safeCity}`
 
-    const planName =
-      plan === 'premium' ? 'Premium Report (197 €)' : 'Strategie-Paket (497 €)'
-    const planPrice = plan === 'premium' ? '197' : '497'
+    const planConfig = {
+      premium: { name: 'Premium Report (197 €)', price: '197' },
+      strategie: { name: 'Strategie-Paket (497 €)', price: '497' },
+      zertifikat: { name: 'KI-Zertifikat Premium (97 €)', price: '97' },
+      'zertifikat-basic': { name: 'KI-Zertifikat Basic (47 €)', price: '47' },
+      kurs: { name: 'Online-Kurs (297 €)', price: '297' },
+      benchmark: { name: 'Branchen-Benchmark Report (297 €)', price: '297' },
+      'toolbox-starter': { name: 'KI-Toolbox Starter (29 €/Monat)', price: '29' },
+      'toolbox-pro': { name: 'KI-Toolbox Professional (49 €/Monat)', price: '49' },
+      'monitoring-basic': { name: 'KI-Monitoring Basic (49 €/Monat)', price: '49' },
+      'monitoring-pro': { name: 'KI-Monitoring Pro (99 €/Monat)', price: '99' },
+    }
+    const planName = planConfig[plan]?.name || 'Premium Report (197 €)'
+    const planPrice = planConfig[plan]?.price || '197'
 
     const accessCode = generateAccessCode(safeCompany)
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de'

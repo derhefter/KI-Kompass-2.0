@@ -11,3 +11,4 @@ nul
 *.docx
 .~lock.*
 setup.bat
+.vercel
