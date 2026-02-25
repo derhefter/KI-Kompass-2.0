@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>50+ Prompt-Templates &ndash; KI-Kompass Toolbox</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; max-width: 210mm; margin: 0 auto; padding: 20mm; background: white; }
+    h1 { font-size: 22pt; color: #1e3a8a; margin-bottom: 8px; }
+    h2 { font-size: 16pt; color: #1e3a8a; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #dbeafe; }
+    h3 { font-size: 12pt; color: #2563eb; margin: 16px 0 8px; }
+    p { margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th { background: #f0f4ff; padding: 8px 12px; text-align: left; border: 1px solid #e5e7eb; font-size: 10pt; color: #1e3a8a; }
+    td { padding: 8px 12px; border: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+    .header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+    .header h1 { color: white; margin: 0; }
+    .header p { color: rgba(255,255,255,0.8); margin: 4px 0 0; }
+    .prompt-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .prompt-card h3 { margin-top: 0; }
+    .prompt-text { background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 10pt; white-space: pre-wrap; }
+    .placeholder { color: #dc2626; font-style: italic; }
+    .footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #9ca3af; text-align: center; }
+    @media print { body { padding: 0; } .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>50+ Prompt-Templates f&uuml;r den Unternehmensalltag</h1>
+    <p>Sofort einsetzbare Vorlagen f&uuml;r ChatGPT, Claude &amp; Co. &ndash; optimiert f&uuml;r deutschsprachige KMU</p>
+  </div>
+
+  <p>Diese Sammlung enth&auml;lt praxiserprobte Prompt-Templates f&uuml;r die wichtigsten Unternehmensbereiche. Ersetzen Sie die <span class="placeholder">[VARIABLEN]</span> durch Ihre eigenen Angaben und passen Sie die Prompts an Ihren Kontext an.</p>
+
+  <!-- ============================================ -->
+  <h2>1. Marketing</h2>
+  <!-- ============================================ -->
+
+  <div class="prompt-card">
+    <h3>1.1 LinkedIn-Post erstellen</h3>
+    <p>Erstellt einen professionellen LinkedIn-Beitrag mit Storytelling-Struktur und Call-to-Action.</p>
+    <div class="prompt-text">Du bist ein erfahrener LinkedIn-Content-Stratege. Erstelle einen LinkedIn-Post f&uuml;r [FIRMENNAME] zum Thema [THEMA].
+
+Zielgruppe: [ZIELGRUPPE, z.B. Gesch&auml;ftsf&uuml;hrer im Mittelstand]
+Tonalit&auml;t: professionell, aber nahbar
+L&auml;nge: 800&ndash;1.200 Zeichen
+
+Struktur:
+1. Aufmerksamkeitsstarker Einstieg (Hook)
+2. Pers&ouml;nliche Erfahrung oder Brancheninsight
+3. 3 konkrete Tipps oder Learnings
+4. Call-to-Action (Frage an die Community)
+
+Verwende passende Emojis sparsam und f&uuml;ge 3&ndash;5 relevante Hashtags hinzu.</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>1.2 Newsletter-Betreff optimieren</h3>
+    <p>Generiert mehrere optimierte Betreffzeilen f&uuml;r h&ouml;here &Ouml;ffnungsraten.</p>
+    <div class="prompt-text">Ich versende einen Newsletter an [ZIELGRUPPE] zum Thema [THEMA].
+
+Erstelle 10 verschiedene Betreffzeilen in folgenden Kategorien:
+- 3x Neugier wecken (ohne Clickbait)
+- 3x Nutzen kommunizieren (konkreter Vorteil)
+- 2x mit Zahlen/Statistiken
+- 2x mit Dringlichkeit (ohne Spam-W&ouml;rter)
+
+Maximale L&auml;nge: 50 Zeichen pro Betreffzeile.
+Zus&auml;tzlich: Erstelle f&uuml;r die 3 besten Betreffzeilen jeweils einen passenden Preheader-Text (max. 80 Zeichen).</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>1.3 Blog-Artikel planen</h3>
+    <p>Erstellt eine vollst&auml;ndige Artikelstruktur mit SEO-Optimierung.</p>
+    <div class="prompt-text">Erstelle eine detaillierte Gliederung f&uuml;r einen Blog-Artikel zum Thema: [THEMA]
+
+Rahmenbedingungen:
+- Zielgruppe: [ZIELGRUPPE]
+- Prim&auml;res Keyword: [KEYWORD]
+- Sekund&auml;re Keywords: [KEYWORD_2], [KEYWORD_3]
+- Wortanzahl: ca. 1.500 W&ouml;rter
+- Branche: [BRANCHE]
+
+Liefere:
+1. SEO-optimierten Titel (H1) mit Keyword
+2. Meta-Description (max. 155 Zeichen)
+3. Gliederung mit H2- und H3-&Uuml;berschriften
+4. Stichpunkte zu jedem Abschnitt (was soll behandelt werden)
+5. 3 Vorschl&auml;ge f&uuml;r interne Verlinkungen
+6. Call-to-Action f&uuml;r den Schluss</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>1.4 Social-Media-Kalender erstellen</h3>
+    <p>Plant einen vollst&auml;ndigen Monatskalender mit Posts f&uuml;r verschiedene Plattformen.</p>
+    <div class="prompt-text">Erstelle einen Social-Media-Redaktionsplan f&uuml;r [MONAT] [JAHR] f&uuml;r [FIRMENNAME].
+
+Branche: [BRANCHE]
+Plattformen: LinkedIn, Instagram, Facebook
+Posting-Frequenz: 3x pro Woche pro Plattform
+
+F&uuml;r jeden Post liefere:
+- Datum und Wochentag
+- Plattform
+- Content-Typ (Bild, Karussell, Video, Text)
+- Thema und Kernaussage
+- Hashtags (plattformspezifisch)
+
+Ber&uuml;cksichtige:
+- Branchenspezifische Aktionstage
+- Feiertage in DACH
+- Content-Mix: 40% Mehrwert, 30% Engagement, 20% Produkt, 10% Behind-the-Scenes</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>1.5 Zielgruppenanalyse durchf&uuml;hren</h3>
+    <p>Erstellt ein detailliertes Ideal-Customer-Profile und Buyer Personas.</p>
+    <div class="prompt-text">F&uuml;hre eine Zielgruppenanalyse f&uuml;r folgendes Produkt/Dienstleistung durch:
+
+Produkt: [PRODUKT/DIENSTLEISTUNG]
+Branche: [BRANCHE]
+Preissegment: [PREISSEGMENT]
+Region: [REGION, z.B. DACH]
+
+Erstelle:
+1. Ideal Customer Profile (ICP) mit demografischen und firmografischen Merkmalen
+2. 3 detaillierte Buyer Personas (je mit Name, Alter, Position, Herausforderungen, Ziele, bevorzugte Kan&auml;le, Kaufmotive)
+3. Pain Points und Bed&uuml;rfnisse pro Persona
+4. Empfohlene Ansprache-Strategie pro Persona
+5. Einw&auml;nde und passende Gegenargumente</div>
+  </div>
+
+  <p class="placeholder">[WEITERE PROMPTS HIER ERG&Auml;NZEN]</p>
+
+  <!-- ============================================ -->
+  <h2>2. Vertrieb</h2>
+  <!-- ============================================ -->
+
+  <div class="prompt-card">
+    <h3>2.1 Kaltakquise-E-Mail verfassen</h3>
+    <p>Erstellt eine personalisierte Erstansprache per E-Mail mit hoher Antwortrate.</p>
+    <div class="prompt-text">Verfasse eine Kaltakquise-E-Mail f&uuml;r [FIRMENNAME].
+
+Empf&auml;nger: [ANSPRECHPARTNER_POSITION] bei [ZIELUNTERNEHMEN]
+Branche des Empf&auml;ngers: [BRANCHE]
+Unser Angebot: [PRODUKT/DIENSTLEISTUNG]
+Konkreter Nutzen: [HAUPTNUTZEN]
+
+Anforderungen:
+- Betreffzeile: maximal 40 Zeichen, neugierig machend
+- L&auml;nge: maximal 120 W&ouml;rter
+- Personalisierter Einstieg (Bezug zum Unternehmen/Branche)
+- Ein konkretes Ergebnis/Referenz erw&auml;hnen
+- Klarer Call-to-Action (Terminvorschlag)
+- Kein Werbe-Jargon, professionell-kollegialer Ton
+- DSGVO-konformer Hinweis am Ende</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>2.2 Angebots-Follow-up schreiben</h3>
+    <p>Formuliert eine professionelle Nachfass-E-Mail nach Angebotsabgabe.</p>
+    <div class="prompt-text">Schreibe eine Follow-up-E-Mail f&uuml;r ein Angebot, das vor [ANZAHL_TAGE] Tagen versendet wurde.
+
+Kunde: [KUNDENNAME]
+Ansprechpartner: [ANSPRECHPARTNER]
+Angebotssumme: [BETRAG]
+Angebotenes Produkt/Leistung: [PRODUKT]
+Besondere Vereinbarungen: [DETAILS]
+
+Die E-Mail soll:
+- Freundlich und nicht aufdringlich sein
+- Einen zus&auml;tzlichen Mehrwert bieten (z.B. Fallstudie, Tipp)
+- Offene Fragen kl&auml;ren
+- Einen konkreten n&auml;chsten Schritt vorschlagen
+- Maximal 100 W&ouml;rter umfassen
+
+Erstelle 2 Varianten: eine f&uuml;r den ersten Follow-up und eine f&uuml;r den zweiten Follow-up.</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>2.3 Kundeneinwand entkr&auml;ften</h3>
+    <p>Liefert &uuml;berzeugende Gegenargumente f&uuml;r typische Verkaufseinw&auml;nde.</p>
+    <div class="prompt-text">Ich bin Vertriebler f&uuml;r [PRODUKT/DIENSTLEISTUNG] und h&ouml;re folgenden Einwand h&auml;ufig:
+
+Einwand: &quot;[EINWAND DES KUNDEN]&quot;
+
+Liefere mir:
+1. Warum der Kunde diesen Einwand wahrscheinlich hat (Ursachenanalyse)
+2. 3 verschiedene Antwortstrategien:
+   a) Verst&auml;ndnis zeigen + umlenken
+   b) Mit Zahlen/Fakten entkr&auml;ften
+   c) Referenz/Erfolgsgeschichte nutzen
+3. Formulierungsvorschl&auml;ge als w&ouml;rtliche Rede (Gespr&auml;chsleitfaden)
+4. Eine R&uuml;ckfrage, die den Kunden zum Nachdenken bringt
+
+Tonalit&auml;t: beratend, nicht &uuml;berredend.</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>2.4 Elevator Pitch entwickeln</h3>
+    <p>Erstellt einen pr&auml;gnanten Elevator Pitch f&uuml;r verschiedene Zielgruppen.</p>
+    <div class="prompt-text">Entwickle einen Elevator Pitch f&uuml;r [FIRMENNAME].
+
+Produkt/Dienstleistung: [PRODUKT]
+Zielgruppe: [ZIELGRUPPE]
+Alleinstellungsmerkmal (USP): [USP]
+Problem, das wir l&ouml;sen: [PROBLEM]
+Wichtigste Referenz/Ergebnis: [REFERENZ]
+
+Erstelle 3 Versionen:
+1. 30-Sekunden-Version (Aufzug-Gespr&auml;ch)
+2. 60-Sekunden-Version (Networking-Event)
+3. 2-Minuten-Version (Erstgespr&auml;ch)
+
+Jede Version soll enthalten:
+- Aufmerksamkeitsstarken Einstieg
+- Problemdarstellung
+- L&ouml;sung und Nutzen
+- Beweis (Zahl oder Referenz)
+- Call-to-Action</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>2.5 Verkaufsargumente strukturieren</h3>
+    <p>Erstellt eine strukturierte Argumentationskette f&uuml;r das Verkaufsgespr&auml;ch.</p>
+    <div class="prompt-text">Erstelle eine Verkaufsargumentation f&uuml;r folgendes Produkt:
+
+Produkt: [PRODUKT]
+Preis: [PREIS]
+Zielgruppe: [ZIELGRUPPE]
+Top-3-Features: [FEATURE_1], [FEATURE_2], [FEATURE_3]
+Wettbewerber: [WETTBEWERBER]
+
+Liefere f&uuml;r jedes Feature:
+1. Merkmal (Was ist es?)
+2. Vorteil (Was bringt es?)
+3. Nutzen (Was bedeutet das f&uuml;r den Kunden?)
+4. Beweis (Zahl, Referenz oder Vergleich)
+
+Zus&auml;tzlich:
+- 5 Fragen f&uuml;r die Bedarfsanalyse
+- Preisargumentation mit 3 Strategien
+- Abschlusstechniken f&uuml;r verschiedene Kundentypen</div>
+  </div>
+
+  <p class="placeholder">[WEITERE PROMPTS HIER ERG&Auml;NZEN]</p>
+
+  <!-- ============================================ -->
+  <h2>3. HR &amp; Personal</h2>
+  <!-- ============================================ -->
+
+  <div class="prompt-card">
+    <h3>3.1 Stellenanzeige erstellen</h3>
+    <p>Verfasst eine moderne, ansprechende Stellenanzeige mit allen relevanten Inhalten.</p>
+    <div class="prompt-text">Erstelle eine Stellenanzeige f&uuml;r folgende Position:
+
+Position: [JOBTITEL]
+Unternehmen: [FIRMENNAME]
+Branche: [BRANCHE]
+Standort: [STANDORT]
+Arbeitsmodell: [VOR ORT / HYBRID / REMOTE]
+Gehaltsspanne: [GEHALT]
+Eintrittsdatum: [DATUM]
+
+Anforderungen:
+- Must-haves: [MUSS_ANFORDERUNGEN]
+- Nice-to-haves: [KANN_ANFORDERUNGEN]
+
+Die Stellenanzeige soll enthalten:
+1. Aufmerksamkeitsstarke &Uuml;berschrift
+2. Kurze Unternehmensvorstellung (3&ndash;4 S&auml;tze)
+3. Aufgabenbeschreibung (5&ndash;7 Bulletpoints)
+4. Anforderungsprofil (differenziert nach Muss/Kann)
+5. Benefits und Angebote (mindestens 6)
+6. Bewerbungsprozess und Kontakt
+
+Sprache: gender-neutral, modern, Du-Ansprache</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>3.2 Bewerbungsabsage formulieren</h3>
+    <p>Erstellt eine wertsch&auml;tzende und rechtssichere Absage an Bewerber.</p>
+    <div class="prompt-text">Formuliere eine Bewerbungsabsage f&uuml;r folgende Situation:
+
+Bewerber: [NAME]
+Position: [JOBTITEL]
+Phase: [NACH SICHTUNG / NACH ERSTGESPR&Auml;CH / NACH ZWEITGESPR&Auml;CH]
+St&auml;rken des Bewerbers: [ST&Auml;RKEN]
+Absagegrund (intern, nicht kommunizieren): [GRUND]
+
+Anforderungen:
+- Wertsch&auml;tzend und respektvoll
+- AGG-konform (keine diskriminierenden Gr&uuml;nde nennen)
+- Individuell (kein Standard-Text)
+- T&uuml;r f&uuml;r zuk&uuml;nftige Bewerbungen offen lassen
+- Maximal 150 W&ouml;rter
+- DSGVO-Hinweis zur Datenl&ouml;schung
+
+Erstelle 2 Varianten: formell (Sie) und modern (Du).</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>3.3 Onboarding-Checkliste generieren</h3>
+    <p>Erstellt einen vollst&auml;ndigen Onboarding-Plan f&uuml;r neue Mitarbeitende.</p>
+    <div class="prompt-text">Erstelle eine Onboarding-Checkliste f&uuml;r einen neuen Mitarbeitenden.
+
+Position: [JOBTITEL]
+Abteilung: [ABTEILUNG]
+Startdatum: [DATUM]
+Vorgesetzter: [NAME_VORGESETZTER]
+Buddy/Mentor: [NAME_BUDDY]
+
+Gliedere die Checkliste in:
+1. Vor dem ersten Tag (IT, Arbeitsplatz, Willkommenspaket)
+2. Erster Tag (Empfang, Rundgang, Schl&uuml;ssel&uuml;bergabe)
+3. Erste Woche (Einarbeitung, Tool-Schulungen, Team-Kennenlernen)
+4. Erster Monat (Zielvereinbarung, Feedbackgespr&auml;ch, Projektstart)
+5. Erste 90 Tage (Review, Probezeitgespr&auml;ch)
+
+Pro Punkt: Aufgabe, Verantwortlicher, Deadline, Status-Checkbox</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>3.4 Mitarbeitergespr&auml;ch vorbereiten</h3>
+    <p>Strukturiert ein Jahres- oder Feedbackgespr&auml;ch mit Leitfaden und Formulierungshilfen.</p>
+    <div class="prompt-text">Erstelle einen Gespr&auml;chsleitfaden f&uuml;r ein Mitarbeitergespr&auml;ch.
+
+Art: [JAHRESGESPR&Auml;CH / FEEDBACKGESPR&Auml;CH / ZIELVEREINBARUNG]
+Mitarbeitender: [NAME], [POSITION]
+Zeitraum: [BEWERTUNGSZEITRAUM]
+Bekannte St&auml;rken: [ST&Auml;RKEN]
+Entwicklungsfelder: [BEREICHE]
+Besondere Vorkommnisse: [EVENTS]
+
+Liefere:
+1. Gespr&auml;chsagenda mit Zeitplan (60 Min.)
+2. Er&ouml;ffnungsfragen (eisbrecher)
+3. Fragen zur R&uuml;ckschau (5&ndash;7 Fragen)
+4. Fragen zur Zukunftsplanung (5 Fragen)
+5. Formulierungshilfen f&uuml;r kritisches Feedback (gewaltfreie Kommunikation)
+6. Vorlage f&uuml;r Zielvereinbarung (SMART-Methode)
+7. Dokumentationsvorlage</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>3.5 Teambuilding-Ideen generieren</h3>
+    <p>Schl&auml;gt kreative Teambuilding-Ma&szlig;nahmen vor, zugeschnitten auf das Team.</p>
+    <div class="prompt-text">Generiere Teambuilding-Ideen f&uuml;r folgendes Team:
+
+Teamgr&ouml;&szlig;e: [ANZAHL] Personen
+Abteilung: [ABTEILUNG]
+Altersstruktur: [ALTERSSPANNE]
+Remote-Anteil: [PROZENT]% arbeiten remote
+Budget: [BUDGET] pro Person
+Aktuelle Herausforderung: [HERAUSFORDERUNG, z.B. Silodenken, neue Teammitglieder, Konflikte]
+Bisherige Ma&szlig;nahmen: [BISHERIGE_AKTIVIT&Auml;TEN]
+
+Liefere:
+1. 5 Indoor-Aktivit&auml;ten (b&uuml;rotauglich)
+2. 5 Outdoor-Aktivit&auml;ten
+3. 5 virtuelle Teambuilding-Formate
+4. 3 mehrt&auml;gige Team-Retreats
+
+Pro Vorschlag: Name, Beschreibung, Dauer, Kosten, erwarteter Effekt, Teilnehmeranzahl (min/max)</div>
+  </div>
+
+  <p class="placeholder">[WEITERE PROMPTS HIER ERG&Auml;NZEN]</p>
+
+  <!-- ============================================ -->
+  <h2>4. Buchhaltung &amp; Finanzen</h2>
+  <!-- ============================================ -->
+
+  <div class="prompt-card">
+    <h3>4.1 Kostenanalyse erstellen</h3>
+    <p>Strukturiert eine Kostenanalyse f&uuml;r Projekte oder Abteilungen.</p>
+    <div class="prompt-text">Erstelle eine strukturierte Kostenanalyse f&uuml;r [PROJEKT/ABTEILUNG].
+
+Zeitraum: [ZEITRAUM]
+Gesamtbudget: [BUDGET]
+Kostenkategorien: [KATEGORIEN, z.B. Personal, Software, Marketing, B&uuml;ro]
+
+Liefere:
+1. Tabellarische Kosten&uuml;bersicht (Kategorie, Plan, Ist, Abweichung, Abweichung in %)
+2. Top-5-Kostentreiber mit Erkl&auml;rung
+3. Einsparpotenziale pro Kategorie (realistisch)
+4. Benchmarking: typische Kostenverteilung in der Branche [BRANCHE]
+5. Empfehlungen f&uuml;r die n&auml;chste Periode
+6. Visualisierungsvorschl&auml;ge (welche Diagramme eignen sich)
+
+Format: Tabellarisch, mit Zusammenfassung am Anfang (Executive Summary).</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>4.2 Mahnschreiben formulieren</h3>
+    <p>Erstellt abgestufte Mahnschreiben von freundlicher Erinnerung bis letzte Mahnung.</p>
+    <div class="prompt-text">Erstelle ein Mahnschreiben f&uuml;r folgende Situation:
+
+Mahnstufe: [1. ZAHLUNGSERINNERUNG / 2. MAHNUNG / 3. LETZTE MAHNUNG]
+Kunde: [KUNDENNAME]
+Rechnungsnummer: [RECHNUNGSNR]
+Rechnungsdatum: [DATUM]
+F&auml;lligkeitsdatum: [DATUM]
+Offener Betrag: [BETRAG] EUR (inkl. MwSt.)
+Zahlungsziel: [TAGE] Tage
+
+Anforderungen:
+- Rechtlich korrekt nach deutschem Recht
+- Angemessener Ton f&uuml;r die jeweilige Mahnstufe
+- Bankverbindung: [BANKVERBINDUNG]
+- Bei 3. Mahnung: Hinweis auf Inkasso/rechtliche Schritte
+- Verzugszinsen gem&auml;&szlig; &sect; 288 BGB erw&auml;hnen (ab 2. Mahnung)
+
+Format: Gesch&auml;ftsbrief mit allen Pflichtangaben</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>4.3 Reisekostenabrechnung pr&uuml;fen</h3>
+    <p>Erstellt eine Pr&uuml;f-Checkliste und berechnet Pauschalen nach deutschem Reisekostenrecht.</p>
+    <div class="prompt-text">Pr&uuml;fe folgende Reisekostenabrechnung auf Vollst&auml;ndigkeit und Korrektheit:
+
+Mitarbeitender: [NAME]
+Reiseziel: [ORT/LAND]
+Reisezeitraum: [VON] bis [BIS]
+Reiseanlass: [ANLASS]
+
+Eingereichte Kosten:
+- Fahrtkosten: [BETRAG] ([PKW/BAHN/FLUG])
+- &Uuml;bernachtung: [BETRAG] ([ANZAHL] N&auml;chte)
+- Verpflegung: [BETRAG]
+- Nebenkosten: [BETRAG] ([DETAILS])
+
+Pr&uuml;fe anhand:
+1. Aktuelle Verpflegungspauschalen (Inland/Ausland)
+2. Kilometerpauschale (0,30 EUR/km)
+3. &Uuml;bernachtungspauschale vs. Einzelnachweis
+4. Belegpflicht (welche Belege fehlen?)
+5. Vorsteuerabzugsf&auml;higkeit
+6. Arbeitgeberzusch&uuml;sse und K&uuml;rzungen bei gestellten Mahlzeiten
+
+Erstelle eine Pr&uuml;ftabelle mit Soll/Ist-Vergleich.</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>4.4 Budgetplanung erstellen</h3>
+    <p>Erstellt eine strukturierte Budgetplanung f&uuml;r das kommende Gesch&auml;ftsjahr.</p>
+    <div class="prompt-text">Erstelle eine Budgetplanung f&uuml;r [ABTEILUNG/PROJEKT] f&uuml;r das Gesch&auml;ftsjahr [JAHR].
+
+Vorjahresbudget: [BETRAG]
+Vorjahresausgaben (Ist): [BETRAG]
+Geplante &Auml;nderungen: [&Auml;NDERUNGEN, z.B. neue Stelle, Tool-Wechsel]
+Umsatzprognose: [PROGNOSE]
+Strategische Ziele: [ZIELE]
+
+Liefere:
+1. Budgetrahmen mit monatlicher Aufschl&uuml;sselung
+2. Kostenstellen-Zuordnung
+3. Investitionsplan (CAPEX vs. OPEX)
+4. Risikopuffer (empfohlene H&ouml;he mit Begr&uuml;ndung)
+5. Break-Even-Berechnung falls zutreffend
+6. KPIs zur Budget&uuml;berwachung
+7. Szenario-Analyse: Best Case, Base Case, Worst Case
+
+Format: Tabellarisch, Excel-kompatibel</div>
+  </div>
+
+  <div class="prompt-card">
+    <h3>4.5 Steuerfragen zusammenfassen</h3>
+    <p>Bereitet komplexe steuerliche Sachverhalte verst&auml;ndlich auf (keine Steuerberatung).</p>
+    <div class="prompt-text">Fasse folgenden steuerlichen Sachverhalt verst&auml;ndlich zusammen (Hinweis: Dies ersetzt keine professionelle Steuerberatung):
+
+Thema: [STEUERLICHES THEMA, z.B. Vorsteuerabzug bei gemischter Nutzung]
+Unternehmensform: [RECHTSFORM]
+Branche: [BRANCHE]
+Konkreter Fall: [FALLBESCHREIBUNG]
+
+Liefere:
+1. Erkl&auml;rung des Sachverhalts in einfacher Sprache
+2. Relevante Gesetzesgrundlagen (&sect;&sect;) mit Kurzbeschreibung
+3. Handlungsoptionen (Vor- und Nachteile)
+4. Fristen und Termine, die zu beachten sind
+5. Typische Fehler, die vermieden werden sollten
+6. Checkliste: Unterlagen f&uuml;r den Steuerberater vorbereiten
+
+WICHTIG: Weise darauf hin, dass dies eine Orientierung ist und der Steuerberater konsultiert werden sollte.</div>
+  </div>
+
+  <p class="placeholder">[WEITERE PROMPTS HIER ERG&Auml;NZEN]</p>
+
+  <div class="footer">
+    <p>&copy; frimalo UG &ndash; KI-Kompass Toolbox &ndash; Alle Rechte vorbehalten</p>
+    <p>Diese Vorlagen dienen als Ausgangspunkt. Passen Sie die Prompts an Ihre spezifischen Anforderungen an.</p>
+  </div>
+
+</body>
+</html>

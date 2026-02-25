@@ -7,6 +7,7 @@ import crypto from 'crypto'
 import { getMollieClient } from '../../../lib/mollie'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { saveAccessCode, saveCustomerData } from '../../../lib/google-sheets'
+import { getCustomerEmailForPlan } from '../../../lib/email-templates'
 
 function escapeHtml(text) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
@@ -78,10 +79,17 @@ export async function POST(request) {
       paymentMethod: 'Mollie (' + paymentMethod + ')', amount: amount + ' €',
     }).catch(() => {})
 
+    // Produktspezifische E-Mail an den Kunden senden
+    const emailData = getCustomerEmailForPlan({
+      plan: plan || 'premium',
+      safeName, safeCompany, amount,
+      accessCode, accessLink, expiresAtFormatted, planName,
+    })
+
     await sendConfirmationToCustomer({
       to: safeEmail,
-      subject: 'Ihr Zugangscode - KI-Kompass ' + planName,
-      html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;"><div style="background:#22c55e;color:white;padding:24px;border-radius:12px 12px 0 0;text-align:center;"><h1 style="margin:0;font-size:24px;">Zahlung erfolgreich!</h1><p style="margin:8px 0 0;opacity:0.9;">KI-Kompass ' + planName + '</p></div><div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;"><h2 style="color:#1e3a8a;margin-top:0;">Vielen Dank, ' + safeName + '!</h2><p>Ihre Zahlung &uuml;ber <strong>' + amount + ' &euro;</strong> wurde erfolgreich verarbeitet.</p><div style="background:#ecfdf5;border:2px solid #22c55e;border-radius:12px;padding:24px;margin:24px 0;text-align:center;"><p style="margin:0 0 8px;font-weight:bold;color:#065f46;">Ihr pers&ouml;nlicher Zugangscode:</p><div style="font-size:28px;font-weight:bold;font-family:monospace;color:#1e3a8a;background:white;padding:12px;border-radius:8px;letter-spacing:2px;">' + accessCode + '</div></div><div style="text-align:center;margin:24px 0;"><a href="' + accessLink + '" style="display:inline-block;background:#2563eb;color:white;padding:16px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">Jetzt Premium Assessment starten</a></div><div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin:16px 0;text-align:center;"><p style="margin:0;font-size:14px;color:#991b1b;font-weight:bold;">G&uuml;ltig bis: ' + expiresAtFormatted + ' (7 Tage)</p></div><p>Bei Fragen antworten Sie einfach auf diese E-Mail.</p><p>Mit freundlichen Gr&uuml;&szlig;en<br><strong>Steffen Hefter</strong><br>frimalo &ndash; KI-Beratung</p></div></div>',
+      subject: emailData.subject,
+      html: emailData.html,
     })
 
     await sendNotificationToOwner({

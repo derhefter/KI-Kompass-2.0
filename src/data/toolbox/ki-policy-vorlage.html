@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KI-Policy Vorlage &ndash; KI-Kompass Toolbox</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; max-width: 210mm; margin: 0 auto; padding: 20mm; background: white; }
+    h1 { font-size: 22pt; color: #1e3a8a; margin-bottom: 8px; }
+    h2 { font-size: 16pt; color: #1e3a8a; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #dbeafe; }
+    h3 { font-size: 12pt; color: #2563eb; margin: 16px 0 8px; }
+    p { margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th { background: #f0f4ff; padding: 8px 12px; text-align: left; border: 1px solid #e5e7eb; font-size: 10pt; color: #1e3a8a; }
+    td { padding: 8px 12px; border: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+    .header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+    .header h1 { color: white; margin: 0; }
+    .header p { color: rgba(255,255,255,0.8); margin: 4px 0 0; }
+    .prompt-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .prompt-card h3 { margin-top: 0; }
+    .prompt-text { background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 10pt; white-space: pre-wrap; }
+    .placeholder { color: #dc2626; font-style: italic; }
+    .footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #9ca3af; text-align: center; }
+    ol { margin: 8px 0 12px 24px; }
+    ol li { margin-bottom: 6px; }
+    ul { margin: 8px 0 12px 24px; }
+    ul li { margin-bottom: 6px; }
+    .section-number { color: #2563eb; font-weight: bold; }
+    .article { margin-bottom: 16px; }
+    .signature-block { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 16px; }
+    .signature-line { width: 45%; border-top: 1px solid #1a1a1a; padding-top: 8px; font-size: 10pt; color: #6b7280; margin-top: 60px; }
+    @media print { body { padding: 0; } .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>KI-Richtlinie (KI-Policy)</h1>
+    <p>Unternehmensrichtlinie f&uuml;r den Einsatz von K&uuml;nstlicher Intelligenz bei <span class="placeholder">[FIRMENNAME]</span></p>
+  </div>
+
+  <table>
+    <tr>
+      <th style="width: 30%;">Dokumenteninformation</th>
+      <th></th>
+    </tr>
+    <tr><td><strong>Unternehmen</strong></td><td class="placeholder">[FIRMENNAME]</td></tr>
+    <tr><td><strong>Version</strong></td><td>1.0</td></tr>
+    <tr><td><strong>Erstellt am</strong></td><td class="placeholder">[DATUM]</td></tr>
+    <tr><td><strong>Erstellt von</strong></td><td class="placeholder">[KI-BEAUFTRAGTER]</td></tr>
+    <tr><td><strong>Genehmigt von</strong></td><td class="placeholder">[GESCH&Auml;FTSF&Uuml;HRUNG]</td></tr>
+    <tr><td><strong>N&auml;chste &Uuml;berpr&uuml;fung</strong></td><td class="placeholder">[DATUM + 12 MONATE]</td></tr>
+    <tr><td><strong>Vertraulichkeit</strong></td><td>Intern</td></tr>
+  </table>
+
+  <!-- ============================================ -->
+  <h2>&sect; 1 Pr&auml;ambel</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p><span class="placeholder">[FIRMENNAME]</span> erkennt das transformative Potenzial von K&uuml;nstlicher Intelligenz (KI) f&uuml;r die Steigerung von Produktivit&auml;t, Innovation und Wettbewerbsf&auml;higkeit. Gleichzeitig sind wir uns der Verantwortung bewusst, die mit dem Einsatz von KI-Technologien einhergeht.</p>
+    <p>Diese Richtlinie legt den Rahmen f&uuml;r einen sicheren, ethischen und rechtskonformen Einsatz von KI-Werkzeugen im Unternehmensalltag fest. Sie dient dem Schutz unserer Mitarbeitenden, Kunden, Gesch&auml;ftspartner und des Unternehmens selbst.</p>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 2 Geltungsbereich</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Diese Richtlinie gilt f&uuml;r:</p>
+    <ul>
+      <li>Alle Mitarbeitenden von <span class="placeholder">[FIRMENNAME]</span>, unabh&auml;ngig von Position und Abteilung</li>
+      <li>Freie Mitarbeitende, Praktikanten und Werkstudenten w&auml;hrend ihrer T&auml;tigkeit f&uuml;r das Unternehmen</li>
+      <li>Externe Dienstleister, sofern sie KI-Tools im Auftrag von <span class="placeholder">[FIRMENNAME]</span> nutzen</li>
+      <li>Alle KI-basierten Anwendungen, Dienste und Tools, die im beruflichen Kontext eingesetzt werden</li>
+    </ul>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 3 Definitionen</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <table>
+      <tr><th style="width: 30%;">Begriff</th><th>Definition</th></tr>
+      <tr><td><strong>K&uuml;nstliche Intelligenz (KI)</strong></td><td>Systeme, die menschliche kognitive F&auml;higkeiten nachbilden, einschlie&szlig;lich maschinellem Lernen, nat&uuml;rlicher Sprachverarbeitung und generativer KI.</td></tr>
+      <tr><td><strong>Generative KI</strong></td><td>KI-Systeme, die neue Inhalte erzeugen k&ouml;nnen (Text, Bild, Code, Audio), z.B. ChatGPT, Claude, Midjourney.</td></tr>
+      <tr><td><strong>KI-Tool</strong></td><td>Jede Software oder Anwendung, die KI-Funktionalit&auml;ten nutzt, unabh&auml;ngig davon, ob KI die Hauptfunktion oder eine Zusatzfunktion darstellt.</td></tr>
+      <tr><td><strong>Prompt</strong></td><td>Eine Eingabe oder Anweisung, die an ein KI-System gerichtet wird, um eine bestimmte Ausgabe zu erzeugen.</td></tr>
+      <tr><td><strong>Personenbezogene Daten</strong></td><td>Alle Informationen, die sich auf eine identifizierte oder identifizierbare nat&uuml;rliche Person beziehen (gem. Art. 4 Nr. 1 DSGVO).</td></tr>
+    </table>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 4 Grunds&auml;tze der KI-Nutzung</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Der Einsatz von KI bei <span class="placeholder">[FIRMENNAME]</span> orientiert sich an folgenden Grunds&auml;tzen:</p>
+    <ol>
+      <li><strong>Transparenz:</strong> KI-generierte Inhalte werden als solche gekennzeichnet, wenn sie extern kommuniziert werden.</li>
+      <li><strong>Menschliche Kontrolle:</strong> KI unterst&uuml;tzt Entscheidungen, ersetzt sie aber nicht. Jede KI-Ausgabe wird von einem Menschen &uuml;berpr&uuml;ft.</li>
+      <li><strong>Datenschutz:</strong> Der Schutz personenbezogener Daten hat h&ouml;chste Priorit&auml;t. Keine personenbezogenen Daten werden ohne Rechtsgrundlage in KI-Systeme eingegeben.</li>
+      <li><strong>Qualit&auml;tssicherung:</strong> KI-Ausgaben werden stets auf Richtigkeit, Vollst&auml;ndigkeit und Angemessenheit gepr&uuml;ft.</li>
+      <li><strong>Verantwortlichkeit:</strong> Die Verantwortung f&uuml;r die Nutzung von KI und deren Ergebnisse liegt beim nutzenden Mitarbeitenden und dessen Vorgesetztem.</li>
+      <li><strong>Ethik:</strong> KI wird nicht f&uuml;r diskriminierende, manipulative oder t&auml;uschende Zwecke eingesetzt.</li>
+    </ol>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 5 Erlaubte KI-Tools</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Folgende KI-Tools sind f&uuml;r die Nutzung im Unternehmen freigegeben:</p>
+    <table>
+      <tr>
+        <th>Tool</th>
+        <th>Anbieter</th>
+        <th>Zugelassene Nutzung</th>
+        <th>Lizenz</th>
+        <th>DSGVO-Status</th>
+      </tr>
+      <tr>
+        <td><strong>ChatGPT (Team/Enterprise)</strong></td>
+        <td>OpenAI</td>
+        <td>Texterstellung, Recherche, Zusammenfassungen, Code-Unterst&uuml;tzung</td>
+        <td class="placeholder">[LIZENZTYP]</td>
+        <td>AVV abgeschlossen, EU-Datenverarbeitung aktiviert</td>
+      </tr>
+      <tr>
+        <td><strong>Microsoft Copilot (M365)</strong></td>
+        <td>Microsoft</td>
+        <td>Dokumentenerstellung, E-Mail-Zusammenfassungen, Pr&auml;sentationen, Excel-Analysen</td>
+        <td class="placeholder">[LIZENZTYP]</td>
+        <td>AVV &uuml;ber Microsoft-Vertrag, EU Data Boundary</td>
+      </tr>
+      <tr>
+        <td><strong>DeepL Pro</strong></td>
+        <td>DeepL SE</td>
+        <td>&Uuml;bersetzungen (alle Sprachen), Textoptimierung</td>
+        <td class="placeholder">[LIZENZTYP]</td>
+        <td>EU-Server (K&ouml;ln), DSGVO-konform</td>
+      </tr>
+    </table>
+    <p class="placeholder">[WEITERE TOOLS HIER ERG&Auml;NZEN]</p>
+    <p><strong>Hinweis:</strong> Die Nutzung nicht freigegebener KI-Tools ist untersagt und bedarf der vorherigen Genehmigung durch <span class="placeholder">[KI-BEAUFTRAGTER]</span>.</p>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 6 Verbotene Nutzungen</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Folgende Nutzungen von KI-Tools sind ausdr&uuml;cklich untersagt:</p>
+    <ol>
+      <li>Eingabe von <strong>personenbezogenen Daten</strong> (Namen, E-Mail-Adressen, Telefonnummern, etc.) in nicht freigegebene KI-Tools</li>
+      <li>Eingabe von <strong>vertraulichen Gesch&auml;ftsinformationen</strong> (Finanzdaten, Strategiepapiere, Vertr&auml;ge, Passw&ouml;rter)</li>
+      <li>Eingabe von <strong>Kundendaten</strong> ohne ausdr&uuml;ckliche Rechtsgrundlage und ohne AVV mit dem KI-Anbieter</li>
+      <li><strong>Automatisierte Entscheidungen</strong> ohne menschliche &Uuml;berpr&uuml;fung, insbesondere bei Personalentscheidungen, Kreditvergabe oder Vertragsabschl&uuml;ssen</li>
+      <li>Erstellung von <strong>Deep Fakes</strong>, manipulierten Medien oder irref&uuml;hrenden Inhalten</li>
+      <li><strong>Profiling</strong> von Mitarbeitenden, Bewerbern oder Kunden ohne Rechtsgrundlage</li>
+      <li>Nutzung von KI zur <strong>Umgehung</strong> interner Kontrollmechanismen oder Compliance-Vorgaben</li>
+      <li>Installation und Nutzung von <strong>nicht genehmigten KI-Browser-Erweiterungen</strong> oder Plugins</li>
+    </ol>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 7 Datenschutz-Anforderungen</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <h3>7.1 Allgemeine Anforderungen</h3>
+    <ul>
+      <li>Vor der Nutzung eines neuen KI-Tools ist eine <strong>Datenschutz-Folgenabsch&auml;tzung (DSFA)</strong> durchzuf&uuml;hren, sofern personenbezogene Daten verarbeitet werden.</li>
+      <li>Mit jedem KI-Anbieter, der personenbezogene Daten verarbeitet, muss ein <strong>Auftragsverarbeitungsvertrag (AVV)</strong> abgeschlossen werden.</li>
+      <li>Die <strong>Opt-out-Option</strong> f&uuml;r das Training von KI-Modellen mit Unternehmensdaten muss aktiviert sein.</li>
+      <li>Die Datenverarbeitung sollte bevorzugt auf <strong>EU-Servern</strong> erfolgen.</li>
+    </ul>
+
+    <h3>7.2 Datenklassifizierung f&uuml;r KI-Nutzung</h3>
+    <table>
+      <tr>
+        <th>Datenklasse</th>
+        <th>Beispiele</th>
+        <th>KI-Nutzung erlaubt?</th>
+      </tr>
+      <tr>
+        <td style="background: #dcfce7;"><strong>&Ouml;ffentlich</strong></td>
+        <td>Marketingtexte, Blog-Artikel, &ouml;ffentliche Informationen</td>
+        <td>Ja, ohne Einschr&auml;nkung</td>
+      </tr>
+      <tr>
+        <td style="background: #fef9c3;"><strong>Intern</strong></td>
+        <td>Interne Kommunikation, Prozessdokumentation</td>
+        <td>Ja, nur mit freigegebenen Tools</td>
+      </tr>
+      <tr>
+        <td style="background: #fed7aa;"><strong>Vertraulich</strong></td>
+        <td>Kundendaten, Vertr&auml;ge, Finanzdaten</td>
+        <td>Nur nach DSFA und mit AVV</td>
+      </tr>
+      <tr>
+        <td style="background: #fecaca;"><strong>Streng vertraulich</strong></td>
+        <td>Passw&ouml;rter, Gesundheitsdaten, Gehaltsdetails</td>
+        <td>Nein, grunds&auml;tzlich verboten</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 8 Verantwortlichkeiten</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <table>
+      <tr><th>Rolle</th><th>Verantwortlichkeiten</th></tr>
+      <tr>
+        <td><strong>Gesch&auml;ftsf&uuml;hrung</strong></td>
+        <td>Genehmigung der KI-Policy, Bereitstellung von Ressourcen, strategische Ausrichtung</td>
+      </tr>
+      <tr>
+        <td><strong>KI-Beauftragter</strong><br /><span class="placeholder">[KI-BEAUFTRAGTER]</span></td>
+        <td>Freigabe von KI-Tools, Schulungsplanung, Ansprechpartner f&uuml;r KI-Fragen, regelm&auml;&szlig;ige Policy-&Uuml;berpr&uuml;fung</td>
+      </tr>
+      <tr>
+        <td><strong>Datenschutzbeauftragter</strong><br /><span class="placeholder">[DSB]</span></td>
+        <td>DSFA-Durchf&uuml;hrung, AVV-Pr&uuml;fung, Datenschutz-Beratung, Meldung an Aufsichtsbeh&ouml;rde bei Bedarf</td>
+      </tr>
+      <tr>
+        <td><strong>IT-Abteilung</strong></td>
+        <td>Technische Umsetzung, Zugangsverwaltung, Sicherheits&uuml;berpr&uuml;fung, Monitoring</td>
+      </tr>
+      <tr>
+        <td><strong>F&uuml;hrungskr&auml;fte</strong></td>
+        <td>Einhaltung der Policy im Team sicherstellen, Schulungsteilnahme kontrollieren</td>
+      </tr>
+      <tr>
+        <td><strong>Alle Mitarbeitenden</strong></td>
+        <td>Einhaltung dieser Richtlinie, Teilnahme an Schulungen, Meldung von Verst&ouml;&szlig;en</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 9 Schulungspflicht</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <ol>
+      <li>Alle Mitarbeitenden m&uuml;ssen vor der ersten KI-Nutzung eine <strong>Basis-Schulung</strong> absolvieren (Dauer: ca. 2 Stunden).</li>
+      <li><strong>Auffrischungsschulungen</strong> finden mindestens einmal j&auml;hrlich statt.</li>
+      <li>Bei Einf&uuml;hrung neuer KI-Tools erfolgt eine <strong>Tool-spezifische Einweisung</strong>.</li>
+      <li>F&uuml;hrungskr&auml;fte erhalten eine zus&auml;tzliche <strong>F&uuml;hrungskr&auml;fte-Schulung</strong> (Strategie, Risikomanagement, Teamf&uuml;hrung im KI-Kontext).</li>
+      <li>Die Teilnahme an Schulungen wird <strong>dokumentiert</strong> und ist Voraussetzung f&uuml;r die Freischaltung von KI-Tools.</li>
+    </ol>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 10 Meldepflicht und Vorfallmanagement</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Folgende Vorf&auml;lle sind unverz&uuml;glich an <span class="placeholder">[KI-BEAUFTRAGTER]</span> und <span class="placeholder">[DSB]</span> zu melden:</p>
+    <ul>
+      <li>Versehentliche Eingabe personenbezogener oder vertraulicher Daten in nicht freigegebene KI-Tools</li>
+      <li>Erkennung von fehlerhaften, diskriminierenden oder unangemessenen KI-Ausgaben</li>
+      <li>Sicherheitsvorf&auml;lle im Zusammenhang mit KI-Tools (Datenlecks, unbefugter Zugriff)</li>
+      <li>Nutzung nicht genehmigter KI-Tools durch Kolleginnen und Kollegen</li>
+      <li>Unbekannte oder ungew&ouml;hnliche Verhaltensweisen von KI-Systemen</li>
+    </ul>
+    <p>Meldungen k&ouml;nnen per E-Mail an <span class="placeholder">[E-MAIL-ADRESSE]</span> oder &uuml;ber <span class="placeholder">[MELDESYSTEM/TOOL]</span> erfolgen. Anonyme Meldungen sind m&ouml;glich.</p>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>&sect; 11 Inkrafttreten und &Uuml;berpr&uuml;fung</h2>
+  <!-- ============================================ -->
+
+  <div class="article">
+    <p>Diese Richtlinie tritt am <span class="placeholder">[DATUM]</span> in Kraft und wird mindestens einmal j&auml;hrlich &uuml;berpr&uuml;ft und bei Bedarf aktualisiert. &Auml;nderungen werden allen Mitarbeitenden mitgeteilt.</p>
+    <p>Bei Verst&ouml;&szlig;en gegen diese Richtlinie beh&auml;lt sich <span class="placeholder">[FIRMENNAME]</span> arbeitsrechtliche Ma&szlig;nahmen vor.</p>
+  </div>
+
+  <div class="signature-block">
+    <div class="signature-line">
+      <p>Ort, Datum</p>
+      <p class="placeholder">[ORT], [DATUM]</p>
+    </div>
+    <div class="signature-line">
+      <p>Gesch&auml;ftsf&uuml;hrung</p>
+      <p class="placeholder">[NAME GESCH&Auml;FTSF&Uuml;HRER/IN]</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; frimalo UG &ndash; KI-Kompass Toolbox &ndash; Alle Rechte vorbehalten</p>
+    <p>Vorlage. Bitte passen Sie diese Richtlinie an die spezifischen Anforderungen Ihres Unternehmens an.</p>
+  </div>
+
+</body>
+</html>

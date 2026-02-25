@@ -1,7 +1,8 @@
 // ============================================================
-// KI-READINESS ZERTIFIKAT GENERATOR - KI-Kompass V2
+// KI-READINESS ZERTIFIKAT & BADGE GENERATOR - KI-Kompass V2
 // ============================================================
-// Generiert ein professionelles, druckfertiges Zertifikat (A4 Querformat)
+// generateCertificateHTML() = Premium Zertifikat (€97) - A4 Querformat
+// generateBadgeHTML()       = Basic Badge (€47) - Kompaktes Website-Badge
 // ============================================================
 
 import crypto from 'crypto'
@@ -131,6 +132,161 @@ export function generateCertificateHTML({ companyName, contactName, date, level,
 
     <div class="cert-id">Zertifikat-Nr.: ${certificateId}</div>
     <div class="verify-text">Verifizierbar unter ki-kompass.de/verify/${certificateId}</div>
+  </div>
+</body>
+</html>`
+}
+
+// ============================================================
+// BASIC BADGE (€47) - Kompaktes, website-einbettbares Badge
+// ============================================================
+export function generateBadgeHTML({ companyName, contactName, date, level, levelTitle, percentage, certificateId }) {
+  const levelColors = {
+    1: { bg: '#fef2f2', border: '#ef4444', badge: '#ef4444', light: '#fee2e2' },
+    2: { bg: '#fffbeb', border: '#f59e0b', badge: '#f59e0b', light: '#fef3c7' },
+    3: { bg: '#eff6ff', border: '#3b82f6', badge: '#3b82f6', light: '#dbeafe' },
+    4: { bg: '#f0fdf4', border: '#22c55e', badge: '#22c55e', light: '#dcfce7' },
+  }
+  const colors = levelColors[level] || levelColors[1]
+
+  return `<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="badge-type" content="basic">
+  <title>KI-Readiness Badge - ${companyName}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .badge-container {
+      width: 400px;
+      background: white;
+      border-radius: 20px;
+      border: 3px solid ${colors.border};
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .badge-header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .badge-header h1 {
+      font-size: 14pt;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .badge-header p {
+      font-size: 9pt;
+      opacity: 0.8;
+    }
+    .badge-body {
+      padding: 24px;
+      text-align: center;
+    }
+    .badge-score {
+      font-size: 48pt;
+      font-weight: bold;
+      color: ${colors.badge};
+      line-height: 1;
+      margin: 8px 0;
+    }
+    .badge-level {
+      display: inline-block;
+      background: ${colors.badge};
+      color: white;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 12pt;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+    .badge-company {
+      font-size: 16pt;
+      font-weight: bold;
+      color: #1e3a8a;
+      margin: 16px 0 4px;
+    }
+    .badge-contact {
+      font-size: 10pt;
+      color: #6b7280;
+    }
+    .badge-footer {
+      background: ${colors.light};
+      padding: 12px 20px;
+      text-align: center;
+      border-top: 1px solid ${colors.border};
+    }
+    .badge-footer .cert-id {
+      font-family: monospace;
+      font-size: 8pt;
+      color: #6b7280;
+    }
+    .badge-footer .verify {
+      font-size: 7pt;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+    .badge-footer .date {
+      font-size: 8pt;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .badge-footer .brand {
+      font-size: 8pt;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+    @media print {
+      body { background: white; min-height: auto; }
+      .badge-container { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <!--
+  ============================================================
+  WEBSITE-EINBETTUNG: Kopieren Sie den folgenden Code in Ihre Website,
+  um das Badge als Bild/Link einzubetten:
+
+  <a href="https://ki-kompass-v2-seven.vercel.app/verify/${certificateId}" target="_blank" rel="noopener">
+    <img src="[BADGE-BILD-URL]" alt="KI-Readiness Badge - Level ${level}: ${levelTitle} - ${percentage}%" width="200" />
+  </a>
+
+  Tipp: Speichern Sie diese HTML-Datei als Screenshot/PNG und
+  laden Sie das Bild auf Ihre Website hoch.
+  ============================================================
+  -->
+
+  <div class="badge-container">
+    <div class="badge-header">
+      <h1>KI-Readiness</h1>
+      <p>Zertifiziert durch KI-Kompass &bull; frimalo</p>
+    </div>
+
+    <div class="badge-body">
+      <div class="badge-score">${percentage}%</div>
+      <div class="badge-level">Level ${level}: ${levelTitle}</div>
+      <div class="badge-company">${companyName}</div>
+      <div class="badge-contact">vertreten durch ${contactName}</div>
+    </div>
+
+    <div class="badge-footer">
+      <div class="cert-id">Nr.: ${certificateId}</div>
+      <div class="verify">Verifizierbar unter ki-kompass.de/verify/${certificateId}</div>
+      <div class="date">Ausgestellt am ${date}</div>
+      <div class="brand">frimalo &ndash; KI-Beratung f&uuml;r den Mittelstand</div>
+    </div>
   </div>
 </body>
 </html>`

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSFA-Template f&uuml;r KI-Projekte &ndash; KI-Kompass Toolbox</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; max-width: 210mm; margin: 0 auto; padding: 20mm; background: white; }
+    h1 { font-size: 22pt; color: #1e3a8a; margin-bottom: 8px; }
+    h2 { font-size: 16pt; color: #1e3a8a; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #dbeafe; }
+    h3 { font-size: 12pt; color: #2563eb; margin: 16px 0 8px; }
+    p { margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th { background: #f0f4ff; padding: 8px 12px; text-align: left; border: 1px solid #e5e7eb; font-size: 10pt; color: #1e3a8a; }
+    td { padding: 8px 12px; border: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+    .header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+    .header h1 { color: white; margin: 0; }
+    .header p { color: rgba(255,255,255,0.8); margin: 4px 0 0; }
+    .prompt-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .prompt-card h3 { margin-top: 0; }
+    .prompt-text { background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 10pt; white-space: pre-wrap; }
+    .placeholder { color: #dc2626; font-style: italic; }
+    .footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #9ca3af; text-align: center; }
+    .form-field { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; margin: 8px 0; min-height: 40px; }
+    .form-field-large { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; margin: 8px 0; min-height: 80px; }
+    .form-label { font-weight: bold; font-size: 10pt; color: #374151; margin-bottom: 4px; display: block; }
+    .form-hint { font-size: 9pt; color: #6b7280; font-style: italic; margin-bottom: 4px; }
+    .risk-high { background: #fecaca; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    .risk-medium { background: #fed7aa; color: #9a3412; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    .risk-low { background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    .checkbox-item { margin: 6px 0; padding-left: 4px; }
+    ol { margin: 8px 0 12px 24px; }
+    ol li { margin-bottom: 6px; }
+    ul { margin: 8px 0 12px 24px; }
+    ul li { margin-bottom: 6px; }
+    .signature-block { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 16px; }
+    .signature-line { width: 30%; border-top: 1px solid #1a1a1a; padding-top: 8px; font-size: 10pt; color: #6b7280; margin-top: 60px; }
+    @media print { body { padding: 0; } .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .risk-high, .risk-medium, .risk-low { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Datenschutz-Folgenabsch&auml;tzung (DSFA)</h1>
+    <p>f&uuml;r KI-basierte Datenverarbeitung gem&auml;&szlig; Art. 35 DSGVO</p>
+  </div>
+
+  <!-- ============================================ -->
+  <h2>1. Dokumenteninformation</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr><th style="width: 35%;">Feld</th><th>Angabe</th></tr>
+    <tr><td><strong>Verantwortliche Stelle</strong></td><td><div class="form-field"><span class="placeholder">[FIRMENNAME]</span></div></td></tr>
+    <tr><td><strong>Datenschutzbeauftragter</strong></td><td><div class="form-field"><span class="placeholder">[NAME, KONTAKTDATEN DSB]</span></div></td></tr>
+    <tr><td><strong>Projektverantwortlicher</strong></td><td><div class="form-field"><span class="placeholder">[NAME, ABTEILUNG]</span></div></td></tr>
+    <tr><td><strong>Datum der Erstellung</strong></td><td><div class="form-field"><span class="placeholder">[DATUM]</span></div></td></tr>
+    <tr><td><strong>Version</strong></td><td><div class="form-field">1.0</div></td></tr>
+    <tr><td><strong>Status</strong></td><td><div class="form-field"><span class="placeholder">[Entwurf / In Pr&uuml;fung / Genehmigt]</span></div></td></tr>
+  </table>
+
+  <!-- ============================================ -->
+  <h2>2. Projektbeschreibung</h2>
+  <!-- ============================================ -->
+
+  <label class="form-label">2.1 Projektname</label>
+  <div class="form-field"><span class="placeholder">[PROJEKTNAME]</span></div>
+
+  <label class="form-label">2.2 Beschreibung des Vorhabens</label>
+  <div class="form-hint">Beschreiben Sie das KI-Projekt, seinen Zweck und den erwarteten Nutzen.</div>
+  <div class="form-field-large"><span class="placeholder">[PROJEKTBESCHREIBUNG &ndash; Was wird gemacht? Warum? Welcher Nutzen wird erwartet?]</span></div>
+
+  <label class="form-label">2.3 Rechtsgrundlage der Verarbeitung</label>
+  <div class="form-hint">Auf welcher Rechtsgrundlage gem. Art. 6 DSGVO basiert die Verarbeitung?</div>
+  <div class="prompt-card">
+    <div class="checkbox-item">&#9744; Art. 6 Abs. 1 lit. a &ndash; Einwilligung</div>
+    <div class="checkbox-item">&#9744; Art. 6 Abs. 1 lit. b &ndash; Vertragserf&uuml;llung</div>
+    <div class="checkbox-item">&#9744; Art. 6 Abs. 1 lit. c &ndash; Rechtliche Verpflichtung</div>
+    <div class="checkbox-item">&#9744; Art. 6 Abs. 1 lit. f &ndash; Berechtigtes Interesse</div>
+    <div class="checkbox-item">&#9744; Sonstige: <span class="placeholder">[ANGABE]</span></div>
+  </div>
+
+  <label class="form-label">2.4 Berechtigtes Interesse (falls zutreffend)</label>
+  <div class="form-field-large"><span class="placeholder">[BESCHREIBUNG DES BERECHTIGTEN INTERESSES UND INTERESSENABW&Auml;GUNG]</span></div>
+
+  <!-- ============================================ -->
+  <h2>3. KI-System</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr><th style="width: 35%;">Eigenschaft</th><th>Angabe</th></tr>
+    <tr><td><strong>Name des KI-Systems</strong></td><td><div class="form-field"><span class="placeholder">[z.B. ChatGPT Enterprise, Microsoft Copilot]</span></div></td></tr>
+    <tr><td><strong>Anbieter</strong></td><td><div class="form-field"><span class="placeholder">[ANBIETERNAME, SITZ]</span></div></td></tr>
+    <tr><td><strong>Art des KI-Systems</strong></td><td><div class="form-field"><span class="placeholder">[Generative KI / ML-Klassifikation / NLP / Computer Vision / etc.]</span></div></td></tr>
+    <tr><td><strong>Einsatzbereich</strong></td><td><div class="form-field"><span class="placeholder">[ABTEILUNG, ANWENDUNGSFALL]</span></div></td></tr>
+    <tr><td><strong>Serverstandort</strong></td><td><div class="form-field"><span class="placeholder">[EU / USA / Sonstige]</span></div></td></tr>
+    <tr><td><strong>AVV vorhanden?</strong></td><td><div class="form-field"><span class="placeholder">[Ja / Nein / In Vorbereitung]</span></div></td></tr>
+    <tr><td><strong>EU AI Act Risikoklasse</strong></td><td><div class="form-field"><span class="placeholder">[Minimal / Begrenzt / Hoch / Inakzeptabel]</span></div></td></tr>
+    <tr><td><strong>Training mit Unternehmensdaten?</strong></td><td><div class="form-field"><span class="placeholder">[Ja / Nein / Opt-out aktiviert]</span></div></td></tr>
+  </table>
+
+  <!-- ============================================ -->
+  <h2>4. Verarbeitete Daten</h2>
+  <!-- ============================================ -->
+
+  <h3>4.1 Kategorien personenbezogener Daten</h3>
+  <div class="prompt-card">
+    <div class="checkbox-item">&#9744; Name, Vorname</div>
+    <div class="checkbox-item">&#9744; E-Mail-Adresse</div>
+    <div class="checkbox-item">&#9744; Telefonnummer</div>
+    <div class="checkbox-item">&#9744; Anschrift</div>
+    <div class="checkbox-item">&#9744; Geburtsdatum</div>
+    <div class="checkbox-item">&#9744; Besch&auml;ftigungsdaten</div>
+    <div class="checkbox-item">&#9744; Kundendaten / Kaufhistorie</div>
+    <div class="checkbox-item">&#9744; Kommunikationsinhalte (E-Mails, Chat)</div>
+    <div class="checkbox-item">&#9744; Nutzungsdaten / Logdaten</div>
+    <div class="checkbox-item">&#9744; Bilder / Videos</div>
+    <div class="checkbox-item">&#9744; Besondere Kategorien gem. Art. 9 DSGVO: <span class="placeholder">[ANGABE]</span></div>
+    <div class="checkbox-item">&#9744; Sonstige: <span class="placeholder">[ANGABE]</span></div>
+  </div>
+
+  <h3>4.2 Betroffene Personengruppen</h3>
+  <div class="prompt-card">
+    <div class="checkbox-item">&#9744; Mitarbeitende</div>
+    <div class="checkbox-item">&#9744; Kunden / Kundinnen</div>
+    <div class="checkbox-item">&#9744; Bewerber / Bewerberinnen</div>
+    <div class="checkbox-item">&#9744; Lieferanten / Gesch&auml;ftspartner</div>
+    <div class="checkbox-item">&#9744; Website-Besucher</div>
+    <div class="checkbox-item">&#9744; Sonstige: <span class="placeholder">[ANGABE]</span></div>
+  </div>
+
+  <h3>4.3 Gesch&auml;tzte Anzahl betroffener Personen</h3>
+  <div class="form-field"><span class="placeholder">[ANZAHL oder BEREICH, z.B. 100&ndash;500 Personen]</span></div>
+
+  <h3>4.4 Datenfluss</h3>
+  <div class="form-hint">Beschreiben Sie den Weg der Daten: Quelle &rarr; KI-System &rarr; Ausgabe &rarr; Speicherung</div>
+  <div class="form-field-large"><span class="placeholder">[BESCHREIBUNG DES DATENFLUSSES]</span></div>
+
+  <!-- ============================================ -->
+  <h2>5. Risikobewertung</h2>
+  <!-- ============================================ -->
+
+  <p>Bewerten Sie die folgenden Risiken nach Eintrittswahrscheinlichkeit (1=gering, 4=sehr hoch) und Schwere der Auswirkung (1=gering, 4=sehr hoch). Risikostufe = Wahrscheinlichkeit &times; Schwere.</p>
+
+  <table>
+    <tr>
+      <th>Nr.</th>
+      <th>Risiko</th>
+      <th style="width: 12%;">Wahrschein&shy;lichkeit</th>
+      <th style="width: 10%;">Schwere</th>
+      <th style="width: 10%;">Stufe</th>
+      <th style="width: 12%;">Bewertung</th>
+    </tr>
+    <tr>
+      <td>R1</td>
+      <td>Unbefugter Zugriff auf personenbezogene Daten im KI-System</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-high">Hoch</span></td>
+    </tr>
+    <tr>
+      <td>R2</td>
+      <td>Unbeabsichtigte Weitergabe vertraulicher Daten an KI-Anbieter</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-high">Hoch</span></td>
+    </tr>
+    <tr>
+      <td>R3</td>
+      <td>Nutzung personenbezogener Daten f&uuml;r KI-Modelltraining</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-medium">Mittel</span></td>
+    </tr>
+    <tr>
+      <td>R4</td>
+      <td>Fehlhafte KI-Ausgaben f&uuml;hren zu falschen Entscheidungen</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-medium">Mittel</span></td>
+    </tr>
+    <tr>
+      <td>R5</td>
+      <td>Diskriminierung durch KI-Bias (z.B. bei Bewerbungsauswahl)</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-high">Hoch</span></td>
+    </tr>
+    <tr>
+      <td>R6</td>
+      <td>Mangelnde Transparenz gegen&uuml;ber Betroffenen</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-medium">Mittel</span></td>
+    </tr>
+    <tr>
+      <td>R7</td>
+      <td>Datentransfer in Drittl&auml;nder ohne angemessenes Schutzniveau</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-medium">Mittel</span></td>
+    </tr>
+    <tr>
+      <td>R8</td>
+      <td>Verletzung von Urheberrechten durch KI-generierte Inhalte</td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;4]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[1&ndash;16]</span></div></td>
+      <td><span class="risk-low">Gering</span></td>
+    </tr>
+  </table>
+
+  <p><strong>Risikomatrix:</strong> Gering (1&ndash;4) = <span class="risk-low">Akzeptabel</span> &nbsp; Mittel (5&ndash;9) = <span class="risk-medium">Ma&szlig;nahmen erforderlich</span> &nbsp; Hoch (10&ndash;16) = <span class="risk-high">Sofortma&szlig;nahmen</span></p>
+
+  <!-- ============================================ -->
+  <h2>6. Technische Ma&szlig;nahmen</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr><th>Nr.</th><th>Ma&szlig;nahme</th><th style="width: 15%;">Status</th><th>Verantwortlich</th></tr>
+    <tr>
+      <td>T1</td>
+      <td>Verschl&uuml;sselung der Daten&uuml;bertragung (TLS 1.3)</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T2</td>
+      <td>Zugriffskontrolle und Authentifizierung (SSO/MFA)</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T3</td>
+      <td>Opt-out f&uuml;r KI-Modelltraining aktiviert</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T4</td>
+      <td>Anonymisierung/Pseudonymisierung vor KI-Eingabe</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T5</td>
+      <td>Protokollierung aller KI-Interaktionen (Logging)</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T6</td>
+      <td>Regelm&auml;&szlig;ige Sicherheits&uuml;berpr&uuml;fung des KI-Tools</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>T7</td>
+      <td>Datensicherung und Wiederherstellungsstrategie</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+  </table>
+
+  <!-- ============================================ -->
+  <h2>7. Organisatorische Ma&szlig;nahmen</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr><th>Nr.</th><th>Ma&szlig;nahme</th><th style="width: 15%;">Status</th><th>Verantwortlich</th></tr>
+    <tr>
+      <td>O1</td>
+      <td>KI-Policy erstellt und kommuniziert</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O2</td>
+      <td>Mitarbeiterschulungen zum Datenschutz bei KI-Nutzung</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O3</td>
+      <td>Auftragsverarbeitungsvertrag (AVV) abgeschlossen</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O4</td>
+      <td>Verzeichnis der Verarbeitungst&auml;tigkeiten aktualisiert</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O5</td>
+      <td>Informationspflichten gem. Art. 13/14 DSGVO erf&uuml;llt</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O6</td>
+      <td>Prozess f&uuml;r Betroffenenrechte (Auskunft, L&ouml;schung) etabliert</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+    <tr>
+      <td>O7</td>
+      <td>Meldeprozess f&uuml;r Datenschutzvorf&auml;lle definiert</td>
+      <td><div class="form-field"><span class="placeholder">[&#9744;]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+    </tr>
+  </table>
+
+  <!-- ============================================ -->
+  <h2>8. Ergebnis der DSFA</h2>
+  <!-- ============================================ -->
+
+  <div class="prompt-card">
+    <h3>8.1 Gesamtbewertung</h3>
+    <div class="checkbox-item">&#9744; <span class="risk-low">Geringes Restrisiko</span> &ndash; Die Verarbeitung kann ohne weitere Ma&szlig;nahmen durchgef&uuml;hrt werden.</div>
+    <div class="checkbox-item">&#9744; <span class="risk-medium">Mittleres Restrisiko</span> &ndash; Die Verarbeitung kann nach Umsetzung der oben genannten Ma&szlig;nahmen durchgef&uuml;hrt werden.</div>
+    <div class="checkbox-item">&#9744; <span class="risk-high">Hohes Restrisiko</span> &ndash; Konsultation der Aufsichtsbeh&ouml;rde gem. Art. 36 DSGVO erforderlich.</div>
+  </div>
+
+  <label class="form-label">8.2 Zusammenfassung und Empfehlung</label>
+  <div class="form-field-large"><span class="placeholder">[ZUSAMMENFASSENDE BEWERTUNG UND EMPFEHLUNG DES DSB]</span></div>
+
+  <label class="form-label">8.3 Auflagen und Bedingungen</label>
+  <div class="form-field-large"><span class="placeholder">[BEDINGUNGEN, UNTER DENEN DIE VERARBEITUNG GENEHMIGT WIRD]</span></div>
+
+  <!-- ============================================ -->
+  <h2>9. Genehmigung</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr><th>Rolle</th><th>Name</th><th>Datum</th><th>Unterschrift</th></tr>
+    <tr>
+      <td><strong>Projektverantwortlicher</strong></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[DATUM]</span></div></td>
+      <td><div class="form-field">&nbsp;</div></td>
+    </tr>
+    <tr>
+      <td><strong>Datenschutzbeauftragter</strong></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[DATUM]</span></div></td>
+      <td><div class="form-field">&nbsp;</div></td>
+    </tr>
+    <tr>
+      <td><strong>Gesch&auml;ftsf&uuml;hrung</strong></td>
+      <td><div class="form-field"><span class="placeholder">[NAME]</span></div></td>
+      <td><div class="form-field"><span class="placeholder">[DATUM]</span></div></td>
+      <td><div class="form-field">&nbsp;</div></td>
+    </tr>
+  </table>
+
+  <p style="margin-top: 16px;"><strong>N&auml;chste &Uuml;berpr&uuml;fung:</strong> <span class="placeholder">[DATUM + 12 MONATE]</span></p>
+
+  <div class="footer">
+    <p>&copy; frimalo UG &ndash; KI-Kompass Toolbox &ndash; Alle Rechte vorbehalten</p>
+    <p>Vorlage. Bitte passen Sie dieses Template an die spezifischen Anforderungen Ihres Unternehmens und KI-Projekts an. Diese Vorlage ersetzt keine rechtliche Beratung.</p>
+  </div>
+
+</body>
+</html>

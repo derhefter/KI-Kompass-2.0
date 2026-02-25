@@ -125,7 +125,7 @@ export async function POST(request) {
         value: product.price,
       },
       description: product.name,
-      redirectUrl: `${baseUrl}/zahlung-erfolgreich`,
+      redirectUrl: `${baseUrl}/zahlung-erfolgreich?plan=${plan}`,
       webhookUrl: `${baseUrl}/api/mollie-webhook`,
       metadata: {
         plan,

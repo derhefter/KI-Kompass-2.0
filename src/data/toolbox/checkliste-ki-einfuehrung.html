@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkliste: KI-Einf&uuml;hrung &ndash; KI-Kompass Toolbox</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; max-width: 210mm; margin: 0 auto; padding: 20mm; background: white; }
+    h1 { font-size: 22pt; color: #1e3a8a; margin-bottom: 8px; }
+    h2 { font-size: 16pt; color: #1e3a8a; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #dbeafe; }
+    h3 { font-size: 12pt; color: #2563eb; margin: 16px 0 8px; }
+    p { margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    th { background: #f0f4ff; padding: 8px 12px; text-align: left; border: 1px solid #e5e7eb; font-size: 10pt; color: #1e3a8a; }
+    td { padding: 8px 12px; border: 1px solid #e5e7eb; font-size: 10pt; vertical-align: top; }
+    .header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+    .header h1 { color: white; margin: 0; }
+    .header p { color: rgba(255,255,255,0.8); margin: 4px 0 0; }
+    .prompt-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .prompt-card h3 { margin-top: 0; }
+    .prompt-text { background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 10pt; white-space: pre-wrap; }
+    .placeholder { color: #dc2626; font-style: italic; }
+    .footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #9ca3af; text-align: center; }
+    .phase-header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 16px 20px; border-radius: 10px 10px 0 0; margin-top: 28px; }
+    .phase-header h2 { color: white; margin: 0; padding: 0; border: none; }
+    .phase-header p { color: rgba(255,255,255,0.8); margin: 4px 0 0; font-size: 10pt; }
+    .phase-body { border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0  10px 10px; padding: 0; margin-bottom: 20px; }
+    .checklist-item { display: flex; align-items: flex-start; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item:nth-child(even) { background: #fafbfc; }
+    .checkbox { font-size: 16pt; margin-right: 12px; color: #d1d5db; flex-shrink: 0; line-height: 1.2; }
+    .checklist-content { flex: 1; }
+    .checklist-content strong { color: #1e3a8a; display: block; margin-bottom: 2px; }
+    .checklist-content span { font-size: 10pt; color: #6b7280; }
+    .progress-bar { background: #e5e7eb; border-radius: 6px; height: 8px; margin: 8px 0 4px; }
+    .progress-fill { height: 8px; border-radius: 6px; }
+    .progress-label { font-size: 9pt; color: #6b7280; }
+    .tip-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin: 16px 0; }
+    .tip-box strong { color: #166534; }
+    .notes-field { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; margin: 8px 0; min-height: 60px; }
+    @media print {
+      body { padding: 0; }
+      .header, .phase-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .checklist-item:nth-child(even) { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tip-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Checkliste: KI-Einf&uuml;hrung im Unternehmen</h1>
+    <p>Systematischer 6-Monats-Fahrplan f&uuml;r die erfolgreiche KI-Integration in KMU</p>
+  </div>
+
+  <table>
+    <tr><th style="width: 30%;">Information</th><th>Angabe</th></tr>
+    <tr><td><strong>Unternehmen</strong></td><td class="placeholder">[FIRMENNAME]</td></tr>
+    <tr><td><strong>KI-Beauftragter</strong></td><td class="placeholder">[NAME]</td></tr>
+    <tr><td><strong>Startdatum</strong></td><td class="placeholder">[DATUM]</td></tr>
+    <tr><td><strong>Zieldatum</strong></td><td class="placeholder">[DATUM + 6 MONATE]</td></tr>
+  </table>
+
+  <!-- ============================================ -->
+  <!-- PHASE 1 -->
+  <!-- ============================================ -->
+
+  <div class="phase-header">
+    <h2>Phase 1: KI-Awareness (Monat 1&ndash;2)</h2>
+    <p>Grundlagen schaffen &ndash; Wissen aufbauen &ndash; Akzeptanz f&ouml;rdern</p>
+  </div>
+  <div class="phase-body">
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.1 Gesch&auml;ftsf&uuml;hrung f&uuml;r KI-Strategie gewinnen</strong>
+        <span>Management-Briefing durchf&uuml;hren: Chancen, Risiken und Wettbewerbsvorteile von KI pr&auml;sentieren. Budget- und Ressourcenfreigabe einholen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.2 KI-Beauftragten benennen</strong>
+        <span>Eine verantwortliche Person bestimmen, die das KI-Projekt koordiniert, als Ansprechpartner dient und den Fortschritt &uuml;berwacht.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.3 Bestandsaufnahme: Bereits genutzte KI-Tools erfassen</strong>
+        <span>Alle Abteilungen befragen, welche KI-Tools bereits (informell) genutzt werden. Schatten-IT identifizieren und dokumentieren.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.4 Kick-off-Workshop f&uuml;r alle Mitarbeitenden</strong>
+        <span>Einf&uuml;hrungsveranstaltung: Was ist KI? Was kann sie (nicht)? Wie ver&auml;ndert sie unsere Arbeit? Fragen und Bedenken aufnehmen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.5 Use Cases identifizieren und priorisieren</strong>
+        <span>Gemeinsam mit Abteilungsleitern 5&ndash;10 konkrete Anwendungsf&auml;lle sammeln. Nach Aufwand, Nutzen und Machbarkeit priorisieren.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.6 Wettbewerbs- und Marktanalyse KI durchf&uuml;hren</strong>
+        <span>Analysieren, wie Wettbewerber und die Branche KI einsetzen. Best Practices und Benchmarks f&uuml;r die eigene Branche recherchieren.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.7 KI-Policy (Richtlinie) entwerfen</strong>
+        <span>Erste Version der unternehmensinternen KI-Richtlinie erstellen: Erlaubte Tools, Datenschutzvorgaben, Verantwortlichkeiten. (Vorlage: KI-Policy Template)</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>1.8 Datenschutzbeauftragten einbeziehen</strong>
+        <span>DSB &uuml;ber KI-Vorhaben informieren. Gemeinsam Datenschutzanforderungen kl&auml;ren und DSFA-Notwendigkeit pr&uuml;fen.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <strong>Tipp f&uuml;r Phase 1:</strong> Starten Sie mit schnellen Erfolgen (Quick Wins). Ein einfacher Use Case wie die KI-gest&uuml;tzte E-Mail-Formulierung zeigt sofort Mehrwert und baut Vertrauen auf.
+  </div>
+
+  <p><strong>Notizen Phase 1:</strong></p>
+  <div class="notes-field"></div>
+
+  <!-- ============================================ -->
+  <!-- PHASE 2 -->
+  <!-- ============================================ -->
+
+  <div class="phase-header">
+    <h2>Phase 2: KI-Readiness (Monat 3&ndash;4)</h2>
+    <p>Infrastruktur aufbauen &ndash; Tools evaluieren &ndash; Pilotprojekte starten</p>
+  </div>
+  <div class="phase-body">
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.1 KI-Tools evaluieren und ausw&auml;hlen</strong>
+        <span>Anhand der priorisierten Use Cases passende Tools evaluieren. Kriterien: Funktionalit&auml;t, Preis, DSGVO-Konformit&auml;t, EU-Server, Integration. (Vorlage: KI-Anbieter-Vergleich)</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.2 Auftragsverarbeitungsvertr&auml;ge (AVV) abschlie&szlig;en</strong>
+        <span>F&uuml;r alle ausgew&auml;hlten KI-Tools AVV mit den Anbietern abschlie&szlig;en. Opt-out f&uuml;r Modelltraining aktivieren. Datenspeicherorte pr&uuml;fen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.3 DSFA f&uuml;r kritische KI-Anwendungen durchf&uuml;hren</strong>
+        <span>F&uuml;r alle KI-Anwendungen, die personenbezogene Daten verarbeiten, eine Datenschutz-Folgenabsch&auml;tzung erstellen. (Vorlage: DSFA-Template)</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.4 Lizenzen beschaffen und IT-Infrastruktur vorbereiten</strong>
+        <span>Business-/Team-Lizenzen beschaffen. SSO-Anbindung konfigurieren. Zugriffsrechte definieren. Schulungsumgebung einrichten.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.5 Pilotgruppe zusammenstellen</strong>
+        <span>5&ndash;10 motivierte Mitarbeitende aus verschiedenen Abteilungen als Pilotgruppe benennen. Diese werden zu internen KI-Champions ausgebildet.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.6 Praxisschulungen f&uuml;r Pilotgruppe durchf&uuml;hren</strong>
+        <span>Intensive Schulungen zu den ausgew&auml;hlten Tools: Grundlagen, Prompting-Techniken, Do&#39;s &amp; Don&#39;ts, Datenschutz. Hands-on mit echten Aufgaben.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.7 Pilotprojekte starten und dokumentieren</strong>
+        <span>2&ndash;3 konkrete Pilotprojekte mit messbaren Zielen starten. Zeitersparnis, Qualit&auml;tsverbesserung und Nutzerzufriedenheit messen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>2.8 Prompt-Bibliothek aufbauen</strong>
+        <span>Bew&auml;hrte Prompts aus der Pilotphase sammeln und als Vorlagen dokumentieren. Abteilungsspezifische Prompt-Sammlungen erstellen. (Vorlage: Prompt-Templates)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <strong>Tipp f&uuml;r Phase 2:</strong> Messen Sie die Zeitersparnis! Lassen Sie die Pilotgruppe ihre Arbeitszeit f&uuml;r typische Aufgaben vor und nach der KI-Einf&uuml;hrung dokumentieren. Konkrete Zahlen &uuml;berzeugen die Gesch&auml;ftsf&uuml;hrung.
+  </div>
+
+  <p><strong>Notizen Phase 2:</strong></p>
+  <div class="notes-field"></div>
+
+  <!-- ============================================ -->
+  <!-- PHASE 3 -->
+  <!-- ============================================ -->
+
+  <div class="phase-header">
+    <h2>Phase 3: KI-Steadiness (Monat 5&ndash;6)</h2>
+    <p>Skalieren &ndash; Optimieren &ndash; Verstetigen</p>
+  </div>
+  <div class="phase-body">
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.1 Pilotprojekte auswerten und Ergebnisse pr&auml;sentieren</strong>
+        <span>Ergebnisse der Pilotphase zusammenfassen: ROI, Zeitersparnis, Qualit&auml;tsgewinne. Ergebnispr&auml;sentation f&uuml;r Gesch&auml;ftsf&uuml;hrung und Mitarbeitende.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.2 KI-Tools unternehmensweit ausrollen</strong>
+        <span>Auf Basis der Piloterkenntnisse die KI-Tools f&uuml;r alle relevanten Abteilungen freischalten. Rollout-Plan mit Zeitplan und Ansprechpartnern erstellen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.3 Fl&auml;chendeckende Mitarbeiterschulungen durchf&uuml;hren</strong>
+        <span>Alle Mitarbeitenden schulen: Basis-Schulung (Pflicht) + abteilungsspezifische Vertiefung. KI-Champions als interne Trainer einsetzen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.4 KI-Policy finalisieren und kommunizieren</strong>
+        <span>KI-Richtlinie auf Basis der Piloterkenntnisse finalisieren. Allen Mitarbeitenden vorstellen. Kenntnisnahme dokumentieren lassen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.5 Feedback-Mechanismen etablieren</strong>
+        <span>Regelm&auml;&szlig;ige Feedback-Runden einrichten (monatlich). KI-Sprechstunde f&uuml;r Fragen und Probleme anbieten. Verbesserungsvorschl&auml;ge systematisch erfassen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.6 KPIs und Erfolgsmessung implementieren</strong>
+        <span>KPIs f&uuml;r die KI-Nutzung definieren und messen: Adoptionsrate, Zeitersparnis, Nutzerzufriedenheit, Qualit&auml;tsmetriken. Dashboard erstellen.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.7 Weiterentwicklungs-Roadmap erstellen</strong>
+        <span>N&auml;chste KI-Projekte und Use Cases planen. Budgetplanung f&uuml;r das n&auml;chste Jahr. Neue Tools und Technologien evaluieren.</span>
+      </div>
+    </div>
+    <div class="checklist-item">
+      <div class="checkbox">&#9744;</div>
+      <div class="checklist-content">
+        <strong>3.8 Regelm&auml;&szlig;ige &Uuml;berpr&uuml;fung planen</strong>
+        <span>Quartalweise Reviews der KI-Nutzung, Datenschutzkonformit&auml;t und Policy einplanen. J&auml;hrliche Aktualisierung der KI-Strategie festlegen.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <strong>Tipp f&uuml;r Phase 3:</strong> Feiern Sie Erfolge! Teilen Sie Best Practices und Erfolgsgeschichten intern. Mitarbeitende, die kreative KI-L&ouml;sungen finden, sollten als Vorbilder sichtbar werden.
+  </div>
+
+  <p><strong>Notizen Phase 3:</strong></p>
+  <div class="notes-field"></div>
+
+  <!-- ============================================ -->
+  <h2>Fortschritts&uuml;bersicht</h2>
+  <!-- ============================================ -->
+
+  <table>
+    <tr>
+      <th>Phase</th>
+      <th>Zeitraum</th>
+      <th>Abgeschlossen</th>
+      <th style="width: 35%;">Fortschritt</th>
+    </tr>
+    <tr>
+      <td><strong>Phase 1: KI-Awareness</strong></td>
+      <td>Monat 1&ndash;2</td>
+      <td style="text-align: center;"><span class="placeholder">__ / 8</span></td>
+      <td>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: #22c55e;"></div></div>
+        <div class="progress-label"><span class="placeholder">0%</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Phase 2: KI-Readiness</strong></td>
+      <td>Monat 3&ndash;4</td>
+      <td style="text-align: center;"><span class="placeholder">__ / 8</span></td>
+      <td>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: #22c55e;"></div></div>
+        <div class="progress-label"><span class="placeholder">0%</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Phase 3: KI-Steadiness</strong></td>
+      <td>Monat 5&ndash;6</td>
+      <td style="text-align: center;"><span class="placeholder">__ / 8</span></td>
+      <td>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: #22c55e;"></div></div>
+        <div class="progress-label"><span class="placeholder">0%</span></div>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Gesamt</strong></td>
+      <td>6 Monate</td>
+      <td style="text-align: center;"><span class="placeholder">__ / 24</span></td>
+      <td>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: #1e3a8a;"></div></div>
+        <div class="progress-label"><span class="placeholder">0%</span></div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="footer">
+    <p>&copy; frimalo UG &ndash; KI-Kompass Toolbox &ndash; Alle Rechte vorbehalten</p>
+    <p>Diese Checkliste dient als Orientierungshilfe. Passen Sie den Zeitplan und die Ma&szlig;nahmen an die Gr&ouml;&szlig;e und Anforderungen Ihres Unternehmens an.</p>
+  </div>
+
+</body>
+</html>
