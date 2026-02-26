@@ -28,11 +28,13 @@ function isConfigured() {
 
 function extractSheetId(value) {
   if (!value) return null
+  // Whitespace und Newlines entfernen (Vercel env vars können \n am Ende haben)
+  const cleaned = value.trim().replace(/[\r\n]+/g, '')
   // Falls versehentlich eine volle URL eingetragen wurde, die ID extrahieren
-  const urlMatch = value.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/)
+  const urlMatch = cleaned.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/)
   if (urlMatch) return urlMatch[1]
   // Ansonsten ist es bereits die reine ID
-  return value.trim()
+  return cleaned
 }
 
 async function getAuth() {
