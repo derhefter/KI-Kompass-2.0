@@ -116,26 +116,67 @@ async function appendToSheet(spreadsheetId, range, values) {
 }
 
 // ============================================================
+// SICHERHEIT: CSV-Injection-Schutz für Google Sheets
+// ============================================================
+// Verhindert, dass User-Eingaben als Formeln ausgeführt werden
+// wenn das Sheet in Excel/Google Sheets geöffnet wird.
+// ============================================================
+
+function sanitizeForSheets(value) {
+  if (!value || typeof value !== 'string') return value
+  // Zeichen die in Spreadsheets als Formel-Start interpretiert werden
+  if (/^[=+\-@\t\r]/.test(value)) {
+    return "'" + value
+  }
+  return value
+}
+
+// ============================================================
 // ZUGANGSCODES – Speichern und Lesen (dynamische Kundenverwaltung)
 // ============================================================
 // Codes werden im Kundendaten-Sheet im Tab "Zugangscodes" gespeichert.
-// Spalten: Code | Name | E-Mail | Firma | Plan | Erstellt | Ablaufdatum | Status
+// Spalten: Code | Name | E-Mail | Firma | Plan | Erstellt | Ablaufdatum | Status | PaymentId
 // ============================================================
 
-export async function saveAccessCode({ code, name, email, company, plan, expiresAt, createdAt }) {
+export async function saveAccessCode({ code, name, email, company, plan, expiresAt, createdAt, paymentId }) {
   const sheetId = process.env.GOOGLE_SHEET_CUSTOMERS
-  return appendToSheet(sheetId, 'Zugangscodes!A:H', [
+  return appendToSheet(sheetId, 'Zugangscodes!A:I', [
     [
       code,
-      name || '–',
-      email || '–',
-      company || '–',
+      sanitizeForSheets(name) || '–',
+      sanitizeForSheets(email) || '–',
+      sanitizeForSheets(company) || '–',
       plan || 'premium',
       createdAt || new Date().toISOString(),
       expiresAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       'aktiv',
+      paymentId || '',
     ],
   ])
+}
+
+// Prüft ob eine Payment-ID bereits verarbeitet wurde (Doppelzahlungs-Schutz)
+export async function findAccessCodeByPaymentId(paymentId) {
+  if (!paymentId) return null
+
+  const sheetId = process.env.GOOGLE_SHEET_CUSTOMERS
+  const rows = await readFromSheet(sheetId, 'Zugangscodes!A:I')
+  if (!rows) return null
+
+  // Spalte I (Index 8) = PaymentId
+  for (const row of rows) {
+    if (row[8] && row[8].trim() === paymentId.trim()) {
+      return {
+        code: row[0],
+        name: row[1] || '',
+        email: row[2] || '',
+        company: row[3] || '',
+        plan: row[4] || 'premium',
+        paymentId: row[8],
+      }
+    }
+  }
+  return null
 }
 
 async function readFromSheet(spreadsheetId, range) {
@@ -221,9 +262,9 @@ export async function saveDetailedAnswers({
   if (!answers || !answers.length || !questions || !questions.length) return false
 
   const datum = new Date().toLocaleString('de-DE')
-  const safeName = name || '–'
-  const safeCompany = company || '–'
-  const safeEmail = email || '–'
+  const safeName = sanitizeForSheets(name) || '–'
+  const safeCompany = sanitizeForSheets(company) || '–'
+  const safeEmail = sanitizeForSheets(email) || '–'
   const tabName = getAnswersTabName(productType)
 
   // Jede Antwort als eigene Zeile
@@ -237,8 +278,8 @@ export async function saveDetailedAnswers({
       checkType, // 'Schnell-Check (kostenlos)' oder 'Premium Assessment'
       answer.questionId,
       question ? question.categoryLabel : '–',
-      question ? question.question : '–',
-      answer.text || '–',
+      question ? sanitizeForSheets(question.question) : '–',
+      sanitizeForSheets(answer.text) || '–',
       typeof answer.score === 'number' ? answer.score : '–',
     ]
   })
@@ -256,8 +297,8 @@ export async function saveFreeAssessmentResult({ email, company, score, level })
   return appendToSheet(sheetId, 'Ergebnisse!A:F', [
     [
       datum,
-      company || '–',
-      email || '–',
+      sanitizeForSheets(company) || '–',
+      sanitizeForSheets(email) || '–',
       typeof score === 'number' ? score : '–',
       typeof level === 'number' ? level : '–',
       typeof level === 'number'
@@ -318,9 +359,9 @@ export async function savePremiumAssessmentResult({
   return appendToSheet(sheetId, tabName + '!A:K', [
     [
       datum,
-      companyName || '–',
-      contactName || '–',
-      contactEmail || '–',
+      sanitizeForSheets(companyName) || '–',
+      sanitizeForSheets(contactName) || '–',
+      sanitizeForSheets(contactEmail) || '–',
       plan || '–',
       typeof percentage === 'number' ? percentage : '–',
       typeof level === 'number' ? level : '–',
@@ -356,11 +397,11 @@ export async function saveCustomerData({
   return appendToSheet(sheetId, 'Kunden!A:H', [
     [
       datum,
-      sortKey || '–',
-      name || '–',
-      email || '–',
-      company || '–',
-      phone || '–',
+      sanitizeForSheets(sortKey) || '–',
+      sanitizeForSheets(name) || '–',
+      sanitizeForSheets(email) || '–',
+      sanitizeForSheets(company) || '–',
+      sanitizeForSheets(phone) || '–',
       plan || '–',
       paymentMethod || '–',
       amount || '–',

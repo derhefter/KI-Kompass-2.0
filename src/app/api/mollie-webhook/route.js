@@ -6,8 +6,9 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getMollieClient } from '../../../lib/mollie'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
-import { saveAccessCode, saveCustomerData } from '../../../lib/google-sheets'
+import { saveAccessCode, saveCustomerData, findAccessCodeByPaymentId } from '../../../lib/google-sheets'
 import { getCustomerEmailForPlan } from '../../../lib/email-templates'
+import { rateLimit } from '../../../lib/rate-limit'
 
 function escapeHtml(text) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
@@ -20,7 +21,7 @@ function generateAccessCode(companyName) {
   return prefix + '-' + suffix
 }
 
-// Idempotenz: Bereits verarbeitete Payment-IDs zwischenspeichern
+// Idempotenz: In-Memory Cache als schneller erster Check (zusätzlich zur Google-Sheets-Prüfung)
 const processedPayments = new Map()
 const PROCESSED_TTL = 24 * 60 * 60 * 1000
 
@@ -31,8 +32,16 @@ setInterval(() => {
   }
 }, 10 * 60 * 1000)
 
+const webhookLimiter = rateLimit({ maxRequests: 10, windowMs: 60 * 1000 })
+
 export async function POST(request) {
   try {
+    // Rate-Limiting: Schutz gegen Webhook-Spam
+    const { allowed } = webhookLimiter(request)
+    if (!allowed) {
+      return NextResponse.json({ error: 'Zu viele Anfragen' }, { status: 429 })
+    }
+
     const mollieClient = getMollieClient()
     if (!mollieClient) return NextResponse.json({ error: 'Nicht konfiguriert' }, { status: 500 })
 
@@ -40,7 +49,7 @@ export async function POST(request) {
     const paymentId = formData.get('id')
     if (!paymentId || typeof paymentId !== 'string') return NextResponse.json({ error: 'Fehlende Payment-ID' }, { status: 400 })
 
-    // Idempotenz-Check
+    // Idempotenz-Check 1: Schneller In-Memory-Cache
     if (processedPayments.has(paymentId)) {
       return NextResponse.json({ received: true, status: 'already_processed' })
     }
@@ -48,7 +57,19 @@ export async function POST(request) {
     const payment = await mollieClient.payments.get(paymentId)
     if (payment.status !== 'paid') return NextResponse.json({ received: true, status: payment.status })
 
-    // Als verarbeitet markieren
+    // Idempotenz-Check 2: Persistente Prüfung in Google Sheets (überlebt Serverless-Neustarts)
+    try {
+      const existingCode = await findAccessCodeByPaymentId(paymentId)
+      if (existingCode) {
+        processedPayments.set(paymentId, Date.now()) // Cache aktualisieren
+        return NextResponse.json({ received: true, status: 'already_processed' })
+      }
+    } catch (err) {
+      console.error('Doppelzahlungs-Check fehlgeschlagen, fahre fort:', err.message)
+      // Im Fehlerfall weitermachen (lieber doppelt als gar nicht verarbeiten)
+    }
+
+    // Als verarbeitet markieren (In-Memory)
     processedPayments.set(paymentId, Date.now())
 
     const { plan, name, email, company, phone } = payment.metadata || {}
@@ -84,6 +105,7 @@ export async function POST(request) {
     saveAccessCode({
       code: accessCode, name: safeName, email: safeEmail, company: safeCompany,
       plan: plan || 'premium', expiresAt: expiresAt.toISOString(), createdAt: new Date().toISOString(),
+      paymentId,
     }).catch((err) => console.error('Zugangscode speichern fehlgeschlagen:', err.message))
 
     saveCustomerData({

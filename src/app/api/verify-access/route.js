@@ -8,13 +8,14 @@ const limiter = rateLimit({ maxRequests: 5, windowMs: 60 * 1000 })
 
 function constantTimeEqual(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string') return false
-  const bufA = Buffer.from(a)
-  const bufB = Buffer.from(b)
-  if (bufA.length !== bufB.length) {
-    crypto.timingSafeEqual(bufA, bufA)
-    return false
-  }
-  return crypto.timingSafeEqual(bufA, bufB)
+  // Beide Buffer auf gleiche Länge bringen um Timing-Angriffe über die Länge zu verhindern
+  const maxLen = Math.max(a.length, b.length)
+  const bufA = Buffer.alloc(maxLen)
+  const bufB = Buffer.alloc(maxLen)
+  Buffer.from(a).copy(bufA)
+  Buffer.from(b).copy(bufB)
+  // Längengleichheit UND Inhaltsgleichheit prüfen
+  return a.length === b.length && crypto.timingSafeEqual(bufA, bufB)
 }
 
 export async function POST(request) {

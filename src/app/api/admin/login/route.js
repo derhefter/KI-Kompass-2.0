@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
+import { rateLimit } from '../../../../lib/rate-limit'
 
 const adminTokens = new Map()
+// Brute-Force-Schutz: Maximal 3 Login-Versuche pro 15 Minuten
+const loginLimiter = rateLimit({ maxRequests: 3, windowMs: 15 * 60 * 1000 })
 
 setInterval(() => {
   const now = Date.now()
@@ -25,6 +28,12 @@ export function verifyAdminToken(token) {
 
 export async function POST(request) {
   try {
+    // Brute-Force-Schutz
+    const { allowed } = loginLimiter(request)
+    if (!allowed) {
+      return NextResponse.json({ error: 'Zu viele Login-Versuche. Bitte warten Sie 15 Minuten.' }, { status: 429 })
+    }
+
     const { password } = await request.json()
     const adminPassword = process.env.ADMIN_PASSWORD
     if (!adminPassword) {

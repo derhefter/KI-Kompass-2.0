@@ -3,6 +3,7 @@
 .env.local
 .env
 .env.vercel-check
+.env.vercel-check2
 *.log
 .DS_Store
 out/

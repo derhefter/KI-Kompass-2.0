@@ -2,6 +2,21 @@ import nodemailer from 'nodemailer'
 
 let transporterInstance = null
 
+// Sicherheit: E-Mail Header-Injection verhindern
+// Zeilenumbrüche in E-Mail-Feldern können missbraucht werden um
+// zusätzliche Header zu injizieren (z.B. BCC an Angreifer)
+function sanitizeEmailField(value) {
+  if (!value || typeof value !== 'string') return value
+  return value.replace(/[\r\n]/g, '').trim()
+}
+
+function isValidEmail(email) {
+  if (!email || typeof email !== 'string') return false
+  // Basale Validierung + Zeilenumbruch-Check
+  if (/[\r\n]/.test(email)) return false
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
 function getTransporter() {
   if (!transporterInstance) {
     const host = process.env.EMAIL_HOST
@@ -58,12 +73,20 @@ export async function sendConfirmationToCustomer({ to, subject, html, attachment
     return false
   }
 
+  // Header-Injection-Schutz
+  const safeTo = sanitizeEmailField(to)
+  const safeSubject = sanitizeEmailField(subject)
+  if (!isValidEmail(safeTo)) {
+    console.error('Ungültige Empfänger-Adresse (mögliche Injection):', to)
+    return false
+  }
+
   try {
     const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to,
+      to: safeTo,
       replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_USER,
-      subject,
+      subject: safeSubject,
       html,
     }
     if (attachments && attachments.length > 0) {
