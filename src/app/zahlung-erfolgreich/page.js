@@ -47,12 +47,12 @@ const planContent = {
   },
   kurs: {
     title: 'Online-Kurs: KI-Einf\u00fchrung',
-    emailHint: 'Ihre Best\u00e4tigung wurde an Ihre E-Mail-Adresse gesendet.',
+    emailHint: 'Ihr pers\u00f6nlicher Zugangscode wurde an Ihre E-Mail-Adresse gesendet.',
     steps: [
-      'Pr\u00fcfen Sie Ihre E-Mail f\u00fcr die Willkommensnachricht',
-      'Ihre 7 Kursmodule werden Ihnen in K\u00fcrze per E-Mail zugesendet',
-      'Starten Sie in Ihrem eigenen Tempo mit Modul 1: KI verstehen',
-      'Nach Abschluss aller Module erhalten Sie Ihr Teilnahme-Zertifikat',
+      '\u00d6ffnen Sie die E-Mail mit Ihrem Zugangscode',
+      'Klicken Sie auf den Link zum Kursbereich',
+      'Absolvieren Sie das KI-Readiness Assessment',
+      'Erhalten Sie Zugang zu allen 7 Kursmodulen',
     ],
   },
   benchmark: {
@@ -67,22 +67,22 @@ const planContent = {
   },
   'toolbox-starter': {
     title: 'KI-Toolbox Starter',
-    emailHint: 'Ihre Willkommens-E-Mail mit den Toolbox-Details wurde versendet.',
+    emailHint: 'Ihr pers\u00f6nlicher Zugangscode wurde an Ihre E-Mail-Adresse gesendet.',
     steps: [
-      'Pr\u00fcfen Sie Ihre E-Mail f\u00fcr die Willkommensnachricht',
-      'Ihre Toolbox-Ressourcen werden Ihnen in K\u00fcrze zugesendet',
-      'Prompt-Templates, Checklisten und Vorlagen stehen bereit',
-      'Jeden Monat erhalten Sie automatisch Updates und neue Inhalte',
+      '\u00d6ffnen Sie die E-Mail mit Ihrem Zugangscode',
+      'Klicken Sie auf den Link zum Toolbox-Bereich',
+      'Absolvieren Sie das KI-Readiness Assessment',
+      'Erhalten Sie Zugang zu Ihren Toolbox-Ressourcen',
     ],
   },
   'toolbox-pro': {
     title: 'KI-Toolbox Professional',
-    emailHint: 'Ihre Willkommens-E-Mail mit den Toolbox-Details wurde versendet.',
+    emailHint: 'Ihr pers\u00f6nlicher Zugangscode wurde an Ihre E-Mail-Adresse gesendet.',
     steps: [
-      'Pr\u00fcfen Sie Ihre E-Mail f\u00fcr die Willkommensnachricht',
-      'Ihre Toolbox-Ressourcen werden Ihnen in K\u00fcrze zugesendet',
-      'Video-Tutorials, Templates und Compliance-Vorlagen stehen bereit',
-      'Jeden Monat erhalten Sie automatisch Updates und Priority Support',
+      '\u00d6ffnen Sie die E-Mail mit Ihrem Zugangscode',
+      'Klicken Sie auf den Link zum Toolbox-Bereich',
+      'Absolvieren Sie das KI-Readiness Assessment',
+      'Erhalten Sie Zugang zu allen Professional-Ressourcen inkl. Priority Support',
     ],
   },
   'monitoring-basic': {

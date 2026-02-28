@@ -216,6 +216,7 @@ export async function saveDetailedAnswers({
   email,
   answers,
   questions,
+  productType,
 }) {
   if (!answers || !answers.length || !questions || !questions.length) return false
 
@@ -223,6 +224,7 @@ export async function saveDetailedAnswers({
   const safeName = name || '–'
   const safeCompany = company || '–'
   const safeEmail = email || '–'
+  const tabName = getAnswersTabName(productType)
 
   // Jede Antwort als eigene Zeile
   const rows = answers.map((answer) => {
@@ -241,7 +243,7 @@ export async function saveDetailedAnswers({
     ]
   })
 
-  return appendToSheet(sheetId, 'Einzelantworten!A:J', rows)
+  return appendToSheet(sheetId, tabName + '!A:J', rows)
 }
 
 // ============================================================
@@ -274,6 +276,27 @@ export async function saveFreeAssessmentResult({ email, company, score, level })
 // ============================================================
 // 2. Premium-Ergebnisse (35 Fragen) speichern
 // ============================================================
+// Ermittelt den Tab-Namen basierend auf dem Produkttyp
+function getResultsTabName(productType) {
+  switch (productType) {
+    case 'kurs': return 'Ergebnisse-Kurs'
+    case 'toolbox': return 'Ergebnisse-Toolbox'
+    case 'benchmark': return 'Ergebnisse-Benchmark'
+    case 'monitoring': return 'Ergebnisse-Monitoring'
+    default: return 'Ergebnisse'
+  }
+}
+
+function getAnswersTabName(productType) {
+  switch (productType) {
+    case 'kurs': return 'Einzelantworten-Kurs'
+    case 'toolbox': return 'Einzelantworten-Toolbox'
+    case 'benchmark': return 'Einzelantworten-Benchmark'
+    case 'monitoring': return 'Einzelantworten-Monitoring'
+    default: return 'Einzelantworten'
+  }
+}
+
 export async function savePremiumAssessmentResult({
   companyName,
   contactName,
@@ -283,14 +306,16 @@ export async function savePremiumAssessmentResult({
   level,
   levelTitle,
   categoryScores,
+  productType,
 }) {
   const sheetId = process.env.GOOGLE_SHEET_PREMIUM_RESULTS
   const datum = new Date().toLocaleString('de-DE')
+  const tabName = getResultsTabName(productType)
 
   // Kategorie-Scores als einzelne Spalten
   const catValues = (categoryScores || []).map((c) => `${c.label}: ${c.percentage}%`)
 
-  return appendToSheet(sheetId, 'Ergebnisse!A:K', [
+  return appendToSheet(sheetId, tabName + '!A:K', [
     [
       datum,
       companyName || '–',

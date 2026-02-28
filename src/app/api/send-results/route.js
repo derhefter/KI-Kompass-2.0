@@ -19,7 +19,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Zu viele Versuche.' }, { status: 429 })
     }
 
-    const { code, companyName, contactName, contactEmail, results } = await request.json()
+    const { code, companyName, contactName, contactEmail, results, productType } = await request.json()
 
     // Code erneut verifizieren
     if (!code || typeof code !== 'string') {
@@ -52,7 +52,7 @@ export async function POST(request) {
 
     const { percentage, level, levelTitle, categoryScores, quickWins, recommendations, answers } = results || {}
 
-    // Google Sheets: Premium-Ergebnisse speichern
+    // Google Sheets: Ergebnisse in produktspezifischen Tab speichern
     savePremiumAssessmentResult({
       companyName: safeCompany,
       contactName: safeName,
@@ -62,18 +62,20 @@ export async function POST(request) {
       level,
       levelTitle,
       categoryScores,
+      productType: productType || undefined,
     }).catch(() => {})
 
-    // Google Sheets: Detaillierte Einzelantworten speichern
+    // Google Sheets: Detaillierte Einzelantworten in produktspezifischen Tab speichern
     if (answers && Array.isArray(answers) && answers.length > 0) {
       saveDetailedAnswers({
         sheetId: process.env.GOOGLE_SHEET_PREMIUM_RESULTS,
-        checkType: 'Premium Assessment',
+        checkType: productType ? productType.charAt(0).toUpperCase() + productType.slice(1) + ' Assessment' : 'Premium Assessment',
         company: safeCompany,
         name: safeName,
         email: safeEmail,
         answers,
         questions: premiumQuestions,
+        productType: productType || undefined,
       }).catch(() => {})
     }
 

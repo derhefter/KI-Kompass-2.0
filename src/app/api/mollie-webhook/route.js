@@ -64,7 +64,20 @@ export async function POST(request) {
 
     const accessCode = generateAccessCode(safeCompany)
     const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de').trim()
-    const accessLink = baseUrl + '/premium?code=' + accessCode
+
+    // Produktspezifisches Routing: Jedes Produkt hat eine eigene Zugangsseite
+    function getAccessPath(p) {
+      switch (p) {
+        case 'kurs': return '/kurs-zugang'
+        case 'toolbox-starter':
+        case 'toolbox-pro': return '/toolbox-zugang'
+        case 'benchmark': return '/benchmark-zugang'
+        case 'monitoring-basic':
+        case 'monitoring-pro': return '/monitoring-zugang'
+        default: return '/premium'
+      }
+    }
+    const accessLink = baseUrl + getAccessPath(plan) + '?code=' + accessCode
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     const expiresAtFormatted = expiresAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 
