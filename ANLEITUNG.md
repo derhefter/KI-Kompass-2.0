@@ -2,6 +2,7 @@
 
 ## Inhaltsverzeichnis
 
+0. [Redesign V2.1 - Funnel-Optimierung](#0-redesign)
 1. [Produktuebersicht und Post-Purchase-Flows](#1-produktuebersicht)
 2. [Auslieferungsseiten (Zugangsseiten)](#2-auslieferungsseiten)
 3. [KI-Zertifikat: Badge und Zertifikat anpassen](#3-ki-zertifikat)
@@ -11,6 +12,169 @@
 7. [Erfolgsseite anpassen](#7-erfolgsseite)
 8. [Google Sheets Struktur](#8-google-sheets)
 9. [Technische Hinweise](#9-technische-hinweise)
+
+---
+
+## 0. Redesign V2.1 - Funnel-Optimierung (Maerz 2026)
+
+### Was hat sich geaendert?
+
+**Kern-Funnel:** Free Check -> E-Mail-Gate -> Ergebnis -> Premium Report (197 EUR) ODER Foerdermittelberatung (30 Min kostenlos)
+
+**Wichtigste Aenderungen:**
+- Navigation entschlackt: nur 3 Items + CTA (So funktioniert's, Preise, Ueber mich)
+- Startseite neu: 9 Sections mit klarem Fokus auf Check + Beratung
+- E-Mail ist jetzt PFLICHT vor Ergebnis-Anzeige (nicht mehr optional)
+- Foerdermittelberatung als eigener Conversion-Pfad (nicht mehr im 497 EUR Paket versteckt)
+- Alle Nebenprodukte (Toolbox, Monitoring, Kurs, Benchmark) nur noch im Footer
+- /beratung Seite NEU: Google Calendar Links fuer 30 Min + 60 Min
+- Post-Purchase: "Next Best Action" CTA fuer Erstberatung
+
+### Neue Dateien
+
+```
+src/components/          <- NEU: Alle Startseiten-Komponenten
+  Hero.js                <- Hero Section
+  ForWho.js              <- "Fuer wen?" Karten
+  HowItWorks.js          <- "So funktioniert's" 3 Schritte
+  ResultPreview.js       <- Ergebnis-Vorschau Mock
+  TrustBlock.js          <- Trust + Stats
+  PricingCards.js        <- Free vs Premium (nur 2 Tiers!)
+  FoerderBlock.js        <- Foerdermittelberatung CTA
+  FAQ.js                 <- Haeufige Fragen
+  FinalCTA.js            <- Abschluss-CTA
+  UpsellCards.js         <- Ergebnis-Seite: Premium + Beratung
+
+src/data/testimonials.js <- NEU: Testimonials (Platzhalter, anpassbar)
+src/app/beratung/page.js <- NEU: Buchungsseite mit Google Calendar
+src/app/design-preview/  <- NEU: Interner Design-Vergleich (3 Varianten)
+src/app/hero-preview/    <- NEU: Hero-Bild Tester
+```
+
+### Geaenderte Dateien
+
+```
+tailwind.config.js       <- Neue Farbpalette "Klarer Kurs"
+src/app/globals.css      <- Button/Card-Klassen an neue Farben angepasst
+src/app/layout.js        <- Nav + Footer komplett ueberarbeitet
+src/app/page.js          <- Startseite komplett neu (9 Sections)
+src/app/assessment/page.js <- E-Mail-Gate + Microcopy + UpsellCards
+src/app/zahlung-erfolgreich/page.js <- "Next Best Action" Beratungs-CTA
+```
+
+### Interne Preview-Seiten (nicht veroeffentlichen!)
+
+| URL | Zweck |
+|-----|-------|
+| `/design-preview` | 3 Design-Varianten (A/B/C) vergleichen |
+| `/hero-preview` | Hero-Bild-Stile testen |
+
+Diese Seiten sind nur fuer dich zur Entscheidungsfindung. Vor Go-Live entfernen oder mit Passwort schuetzen.
+
+---
+
+### Testimonials anpassen
+
+**Datei:** `src/data/testimonials.js`
+
+Es gibt 2 Typen:
+
+**Typ A: Mini-Case** (Ausgangslage -> Massnahme -> Ergebnis)
+```javascript
+{
+  id: 1,
+  type: 'case',
+  branche: 'Handwerksbetrieb',
+  region: 'Sachsen-Anhalt',
+  ausgangslage: 'Beschreibung der Ausgangssituation...',
+  massnahme: 'Was wurde gemacht...',
+  ergebnis: 'Konkrete Ergebnisse (Zahlen!)...',
+}
+```
+
+**Typ B: Zitat + Kennzahlen**
+```javascript
+{
+  id: 3,
+  type: 'quote',
+  zitat: 'Das Zitat des Kunden...',
+  name: 'Thomas K.',
+  rolle: 'Geschaeftsfuehrer',
+  unternehmen: 'Metallverarbeitung',
+  region: 'Halle (Saale)',
+  mitarbeiter: 35,
+  kennzahlen: [
+    { label: 'Readiness', wert: '38% -> 67%', detail: 'nach 3 Monaten' },
+    { label: 'Foerderung', wert: '12.000 EUR', detail: 'ueber go-digital' },
+  ],
+}
+```
+
+**So aenderst du Testimonials:**
+1. Oeffne `src/data/testimonials.js`
+2. Aendere vorhandene Eintraege oder kopiere einen und passe ihn an
+3. Achte auf die `id` (muss eindeutig sein)
+4. Speichern, deployen, fertig
+
+---
+
+### Google Calendar Buchungslinks einrichten
+
+**Datei:** `src/app/beratung/page.js`
+
+Ganz oben in der Datei stehen zwei Variablen:
+```javascript
+const BOOKING_30_MIN = 'https://calendar.google.com/calendar/appointments/schedules/DEIN_30_MIN_LINK'
+const BOOKING_60_MIN = 'https://calendar.google.com/calendar/appointments/schedules/DEIN_60_MIN_LINK'
+```
+
+**So richtest du die Links ein:**
+1. Google Calendar oeffnen -> Einstellungen -> Terminbuchungsseite
+2. Neuen Termintyp erstellen: "30 Min Erstberatung" (30 Min Dauer)
+3. Zweiten Termintyp: "60 Min Strategiegespraech" (60 Min Dauer)
+4. Links kopieren und in die Datei einfuegen
+5. Speichern und deployen
+
+---
+
+### Mollie Zahlungs-Workflow (Audit)
+
+**Mollie-Flow (VOLL AUTOMATISIERT):**
+```
+Kunde klickt "Kaufen" -> Mollie Checkout -> Zahlung
+-> Webhook (/api/mollie-webhook)
+-> Zugangscode generiert
+-> Google Sheets: "Zugangscodes" + "Kunden" Tabs
+-> E-Mail an Kunde (Zugangscode + Link)
+-> E-Mail an dich (Benachrichtigung)
+-> FERTIG - kein Eingriff noetig
+```
+
+**Rechnung/PayPal-Flow (MANUELL):**
+```
+Kunde waehlt "Auf Rechnung" -> Formular
+-> Kundendaten in Google Sheets
+-> E-Mail an dich mit Details
+-> DU musst: Rechnung senden, Zahlung pruefen, Code manuell versenden
+```
+
+**Empfehlung:** Fuer maximale Automatisierung moeglichst auf Mollie-Checkout setzen. Der Rechnungs-Flow braucht manuelle Schritte.
+
+---
+
+### Supabase vs Google Sheets (Skalierung)
+
+**Aktuell: Google Sheets** - funktioniert bis ca. 500-1000 Kunden gut.
+
+**Wann Supabase sinnvoll wird:**
+- Mehr als 1000 Zugangscodes
+- Gleichzeitige Zugriffe >10/Sekunde
+- Komplexe Abfragen noetig (z.B. "alle Kunden Branche X in Region Y")
+- Echtzeit-Dashboard gewuenscht
+
+**Migration waere:** Google Sheets -> Supabase (PostgreSQL). Alle `google-sheets.js` Funktionen muessten auf Supabase-Client umgestellt werden. Kein Breaking Change fuer die UI.
+
+**Fazit:** Fuer jetzt reicht Google Sheets. Bei Wachstum auf Supabase umstellen.
 
 ---
 

@@ -229,7 +229,7 @@ export default function Anfrage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 py-20">
+      <div className="min-h-screen bg-slate-50 py-20">
         <div className="max-w-lg mx-auto px-4">
           <div className="card text-center fade-in-up">
             <div className="w-20 h-20 bg-accent-100 text-accent-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -237,10 +237,10 @@ export default function Anfrage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">
+            <h1 className="text-2xl font-bold text-primary-700 mb-3">
               Rechnung anfordern
             </h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-slate-600 mb-6">
               Sie k&ouml;nnen f&uuml;r den <strong>{currentPlan.name}</strong> eine Rechnung anfordern
               und bequem per &Uuml;berweisung bezahlen.
             </p>
@@ -252,12 +252,12 @@ export default function Anfrage() {
                   <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  <h3 className="font-bold text-gray-900 text-lg">Lieber per Rechnung zahlen?</h3>
+                  <h3 className="font-bold text-primary-700 text-lg">Lieber per Rechnung zahlen?</h3>
                 </div>
 
                 {!showInvoiceForm ? (
                   <>
-                    <p className="text-gray-600 text-sm mb-4 text-center">
+                    <p className="text-slate-600 text-sm mb-4 text-center">
                       Fordern Sie eine Rechnung an. Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet.
                       Die Rechnung erhalten Sie per E-Mail an <strong>{email}</strong>.
                     </p>
@@ -270,29 +270,29 @@ export default function Anfrage() {
                       </svg>
                       Per Rechnung zahlen
                     </button>
-                    <p className="text-xs text-gray-500 mt-3 text-center">
+                    <p className="text-xs text-slate-500 mt-3 text-center">
                       Zahlung per &Uuml;berweisung &ndash; Rechnung wird an {email} gesendet
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="text-gray-600 text-sm mb-4 text-center">
+                    <p className="text-slate-600 text-sm mb-4 text-center">
                       Bitte vervollst&auml;ndigen Sie Ihre Rechnungsadresse, damit wir Ihnen direkt eine korrekte Rechnung erstellen k&ouml;nnen.
                     </p>
 
                     <div className="space-y-3 mb-4">
                       <div className="bg-white rounded-lg p-3 border border-amber-200">
-                        <div className="text-xs text-gray-500 mb-0.5">Name</div>
-                        <div className="font-medium text-gray-900">{name}</div>
+                        <div className="text-xs text-slate-500 mb-0.5">Name</div>
+                        <div className="font-medium text-primary-700">{name}</div>
                       </div>
                       {company && (
                         <div className="bg-white rounded-lg p-3 border border-amber-200">
-                          <div className="text-xs text-gray-500 mb-0.5">Firma</div>
-                          <div className="font-medium text-gray-900">{company}</div>
+                          <div className="text-xs text-slate-500 mb-0.5">Firma</div>
+                          <div className="font-medium text-primary-700">{company}</div>
                         </div>
                       )}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Stra&szlig;e und Hausnummer *</label>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Stra&szlig;e und Hausnummer *</label>
                         <input
                           type="text"
                           value={street}
@@ -300,12 +300,12 @@ export default function Anfrage() {
                           placeholder="Musterstra&szlig;e 12"
                           required
                           maxLength={200}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                          className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
                         />
                       </div>
                       <div className="grid grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">PLZ *</label>
+                          <label className="block text-sm font-medium text-slate-700 mb-1">PLZ *</label>
                           <input
                             type="text"
                             value={plz}
@@ -313,11 +313,11 @@ export default function Anfrage() {
                             placeholder="12345"
                             required
                             maxLength={5}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
                           />
                         </div>
                         <div className="col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Ort *</label>
+                          <label className="block text-sm font-medium text-slate-700 mb-1">Ort *</label>
                           <input
                             type="text"
                             value={city}
@@ -325,7 +325,7 @@ export default function Anfrage() {
                             placeholder="Musterstadt"
                             required
                             maxLength={200}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
                           />
                         </div>
                       </div>
@@ -356,7 +356,7 @@ export default function Anfrage() {
                         </>
                       )}
                     </button>
-                    <p className="text-xs text-gray-500 mt-3 text-center">
+                    <p className="text-xs text-slate-500 mt-3 text-center">
                       Rechnung wird an {email} gesendet &ndash; Zahlung per &Uuml;berweisung
                     </p>
                   </>
@@ -367,8 +367,8 @@ export default function Anfrage() {
                 <svg className="w-12 h-12 text-green-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">Rechnung angefordert!</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="font-bold text-primary-700 text-lg mb-2">Rechnung angefordert!</h3>
+                <p className="text-slate-600 text-sm">
                   Ihre Rechnungsanforderung wurde erfolgreich &uuml;bermittelt. Sie erhalten in K&uuml;rze eine
                   Rechnung per E-Mail an <strong>{email}</strong>.
                   Ihr Zugang wird <strong>innerhalb von 12 Stunden</strong> freigeschaltet.
@@ -385,9 +385,9 @@ export default function Anfrage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg">Strategiegespr&auml;ch direkt buchen</h3>
+                  <h3 className="font-bold text-primary-700 text-lg">Strategiegespr&auml;ch direkt buchen</h3>
                 </div>
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-slate-600 text-sm mb-4">
                   Im Strategie-Paket ist ein 60-min&uuml;tiges Video-Strategiegespr&auml;ch enthalten.
                   Buchen Sie jetzt direkt Ihren Wunschtermin!
                 </p>
@@ -406,8 +406,8 @@ export default function Anfrage() {
             )}
 
             <div className="bg-primary-50 rounded-xl p-5 text-left mb-6">
-              <h3 className="font-semibold text-gray-900 mb-3">So geht es weiter</h3>
-              <ol className="space-y-2 text-sm text-gray-700">
+              <h3 className="font-semibold text-primary-700 mb-3">So geht es weiter</h3>
+              <ol className="space-y-2 text-sm text-slate-700">
                 <li className="flex items-start">
                   <span className="w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">1</span>
                   Zahlung per &Uuml;berweisung nach Rechnungserhalt
@@ -438,13 +438,13 @@ export default function Anfrage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">
+          <h1 className="text-3xl font-bold text-primary-700 mb-3">
             {currentPlan.name} bestellen
           </h1>
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             F&uuml;llen Sie das Formular aus &ndash; im n&auml;chsten Schritt werden Sie zur sicheren Zahlung weitergeleitet.
           </p>
         </div>
@@ -453,11 +453,11 @@ export default function Anfrage() {
           {/* Formular */}
           <div className="md:col-span-3">
             <form onSubmit={handleSubmit} className="card">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Ihre Kontaktdaten</h2>
+              <h2 className="text-xl font-bold text-primary-700 mb-6">Ihre Kontaktdaten</h2>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Name *</label>
                   <input
                     type="text"
                     value={name}
@@ -465,12 +465,12 @@ export default function Anfrage() {
                     placeholder="Max Mustermann"
                     required
                     maxLength={200}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">E-Mail *</label>
                   <input
                     type="email"
                     value={email}
@@ -478,40 +478,40 @@ export default function Anfrage() {
                     placeholder="max@firma.de"
                     required
                     maxLength={200}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Firma</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Firma</label>
                   <input
                     type="text"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Muster GmbH"
                     maxLength={200}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Telefon <span className="text-gray-400">(optional)</span></label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Telefon <span className="text-slate-400">(optional)</span></label>
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+49 123 456 7890"
                     maxLength={50}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
                   />
                 </div>
 
                 {/* Plan-Auswahl */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Gew&auml;hltes Paket</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Gew&auml;hltes Paket</label>
                   <div className={`p-4 rounded-lg border-2 ${currentPlan.color === 'accent' ? 'border-accent-500 bg-accent-50' : 'border-primary-500 bg-primary-50'}`}>
-                    <div className="font-semibold text-gray-900">{currentPlan.name}</div>
-                    <div className="text-sm text-gray-500">&euro;{currentPlan.price}{currentPlan.priceLabel || ' einmalig'}</div>
+                    <div className="font-semibold text-primary-700">{currentPlan.name}</div>
+                    <div className="text-sm text-slate-500">&euro;{currentPlan.price}{currentPlan.priceLabel || ' einmalig'}</div>
                   </div>
                 </div>
               </div>
@@ -542,7 +542,7 @@ export default function Anfrage() {
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 mt-3 text-center">
+              <p className="text-xs text-slate-500 mt-3 text-center">
                 Sichere Zahlung via Mollie &ndash; Kreditkarte, SEPA, Klarna, iDEAL u.v.m.
               </p>
               <button
@@ -558,18 +558,18 @@ export default function Anfrage() {
           {/* Zusammenfassung */}
           <div className="md:col-span-2">
             <div className="card sticky top-24">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">
+              <h3 className="text-lg font-bold text-primary-700 mb-4">
                 Ihre Bestellung
               </h3>
 
               <div className={`p-4 rounded-xl mb-4 ${plan === 'strategie' ? 'bg-accent-50 border border-accent-100' : 'bg-primary-50 border border-primary-100'}`}>
-                <div className="text-2xl font-extrabold text-gray-900">&euro;{currentPlan.price}{currentPlan.priceLabel || ''}</div>
-                <div className="text-sm text-gray-600">{currentPlan.name} &ndash; {currentPlan.priceLabel ? 'Abo' : 'einmalig'}</div>
+                <div className="text-2xl font-extrabold text-primary-700">&euro;{currentPlan.price}{currentPlan.priceLabel || ''}</div>
+                <div className="text-sm text-slate-600">{currentPlan.name} &ndash; {currentPlan.priceLabel ? 'Abo' : 'einmalig'}</div>
               </div>
 
               <ul className="space-y-2 mb-6">
                 {currentPlan.features.map((f, i) => (
-                  <li key={i} className="flex items-start text-sm text-gray-700">
+                  <li key={i} className="flex items-start text-sm text-slate-700">
                     <svg className={`w-4 h-4 mr-2 mt-0.5 flex-shrink-0 ${plan === 'strategie' ? 'text-accent-500' : 'text-primary-500'}`} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -578,20 +578,20 @@ export default function Anfrage() {
                 ))}
               </ul>
 
-              <div className="border-t border-gray-100 pt-4 space-y-2">
-                <div className="flex items-center text-sm text-gray-500">
+              <div className="border-t border-slate-100 pt-4 space-y-2">
+                <div className="flex items-center text-sm text-slate-500">
                   <svg className="w-4 h-4 mr-2 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
                   Kreditkarte, SEPA, Klarna, iDEAL
                 </div>
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm text-slate-500">
                   <svg className="w-4 h-4 mr-2 text-accent-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   Oder Rechnung per E-Mail
                 </div>
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex items-center text-sm text-slate-500">
                   <svg className="w-4 h-4 mr-2 text-accent-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
