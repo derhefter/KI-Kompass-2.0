@@ -102,17 +102,25 @@ export async function POST(request) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     const expiresAtFormatted = expiresAt.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 
-    saveAccessCode({
+    // Google Sheets: Zugangscode + Kundendaten speichern (mit Error-Tracking)
+    const sheetsErrors = []
+    await saveAccessCode({
       code: accessCode, name: safeName, email: safeEmail, company: safeCompany,
       plan: plan || 'premium', expiresAt: expiresAt.toISOString(), createdAt: new Date().toISOString(),
       paymentId,
-    }).catch((err) => console.error('Zugangscode speichern fehlgeschlagen:', err.message))
+    }).catch((err) => {
+      console.error('Zugangscode speichern fehlgeschlagen:', err.message)
+      sheetsErrors.push('Zugangscode')
+    })
 
-    saveCustomerData({
+    await saveCustomerData({
       name: safeName, email: safeEmail, company: safeCompany,
       phone: safePhone || '–', plan: planName,
       paymentMethod: 'Mollie (' + paymentMethod + ')', amount: amount + ' €',
-    }).catch(() => {})
+    }).catch((err) => {
+      console.error('Kundendaten speichern fehlgeschlagen:', err.message)
+      sheetsErrors.push('Kundendaten')
+    })
 
     // Produktspezifische E-Mail an den Kunden senden
     const emailData = getCustomerEmailForPlan({
@@ -121,18 +129,40 @@ export async function POST(request) {
       accessCode, accessLink, expiresAtFormatted, planName,
     })
 
-    await sendConfirmationToCustomer({
-      to: safeEmail,
-      subject: emailData.subject,
-      html: emailData.html,
-    })
+    // E-Mails in try/catch wrappen - Webhook muss immer 200 zurückgeben
+    let customerEmailSent = false
+    let ownerEmailSent = false
 
-    await sendNotificationToOwner({
-      subject: 'ZAHLUNG EINGEGANGEN: ' + planName + ' - ' + safeCompany + ' (' + amount + '€)',
-      html: '<h2 style="color:#22c55e;">Mollie-Zahlung eingegangen!</h2><table style="border-collapse:collapse;width:100%;max-width:500px;"><tr style="background:#ecfdf5;"><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Produkt</td><td style="padding:10px;border:1px solid #ddd;font-weight:bold;color:#22c55e;">' + planName + ' (' + amount + ' €)</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:10px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:10px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:10px;border:1px solid #ddd;"><a href="mailto:' + safeEmail + '">' + safeEmail + '</a></td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:10px;border:1px solid #ddd;">' + safePhone + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Zahlungsart</td><td style="padding:10px;border:1px solid #ddd;">Mollie (' + paymentMethod + ')</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Mollie-ID</td><td style="padding:10px;border:1px solid #ddd;font-family:monospace;">' + paymentId + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Zugangscode</td><td style="padding:10px;border:1px solid #ddd;font-family:monospace;font-size:16px;">' + accessCode + '</td></tr></table><p style="color:#22c55e;font-weight:bold;margin-top:16px;">Alles automatisch erledigt! Der Kunde hat seinen Zugangscode bereits per E-Mail erhalten.</p>',
-    })
+    try {
+      await sendConfirmationToCustomer({
+        to: safeEmail,
+        subject: emailData.subject,
+        html: emailData.html,
+      })
+      customerEmailSent = true
+    } catch (err) {
+      console.error('Kunden-E-Mail fehlgeschlagen:', err.message)
+    }
 
-    return NextResponse.json({ received: true, status: 'processed' })
+    const sheetsWarning = sheetsErrors.length > 0
+      ? '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG: Sheets-Speicherung fehlgeschlagen für: ' + sheetsErrors.join(', ') + '. Bitte manuell prüfen!</strong></div>'
+      : ''
+    const emailWarning = !customerEmailSent
+      ? '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG: Kunden-E-Mail konnte NICHT gesendet werden! Bitte manuell den Zugangscode senden: ' + accessCode + '</strong></div>'
+      : ''
+
+    try {
+      await sendNotificationToOwner({
+        subject: (sheetsErrors.length > 0 || !customerEmailSent ? '[FEHLER] ' : '') + 'ZAHLUNG EINGEGANGEN: ' + planName + ' - ' + safeCompany + ' (' + amount + '€)',
+        html: sheetsWarning + emailWarning + '<h2 style="color:#22c55e;">Mollie-Zahlung eingegangen!</h2><table style="border-collapse:collapse;width:100%;max-width:500px;"><tr style="background:#ecfdf5;"><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Produkt</td><td style="padding:10px;border:1px solid #ddd;font-weight:bold;color:#22c55e;">' + planName + ' (' + amount + ' €)</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:10px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:10px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:10px;border:1px solid #ddd;"><a href="mailto:' + safeEmail + '">' + safeEmail + '</a></td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:10px;border:1px solid #ddd;">' + safePhone + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Zahlungsart</td><td style="padding:10px;border:1px solid #ddd;">Mollie (' + paymentMethod + ')</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Mollie-ID</td><td style="padding:10px;border:1px solid #ddd;font-family:monospace;">' + paymentId + '</td></tr><tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Zugangscode</td><td style="padding:10px;border:1px solid #ddd;font-family:monospace;font-size:16px;">' + accessCode + '</td></tr></table><p style="color:#22c55e;font-weight:bold;margin-top:16px;">' + (customerEmailSent ? 'Alles automatisch erledigt! Der Kunde hat seinen Zugangscode bereits per E-Mail erhalten.' : 'ACHTUNG: Kunden-E-Mail fehlgeschlagen. Bitte Zugangscode manuell senden!') + '</p>',
+      })
+      ownerEmailSent = true
+    } catch (err) {
+      console.error('Owner-E-Mail fehlgeschlagen:', err.message)
+    }
+
+    // Webhook IMMER mit 200 antworten um Mollie-Retries zu vermeiden
+    return NextResponse.json({ received: true, status: 'processed', customerEmailSent, ownerEmailSent })
   } catch (err) {
     console.error('Mollie Webhook-Fehler:', err.message)
     return NextResponse.json({ error: 'Webhook-Verarbeitung fehlgeschlagen' }, { status: 500 })

@@ -53,7 +53,8 @@ export async function POST(request) {
     const { percentage, level, levelTitle, categoryScores, quickWins, recommendations, answers } = results || {}
 
     // Google Sheets: Ergebnisse in produktspezifischen Tab speichern
-    savePremiumAssessmentResult({
+    const sheetsErrors = []
+    await savePremiumAssessmentResult({
       companyName: safeCompany,
       contactName: safeName,
       contactEmail: safeEmail,
@@ -63,11 +64,14 @@ export async function POST(request) {
       levelTitle,
       categoryScores,
       productType: productType || undefined,
-    }).catch(() => {})
+    }).catch((err) => {
+      console.error('Sheets: Premium-Ergebnis speichern fehlgeschlagen:', err.message)
+      sheetsErrors.push('Premium-Ergebnis')
+    })
 
     // Google Sheets: Detaillierte Einzelantworten in produktspezifischen Tab speichern
     if (answers && Array.isArray(answers) && answers.length > 0) {
-      saveDetailedAnswers({
+      await saveDetailedAnswers({
         sheetId: process.env.GOOGLE_SHEET_PREMIUM_RESULTS,
         checkType: productType ? productType.charAt(0).toUpperCase() + productType.slice(1) + ' Assessment' : 'Premium Assessment',
         company: safeCompany,
@@ -76,7 +80,10 @@ export async function POST(request) {
         answers,
         questions: premiumQuestions,
         productType: productType || undefined,
-      }).catch(() => {})
+      }).catch((err) => {
+        console.error('Sheets: Einzelantworten speichern fehlgeschlagen:', err.message)
+        sheetsErrors.push('Einzelantworten')
+      })
     }
 
     // Kategorie-Tabelle erstellen
@@ -223,6 +230,11 @@ export async function POST(request) {
       </div>
     `
 
+    // Sheets-Fehler-Warnung für Owner-E-Mail
+    const sheetsWarning = sheetsErrors.length > 0
+      ? `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG:</strong> Sheets-Speicherung fehlgeschlagen für: ${sheetsErrors.join(', ')}. Bitte manuell prüfen!</div>`
+      : ''
+
     // E-Mail an Steffen (ausführlicher)
     const ownerHtml = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1f2937;">
@@ -230,6 +242,7 @@ export async function POST(request) {
           <h1 style="color:white;margin:0;font-size:20px;">Neues Premium Assessment abgeschlossen</h1>
         </div>
         <div style="background:white;padding:24px;border:1px solid #e5e7eb;border-top:none;">
+          ${sheetsWarning}
           <table style="width:100%;margin-bottom:20px;">
             <tr><td style="padding:4px 0;color:#6b7280;">Firma:</td><td style="padding:4px 0;font-weight:bold;">${safeCompany}</td></tr>
             <tr><td style="padding:4px 0;color:#6b7280;">Name:</td><td style="padding:4px 0;">${safeName}</td></tr>
@@ -279,7 +292,7 @@ export async function POST(request) {
         html: customerHtml,
       }),
       sendNotificationToOwner({
-        subject: `Premium Assessment: ${safeCompany} – ${percentage}% (Level ${level})`,
+        subject: `${sheetsErrors.length > 0 ? '[SHEETS-FEHLER] ' : ''}Premium Assessment: ${safeCompany} – ${percentage}% (Level ${level})`,
         html: ownerHtml,
       }),
     ])

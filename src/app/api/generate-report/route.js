@@ -71,60 +71,75 @@ export async function POST(request) {
     const reportFilename = `KI-Readiness-Report_${safeCompany.replace(/[^a-zA-Z0-9äöüÄÖÜß]/g, '_')}_${datum.replace(/\./g, '-')}.html`
 
     // E-Mail an Kunden mit Report als Anhang
-    await sendConfirmationToCustomer({
-      to: safeEmail,
-      subject: `Ihr KI-Readiness Report - ${safeCompany} (${percentage}%)`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-          <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);padding:32px;border-radius:12px 12px 0 0;text-align:center;">
-            <h1 style="color:white;margin:0;font-size:24px;">Ihr KI-Readiness Report ist fertig!</h1>
-            <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;">${safeCompany} &bull; ${datum}</p>
-          </div>
-          <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;">
-            <p>Hallo ${safeName},</p>
-            <p>Ihr umfassender KI-Readiness Report (20+ Seiten) liegt im Anhang dieser E-Mail bereit.</p>
-            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;text-align:center;margin:20px 0;">
-              <div style="font-size:48px;font-weight:bold;color:#2563eb;">${percentage}%</div>
-              <div style="font-size:18px;font-weight:bold;">Level ${level}: ${levelTitle}</div>
+    let customerEmailSent = false
+    try {
+      await sendConfirmationToCustomer({
+        to: safeEmail,
+        subject: `Ihr KI-Readiness Report - ${safeCompany} (${percentage}%)`,
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+            <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);padding:32px;border-radius:12px 12px 0 0;text-align:center;">
+              <h1 style="color:white;margin:0;font-size:24px;">Ihr KI-Readiness Report ist fertig!</h1>
+              <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;">${safeCompany} &bull; ${datum}</p>
             </div>
-            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:20px 0;">
-              <h3 style="margin-top:0;color:#2563eb;">So nutzen Sie Ihren Report</h3>
-              <ol>
-                <li>&Ouml;ffnen Sie den HTML-Anhang in Ihrem Browser</li>
-                <li>Drucken Sie ihn als PDF (Strg+P &rarr; &bdquo;Als PDF speichern&ldquo;)</li>
-                <li>Starten Sie mit den Quick-Wins aus Kapitel 4</li>
-              </ol>
+            <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;">
+              <p>Hallo ${safeName},</p>
+              <p>Ihr umfassender KI-Readiness Report (20+ Seiten) liegt im Anhang dieser E-Mail bereit.</p>
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;text-align:center;margin:20px 0;">
+                <div style="font-size:48px;font-weight:bold;color:#2563eb;">${percentage}%</div>
+                <div style="font-size:18px;font-weight:bold;">Level ${level}: ${levelTitle}</div>
+              </div>
+              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:20px 0;">
+                <h3 style="margin-top:0;color:#2563eb;">So nutzen Sie Ihren Report</h3>
+                <ol>
+                  <li>&Ouml;ffnen Sie den HTML-Anhang in Ihrem Browser</li>
+                  <li>Drucken Sie ihn als PDF (Strg+P &rarr; &bdquo;Als PDF speichern&ldquo;)</li>
+                  <li>Starten Sie mit den Quick-Wins aus Kapitel 4</li>
+                </ol>
+              </div>
+              <p>Bei Fragen antworten Sie einfach auf diese E-Mail.</p>
+              <p>Mit freundlichen Gr&uuml;&szlig;en<br><strong>Steffen Hefter</strong><br>frimalo &ndash; KI-Beratung</p>
             </div>
-            <p>Bei Fragen antworten Sie einfach auf diese E-Mail.</p>
-            <p>Mit freundlichen Gr&uuml;&szlig;en<br><strong>Steffen Hefter</strong><br>frimalo &ndash; KI-Beratung</p>
           </div>
-        </div>
-      `,
-      attachments: [
-        {
-          filename: reportFilename,
-          content: reportHTML,
-          contentType: 'text/html',
-        },
-      ],
-    })
+        `,
+        attachments: [
+          {
+            filename: reportFilename,
+            content: reportHTML,
+            contentType: 'text/html',
+          },
+        ],
+      })
+      customerEmailSent = true
+    } catch (err) {
+      console.error('Report-E-Mail an Kunden fehlgeschlagen:', err.message)
+    }
 
-    // Benachrichtigung an Owner
-    await sendNotificationToOwner({
-      subject: `Report automatisch versendet: ${safeCompany} - ${percentage}%`,
-      html: `
-        <h2 style="color:#22c55e;">PDF-Report automatisch versendet!</h2>
-        <table style="border-collapse:collapse;width:100%;max-width:500px;">
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${safeCompany}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">${safeName}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">${safeEmail}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Score</td><td style="padding:8px;border:1px solid #ddd;">${percentage}% (Level ${level})</td></tr>
-        </table>
-        <p style="color:#22c55e;font-weight:bold;margin-top:16px;">Der Report wurde automatisch an den Kunden versendet. Kein manuelles Erstellen notwendig!</p>
-      `,
-    })
+    // Benachrichtigung an Owner (mit Warnung wenn Kunden-E-Mail fehlschlug)
+    const emailWarning = !customerEmailSent
+      ? '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG: Report-E-Mail an Kunden konnte NICHT gesendet werden! Bitte Report manuell an ' + safeEmail + ' senden.</strong></div>'
+      : ''
 
-    return NextResponse.json({ success: true })
+    try {
+      await sendNotificationToOwner({
+        subject: (!customerEmailSent ? '[E-MAIL FEHLER] ' : '') + `Report ${customerEmailSent ? 'automatisch versendet' : 'NICHT versendet'}: ${safeCompany} - ${percentage}%`,
+        html: `
+          ${emailWarning}
+          <h2 style="color:${customerEmailSent ? '#22c55e' : '#ef4444'};">${customerEmailSent ? 'PDF-Report automatisch versendet!' : 'PDF-Report erstellt aber E-Mail fehlgeschlagen!'}</h2>
+          <table style="border-collapse:collapse;width:100%;max-width:500px;">
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${safeCompany}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">${safeName}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">${safeEmail}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Score</td><td style="padding:8px;border:1px solid #ddd;">${percentage}% (Level ${level})</td></tr>
+          </table>
+          <p style="color:${customerEmailSent ? '#22c55e' : '#ef4444'};font-weight:bold;margin-top:16px;">${customerEmailSent ? 'Der Report wurde automatisch an den Kunden versendet.' : 'BITTE Report manuell an den Kunden senden!'}</p>
+        `,
+      })
+    } catch (err) {
+      console.error('Owner-Benachrichtigung fehlgeschlagen:', err.message)
+    }
+
+    return NextResponse.json({ success: customerEmailSent, reportGenerated: true })
   } catch {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })
   }

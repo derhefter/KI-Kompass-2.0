@@ -17,6 +17,7 @@ export default function PremiumAssessment() {
   const [accessCode, setAccessCode] = useState('')
   const [loginError, setLoginError] = useState('')
   const [resultsSent, setResultsSent] = useState(false)
+  const [reportStatus, setReportStatus] = useState(null) // null | 'generating' | 'sent' | 'error'
 
   // Zugangspr\u00fcfung per individuellem Code
   useEffect(() => {
@@ -48,21 +49,28 @@ export default function PremiumAssessment() {
       const data = await res.json()
       if (data.success) {
         setResultsSent(true)
-        // Auto-PDF Report generieren und senden (V2)
-        fetch('/api/generate-report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            code: accessCode,
-            companyName,
-            contactName,
-            contactEmail,
-            results: resultData,
-          }),
-        }).catch(() => {})
+        // Auto-PDF Report generieren und senden (mit Feedback)
+        setReportStatus('generating')
+        try {
+          const reportRes = await fetch('/api/generate-report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              code: accessCode,
+              companyName,
+              contactName,
+              contactEmail,
+              results: resultData,
+            }),
+          })
+          const reportData = await reportRes.json()
+          setReportStatus(reportData.success ? 'sent' : 'error')
+        } catch {
+          setReportStatus('error')
+        }
       }
     } catch {
-      // Stille Fehlerbehandlung – Report wird trotzdem angezeigt
+      // Report wird trotzdem angezeigt
     }
   }
 
@@ -443,8 +451,35 @@ export default function PremiumAssessment() {
           {/* Download / Print Button */}
           <div className="card text-center mb-8 bg-primary-50 border-primary-200">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Ihren Report speichern</h2>
+            {reportStatus === 'generating' && (
+              <div className="flex items-center justify-center gap-2 text-primary-600 mb-4">
+                <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Report wird erstellt und per E-Mail gesendet...
+              </div>
+            )}
+            {reportStatus === 'sent' && (
+              <p className="text-accent-600 font-semibold mb-4">
+                Ihr ausf&uuml;hrlicher PDF-Report (20+ Seiten) wurde an <strong>{contactEmail}</strong> gesendet.
+              </p>
+            )}
+            {reportStatus === 'error' && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <p className="text-red-700">
+                  Report-Versand fehlgeschlagen. Bitte kontaktieren Sie uns unter{' '}
+                  <a href="mailto:steffenhefter@googlemail.com" className="underline font-semibold">steffenhefter@googlemail.com</a>{' '}
+                  &ndash; wir senden Ihnen den Report manuell.
+                </p>
+              </div>
+            )}
+            {!reportStatus && (
+              <p className="text-gray-600 mb-4">
+                Ein ausf&uuml;hrlicher PDF-Report (20+ Seiten) wird an <strong>{contactEmail}</strong> gesendet.
+              </p>
+            )}
             <p className="text-gray-600 mb-6">
-              Ein ausf&uuml;hrlicher PDF-Report (20+ Seiten) wurde automatisch an <strong>{contactEmail}</strong> gesendet.
               Alternativ k&ouml;nnen Sie diese Seite direkt drucken.
             </p>
             <button

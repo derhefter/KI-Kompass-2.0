@@ -409,8 +409,14 @@ export async function POST(request) {
     const createdAtISO = new Date().toISOString()
     const datum = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
-    // Google Sheets: Zugangscode speichern (sofort aktiv – kein manuelles Deployment nötig!)
-    saveAccessCode({
+    // Preis-Validierung (gegen NaN in Rechnung)
+    if (!planPrice || isNaN(parseFloat(planPrice))) {
+      return NextResponse.json({ error: 'Plan nicht gefunden' }, { status: 400 })
+    }
+
+    // Google Sheets: Zugangscode speichern (mit Error-Tracking)
+    let sheetsSaveError = false
+    await saveAccessCode({
       code: accessCode,
       name: safeName,
       email: safeMail,
@@ -418,7 +424,10 @@ export async function POST(request) {
       plan,
       expiresAt: expiresAtISO,
       createdAt: createdAtISO,
-    }).catch((err) => console.error('Fehler beim Speichern des Zugangscodes:', err.message))
+    }).catch((err) => {
+      console.error('Fehler beim Speichern des Zugangscodes:', err.message)
+      sheetsSaveError = true
+    })
 
     // Kundendaten werden NICHT hier gespeichert – das passiert bereits in /api/purchase-request
 
@@ -450,9 +459,13 @@ frimalo – KI-Beratung
 Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
 
     // 1. E-Mail an Steffen mit Zugangscode + Rechnung als Anhang
+    const sheetsWarning = sheetsSaveError
+      ? '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG: Zugangscode konnte NICHT in Google Sheets gespeichert werden! Code ' + accessCode + ' muss manuell eingetragen werden.</strong></div>'
+      : ''
     await sendNotificationToOwner({
-      subject: `RECHNUNG ANGEFORDERT: ${planName} – ${safeCompany}`,
+      subject: `${sheetsSaveError ? '[SHEETS-FEHLER] ' : ''}RECHNUNG ANGEFORDERT: ${planName} – ${safeCompany}`,
       html: `
+        ${sheetsWarning}
         <h2 style="color:#dc2626;">Rechnungsanforderung eingegangen!</h2>
         <p style="font-size:16px;">Der Kunde möchte <strong>per Rechnung</strong> zahlen. Bitte Rechnung vervollständigen und versenden.</p>
 

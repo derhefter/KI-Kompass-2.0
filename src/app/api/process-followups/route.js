@@ -7,7 +7,7 @@
 // ============================================================
 
 import { NextResponse } from 'next/server'
-import { sendConfirmationToCustomer } from '../../../lib/mail'
+import { sendConfirmationToCustomer, sendNotificationToOwner } from '../../../lib/mail'
 import { getFollowUpEmailHTML, FOLLOW_UP_SUBJECTS } from '../../../lib/follow-up'
 import { getPendingFollowUps, markFollowUpSent } from '../../../lib/google-sheets'
 
@@ -20,12 +20,25 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
     }
 
-    const pending = await getPendingFollowUps()
+    // Sheets-Fehler abfangen und Owner benachrichtigen
+    let pending
+    try {
+      pending = await getPendingFollowUps()
+    } catch (err) {
+      console.error('getPendingFollowUps fehlgeschlagen:', err.message)
+      await sendNotificationToOwner({
+        subject: '[CRON-FEHLER] Follow-Up System: Sheets nicht erreichbar',
+        html: `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;"><h2 style="color:#991b1b;margin-top:0;">Follow-Up Cron Job fehlgeschlagen</h2><p>Google Sheets konnte nicht gelesen werden. Ausstehende Follow-Up E-Mails wurden NICHT versendet.</p><p>Fehler: ${err.message}</p><p>Zeitpunkt: ${new Date().toLocaleString('de-DE')}</p></div>`,
+      }).catch(() => {})
+      return NextResponse.json({ error: 'Sheets nicht erreichbar', processed: 0 }, { status: 500 })
+    }
+
     if (!pending || pending.length === 0) {
       return NextResponse.json({ processed: 0, sent: 0, message: 'Keine ausstehenden Follow-Ups' })
     }
 
     let sent = 0
+    const errors = []
     for (const followUp of pending) {
       try {
         const { email, company, score, level, levelTitle, type, rowIndex } = followUp
@@ -33,17 +46,36 @@ export async function GET(request) {
         const subject = subjectFn ? subjectFn(company || 'Ihr Unternehmen') : 'KI-Kompass Update'
         const html = getFollowUpEmailHTML(type, { company, score, level, levelTitle })
 
+        // Leere Templates nicht versenden
+        if (!html || html.trim() === '') {
+          console.error(`Leeres Template für Follow-Up Typ: ${type}, E-Mail: ${email}`)
+          errors.push(`Leeres Template: ${email} (${type})`)
+          continue
+        }
+
         const emailSent = await sendConfirmationToCustomer({ to: email, subject, html })
         if (emailSent) {
-          await markFollowUpSent(rowIndex)
+          await markFollowUpSent(rowIndex).catch((err) => {
+            console.error(`markFollowUpSent fehlgeschlagen für ${email}:`, err.message)
+            // Trotzdem als gesendet zählen um Duplikate zu vermeiden
+          })
           sent++
         }
       } catch (err) {
         console.error(`Follow-Up Fehler für ${followUp.email}:`, err.message)
+        errors.push(`${followUp.email}: ${err.message}`)
       }
     }
 
-    return NextResponse.json({ processed: pending.length, sent })
+    // Bei Fehlern Owner benachrichtigen
+    if (errors.length > 0) {
+      await sendNotificationToOwner({
+        subject: `[CRON-WARNUNG] Follow-Ups: ${sent}/${pending.length} versendet, ${errors.length} Fehler`,
+        html: `<h2>Follow-Up Cron Job Bericht</h2><p>Versendet: ${sent}/${pending.length}</p><p>Fehler:</p><ul>${errors.map((e) => `<li>${e}</li>`).join('')}</ul>`,
+      }).catch(() => {})
+    }
+
+    return NextResponse.json({ processed: pending.length, sent, errors: errors.length })
   } catch (err) {
     console.error('Follow-Up Verarbeitung Fehler:', err.message)
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })

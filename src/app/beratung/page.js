@@ -1,16 +1,11 @@
 'use client'
 
 export default function Beratung() {
-  // ============================================================
-  // HIER ANPASSEN: Google Calendar Booking Links
-  // Ersetze die URLs mit deinen echten Google Calendar Appointment
-  // Scheduling Links. Anleitung:
-  // 1. Google Calendar \u00f6ffnen \u2192 Einstellungen \u2192 Terminbuchungsseite
-  // 2. Neuen Termintyp erstellen (30 Min / 60 Min)
-  // 3. Link kopieren und hier einf\u00fcgen
-  // ============================================================
-  const BOOKING_30_MIN = 'https://calendar.google.com/calendar/appointments/schedules/DEIN_30_MIN_LINK'
-  const BOOKING_60_MIN = 'https://calendar.google.com/calendar/appointments/schedules/DEIN_60_MIN_LINK'
+  // Kalender-Links aus Environment-Variablen (Vercel Dashboard → Settings → Environment Variables)
+  // Falls nicht gesetzt: Fallback auf E-Mail-Kontakt
+  const BOOKING_30_MIN = process.env.NEXT_PUBLIC_BOOKING_URL_30 || ''
+  const BOOKING_60_MIN = process.env.NEXT_PUBLIC_BOOKING_URL_60 || ''
+  const bookingAvailable = BOOKING_30_MIN && BOOKING_60_MIN
 
   return (
     <div className="min-h-screen bg-slate-50 py-12">
@@ -28,6 +23,17 @@ export default function Beratung() {
             F&ouml;rderprogramme und erarbeiten konkrete n&auml;chste Schritte.
           </p>
         </div>
+
+        {/* Hinweis wenn Links nicht konfiguriert */}
+        {!bookingAvailable && (
+          <div className="bg-warm-50 border border-warm-200 rounded-xl p-6 mb-8 text-center">
+            <p className="text-warm-600 font-semibold mb-2">Online-Terminbuchung wird eingerichtet</p>
+            <p className="text-slate-600 text-sm mb-3">Bis dahin k&ouml;nnen Sie Ihren Termin direkt per E-Mail vereinbaren:</p>
+            <a href="mailto:steffenhefter@googlemail.com?subject=Erstberatung%20KI-Kompass%20anfragen" className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors">
+              Termin per E-Mail anfragen
+            </a>
+          </div>
+        )}
 
         {/* Two Booking Options */}
         <div className="grid md:grid-cols-2 gap-5 mb-12">
@@ -60,12 +66,12 @@ export default function Beratung() {
               ))}
             </ul>
             <a
-              href={BOOKING_30_MIN}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={BOOKING_30_MIN || 'mailto:steffenhefter@googlemail.com?subject=30%20Min%20Erstberatung%20anfragen'}
+              target={BOOKING_30_MIN ? '_blank' : undefined}
+              rel={BOOKING_30_MIN ? 'noopener noreferrer' : undefined}
               className="block w-full text-center px-5 py-3 text-white font-semibold bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors text-sm"
             >
-              30 Min Termin buchen
+              {BOOKING_30_MIN ? '30 Min Termin buchen' : 'Per E-Mail anfragen'}
             </a>
           </div>
 
@@ -96,12 +102,12 @@ export default function Beratung() {
               ))}
             </ul>
             <a
-              href={BOOKING_60_MIN}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={BOOKING_60_MIN || 'mailto:steffenhefter@googlemail.com?subject=60%20Min%20Strategiegespraech%20anfragen'}
+              target={BOOKING_60_MIN ? '_blank' : undefined}
+              rel={BOOKING_60_MIN ? 'noopener noreferrer' : undefined}
               className="block w-full text-center px-5 py-3 text-primary-500 font-semibold border border-primary-200 rounded-lg hover:bg-primary-50 transition-colors text-sm"
             >
-              60 Min Termin buchen
+              {BOOKING_60_MIN ? '60 Min Termin buchen' : 'Per E-Mail anfragen'}
             </a>
           </div>
         </div>

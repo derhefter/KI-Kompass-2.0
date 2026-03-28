@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { saveFreeAssessmentResult, saveDetailedAnswers } from '../../../lib/google-sheets'
+import { saveFreeAssessmentResult, saveDetailedAnswers, scheduleFollowUps } from '../../../lib/google-sheets'
 import { freeQuestions } from '../../../data/questions'
 
 const limiter = rateLimit({ maxRequests: 5, windowMs: 60 * 1000 })
@@ -27,12 +27,17 @@ export async function POST(request) {
     const safeMail = email.slice(0, 200).replace(/[<>\r\n]/g, '')
     const safeCompany = (company || 'Nicht angegeben').slice(0, 200).replace(/[<>\r\n]/g, '')
 
-    // Google Sheets: Nur Erstumfrage-Ergebnis speichern (NICHT in Kundendaten!)
-    saveFreeAssessmentResult({ email: safeMail, company: safeCompany, score, level }).catch(() => {})
+    // Google Sheets: Erstumfrage-Ergebnis speichern
+    const sheetsErrors = []
+    const assessmentSaved = await saveFreeAssessmentResult({ email: safeMail, company: safeCompany, score, level }).catch((err) => {
+      console.error('Sheets: Assessment-Ergebnis speichern fehlgeschlagen:', err.message)
+      sheetsErrors.push('Assessment-Ergebnis')
+      return false
+    })
 
     // Google Sheets: Detaillierte Einzelantworten speichern
     if (answers && Array.isArray(answers) && answers.length > 0) {
-      saveDetailedAnswers({
+      await saveDetailedAnswers({
         sheetId: process.env.GOOGLE_SHEET_FREE_RESULTS,
         checkType: 'Schnell-Check (kostenlos)',
         company: safeCompany,
@@ -40,8 +45,23 @@ export async function POST(request) {
         email: safeMail,
         answers,
         questions: freeQuestions,
-      }).catch(() => {})
+      }).catch((err) => {
+        console.error('Sheets: Einzelantworten speichern fehlgeschlagen:', err.message)
+        sheetsErrors.push('Einzelantworten')
+      })
     }
+
+    // Google Sheets: Follow-Up E-Mails planen
+    await scheduleFollowUps({
+      email: safeMail,
+      company: safeCompany,
+      name: '–',
+      score: typeof score === 'number' ? score : 0,
+      level: typeof level === 'number' ? level : 1,
+    }).catch((err) => {
+      console.error('Sheets: Follow-Up Planung fehlgeschlagen:', err.message)
+      sheetsErrors.push('Follow-Ups')
+    })
 
     // Kategorie-Tabelle für E-Mail
     const categoryRows = (categoryScores || [])
@@ -67,9 +87,15 @@ export async function POST(request) {
         }).join('')
       : ''
 
+    // Sheets-Fehler in Owner-Benachrichtigung aufnehmen
+    const sheetsWarning = sheetsErrors.length > 0
+      ? `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;margin-bottom:16px;"><strong style="color:#991b1b;">ACHTUNG:</strong> Sheets-Speicherung fehlgeschlagen für: ${sheetsErrors.join(', ')}. Bitte manuell prüfen!</div>`
+      : ''
+
     await sendNotificationToOwner({
-      subject: `Neuer KI-Kompass Lead: ${safeCompany} – ${typeof score === 'number' ? score : '?'}%`,
+      subject: `${sheetsErrors.length > 0 ? '[SHEETS-FEHLER] ' : ''}Neuer KI-Kompass Lead: ${safeCompany} – ${typeof score === 'number' ? score : '?'}%`,
       html: `
+        ${sheetsWarning}
         <h2>Neuer Lead über den KI-Kompass</h2>
         <table style="border-collapse:collapse;width:100%;max-width:500px;">
           <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${safeCompany}</td></tr>
