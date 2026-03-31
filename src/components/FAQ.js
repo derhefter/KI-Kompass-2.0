@@ -10,7 +10,7 @@ export default function FAQ() {
     },
     {
       q: 'Was kostet der Check?',
-      a: 'Der Schnell-Check ist komplett kostenfrei. F\u00fcr eine detaillierte Analyse mit individueller Roadmap gibt es den Premium Report f\u00fcr \u20ac197.',
+      a: 'Der Schnell-Check ist komplett kostenfrei. F\u00fcr eine detaillierte Analyse mit individueller Roadmap gibt es den Premium Report f\u00fcr \u20ac147.',
     },
     {
       q: 'Werden meine Daten sicher behandelt?',

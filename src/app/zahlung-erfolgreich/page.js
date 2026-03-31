@@ -155,20 +155,41 @@ function ZahlungErfolgreichContent() {
             </ol>
           </div>
 
-          {/* Next Best Action: Beratung buchen */}
-          <div className="bg-warm-50 border border-warm-200 rounded-lg p-5 mb-5">
-            <h3 className="font-semibold text-primary-700 text-sm mb-2">M&ouml;chten Sie Ihre Ergebnisse besprechen?</h3>
-            <p className="text-slate-600 text-xs mb-3">
-              In einer kostenlosen 30-Minuten-Erstberatung besprechen wir Ihren Report,
-              pr&uuml;fen passende F&ouml;rderprogramme und erarbeiten konkrete n&auml;chste Schritte.
-            </p>
-            <a href="/beratung" className="inline-flex items-center px-5 py-2.5 text-white text-sm font-semibold bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors">
-              30 Min Erstberatung buchen
-              <svg className="w-3.5 h-3.5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
-          </div>
+          {/* Next Best Action: kontextabhängig */}
+          {plan === 'strategie' ? (
+            <div className="bg-accent-50 border border-accent-200 rounded-lg p-5 mb-5">
+              <h3 className="font-semibold text-primary-700 text-sm mb-2">Ihr 60-Min. Strategiegespr&auml;ch buchen</h3>
+              <p className="text-slate-600 text-xs mb-3">
+                In Ihrem Strategie-Paket ist ein 60-min&uuml;tiges Video-Strategiegespr&auml;ch enthalten.
+                Buchen Sie jetzt direkt Ihren Wunschtermin!
+              </p>
+              <a
+                href={process.env.NEXT_PUBLIC_BOOKING_URL_60 || '/beratung'}
+                target={process.env.NEXT_PUBLIC_BOOKING_URL_60 ? '_blank' : undefined}
+                rel={process.env.NEXT_PUBLIC_BOOKING_URL_60 ? 'noopener noreferrer' : undefined}
+                className="inline-flex items-center px-5 py-2.5 text-white text-sm font-semibold bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors"
+              >
+                60 Min Strategiegespr&auml;ch buchen
+                <svg className="w-3.5 h-3.5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+            </div>
+          ) : (
+            <div className="bg-warm-50 border border-warm-200 rounded-lg p-5 mb-5">
+              <h3 className="font-semibold text-primary-700 text-sm mb-2">M&ouml;chten Sie Ihre Ergebnisse besprechen?</h3>
+              <p className="text-slate-600 text-xs mb-3">
+                In einer kostenlosen 30-Minuten-Erstberatung besprechen wir Ihren Report
+                und erarbeiten konkrete n&auml;chste Schritte.
+              </p>
+              <a href="/beratung" className="inline-flex items-center px-5 py-2.5 text-white text-sm font-semibold bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors">
+                30 Min Erstberatung buchen
+                <svg className="w-3.5 h-3.5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+            </div>
+          )}
 
           <a href="/" className="inline-flex items-center text-sm text-slate-500 hover:text-primary-500 transition-colors">
             <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

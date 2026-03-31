@@ -4,8 +4,7 @@ export default function Beratung() {
   // Kalender-Links aus Environment-Variablen (Vercel Dashboard → Settings → Environment Variables)
   // Falls nicht gesetzt: Fallback auf E-Mail-Kontakt
   const BOOKING_30_MIN = process.env.NEXT_PUBLIC_BOOKING_URL_30 || ''
-  const BOOKING_60_MIN = process.env.NEXT_PUBLIC_BOOKING_URL_60 || ''
-  const bookingAvailable = BOOKING_30_MIN && BOOKING_60_MIN
+  const bookingAvailable = !!BOOKING_30_MIN
 
   return (
     <div className="min-h-screen bg-slate-50 py-12">
@@ -75,23 +74,26 @@ export default function Beratung() {
             </a>
           </div>
 
-          {/* 60 Min */}
-          <div className="bg-white rounded-xl p-7 border border-slate-200">
-            <h2 className="text-lg font-bold text-primary-700 mb-2">Strategiegespr&auml;ch</h2>
+          {/* Premium Strategie-Paket Hinweis */}
+          <div className="bg-white rounded-xl p-7 border border-primary-200 relative">
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-primary-500 text-white px-3 py-0.5 rounded-full text-xs font-semibold">
+              Intensiv-Beratung
+            </div>
+            <h2 className="text-lg font-bold text-primary-700 mb-2">Strategie-Paket</h2>
             <div className="flex items-baseline gap-2 mb-4">
-              <span className="text-2xl font-bold text-primary-700">60 Min</span>
-              <span className="text-slate-500 text-xs">F&uuml;r Premium-Kunden</span>
+              <span className="text-2xl font-bold text-primary-700">&euro;497</span>
+              <span className="text-slate-500 text-xs">einmalig</span>
             </div>
             <p className="text-slate-600 text-sm mb-5">
-              Tiefgehende Besprechung Ihres Premium Reports: Roadmap, Use-Cases, F&ouml;rderstrategie.
+              60-Min. Video-Strategiegespr&auml;ch mit individuellem Premium Report, pers&ouml;nlicher KI-Strategie und F&ouml;rdermittelberatung.
             </p>
             <ul className="space-y-2 text-sm text-slate-700 mb-6">
               {[
-                'Report-Besprechung im Detail',
-                'Roadmap gemeinsam priorisieren',
-                'KI-Use-Cases f\u00fcr Ihre Branche',
-                'F\u00f6rdermittel-Strategie entwickeln',
-                'Pers\u00f6nliche KI-Strategie',
+                'Kompletter Premium Report (20+ Seiten)',
+                '60-Min. pers\u00f6nliches Video-Strategiegespr\u00e4ch',
+                'Individuelle KI-Strategie f\u00fcr Ihr Unternehmen',
+                'Pers\u00f6nliche F\u00f6rdermittelberatung',
+                '30 Tage E-Mail-Support',
               ].map((item) => (
                 <li key={item} className="flex items-start">
                   <svg className="w-4 h-4 text-primary-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -102,12 +104,10 @@ export default function Beratung() {
               ))}
             </ul>
             <a
-              href={BOOKING_60_MIN || 'mailto:steffenhefter@googlemail.com?subject=60%20Min%20Strategiegespraech%20anfragen'}
-              target={BOOKING_60_MIN ? '_blank' : undefined}
-              rel={BOOKING_60_MIN ? 'noopener noreferrer' : undefined}
-              className="block w-full text-center px-5 py-3 text-primary-500 font-semibold border border-primary-200 rounded-lg hover:bg-primary-50 transition-colors text-sm"
+              href="/anfrage?plan=strategie"
+              className="block w-full text-center px-5 py-3 text-white font-semibold bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors text-sm"
             >
-              {BOOKING_60_MIN ? '60 Min Termin buchen' : 'Per E-Mail anfragen'}
+              Strategie-Paket entdecken
             </a>
           </div>
         </div>
@@ -117,10 +117,10 @@ export default function Beratung() {
           <h2 className="text-lg font-bold text-primary-700 mb-5">Was Sie in der Erstberatung erwartet</h2>
           <div className="grid md:grid-cols-2 gap-5">
             {[
-              { time: '5 Min', title: 'Bestandsaufnahme', desc: 'Kurzer \u00dcberblick \u00fcber Ihre aktuelle Situation und Ziele.' },
-              { time: '10 Min', title: 'F\u00f6rdermittel-Check', desc: 'Pr\u00fcfung passender F\u00f6rderprogramme f\u00fcr Ihren Standort und Ihre Branche.' },
-              { time: '10 Min', title: 'Einsch\u00e4tzung', desc: 'Was ist realistisch? Welche Summen? Welcher Zeitrahmen?' },
-              { time: '5 Min', title: 'N\u00e4chste Schritte', desc: 'Konkrete Empfehlungen und ggf. Angebotserstellung.' },
+              { time: '5 Min', title: 'Bestandsaufnahme', desc: 'Kurzer \u00dcberblick \u00fcber Ihre aktuelle Situation, Herausforderungen und Ziele.' },
+              { time: '10 Min', title: 'Einsch\u00e4tzung & Quick-Wins', desc: 'Wir besprechen Ihre Ergebnisse und identifizieren sofort umsetzbare Ma\u00dfnahmen.' },
+              { time: '10 Min', title: 'Konkrete Empfehlungen', desc: 'Praxisnahe n\u00e4chste Schritte, passend zu Ihrer Branche und Unternehmensgr\u00f6\u00dfe.' },
+              { time: '5 Min', title: 'N\u00e4chste Schritte', desc: 'Klarer Fahrplan und ggf. Angebotserstellung f\u00fcr weiterf\u00fchrende Begleitung.' },
             ].map((item, i) => (
               <div key={i} className="flex gap-3">
                 <div className="flex-shrink-0 w-12 h-12 bg-warm-50 rounded-lg flex items-center justify-center">

@@ -26,8 +26,8 @@ const PRODUCTS = {
   premium: {
     name: 'KI-Kompass Premium Report',
     description: 'Umfassender KI-Readiness Report (20+ Seiten) mit individueller Roadmap, Tool-Empfehlungen und Foerdermitteluebersicht',
-    price: '197.00',
-    priceDisplay: '197',
+    price: '147.00',
+    priceDisplay: '147',
   },
   strategie: {
     name: 'KI-Kompass Strategie-Paket',

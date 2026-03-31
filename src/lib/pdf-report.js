@@ -105,14 +105,16 @@ export function generatePDFReportHTML(data) {
     body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.6; color: #1f2937; max-width: 210mm; margin: 0 auto; }
 
     /* Cover Page */
-    .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%); color: white; text-align: center; padding: 40px; }
-    .cover-logo { height: 60px; margin-bottom: 30px; }
-    .cover h1 { font-size: 32pt; margin-bottom: 10px; }
-    .cover h2 { font-size: 18pt; font-weight: normal; opacity: 0.9; margin-bottom: 40px; }
-    .cover-company { font-size: 24pt; font-weight: bold; margin-bottom: 8px; }
-    .cover-meta { font-size: 12pt; opacity: 0.8; }
-    .cover-badge { display: inline-block; padding: 12px 32px; border-radius: 50px; font-size: 16pt; font-weight: bold; margin: 30px 0; border: 3px solid rgba(255,255,255,0.5); }
-    .cover-score { font-size: 64pt; font-weight: bold; margin: 20px 0; }
+    .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #0c2340 0%, #0369a1 60%, #0ea5e9 100%); color: white; text-align: center; padding: 40px; position: relative; }
+    .cover::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08) 0%, transparent 60%); pointer-events: none; }
+    .cover-logo { height: 60px; margin-bottom: 30px; position: relative; z-index: 1; }
+    .cover h1 { font-size: 32pt; margin-bottom: 10px; letter-spacing: -0.5px; position: relative; z-index: 1; }
+    .cover h2 { font-size: 16pt; font-weight: normal; opacity: 0.85; margin-bottom: 40px; position: relative; z-index: 1; }
+    .cover-company { font-size: 24pt; font-weight: bold; margin-bottom: 8px; position: relative; z-index: 1; }
+    .cover-meta { font-size: 11pt; opacity: 0.8; position: relative; z-index: 1; }
+    .cover-badge { display: inline-block; padding: 12px 32px; border-radius: 50px; font-size: 16pt; font-weight: bold; margin: 30px 0; border: 3px solid rgba(255,255,255,0.5); position: relative; z-index: 1; }
+    .cover-score { font-size: 64pt; font-weight: bold; margin: 20px 0; position: relative; z-index: 1; }
+    .cover-url { font-size: 10pt; opacity: 0.6; margin-top: 12px; letter-spacing: 1px; position: relative; z-index: 1; }
 
     /* Content Pages */
     .content { padding: 20mm; }
@@ -164,6 +166,18 @@ export function generatePDFReportHTML(data) {
     .tool-cost { font-size: 9pt; color: #2563eb; font-weight: bold; }
 
     .footer { text-align: center; padding: 16px; color: #9ca3af; font-size: 8pt; border-top: 1px solid #e5e7eb; margin-top: 20px; }
+    .page-footer { text-align: center; padding: 8px 0; color: #9ca3af; font-size: 7pt; border-top: 1px solid #e5e7eb; margin-top: 24px; }
+    .page-footer a { color: #0369a1; text-decoration: none; }
+
+    /* Business Card Kontakt */
+    .contact-card { background: linear-gradient(135deg, #0c2340 0%, #0369a1 100%); color: white; border-radius: 12px; padding: 32px; margin-top: 20px; }
+    .contact-card h3 { color: white; margin: 0 0 16px; font-size: 14pt; border: none; }
+    .contact-card .contact-name { font-size: 16pt; font-weight: bold; margin-bottom: 4px; }
+    .contact-card .contact-role { font-size: 10pt; opacity: 0.8; margin-bottom: 16px; }
+    .contact-card .contact-info { display: flex; gap: 24px; flex-wrap: wrap; font-size: 10pt; }
+    .contact-card .contact-item { display: flex; align-items: center; gap: 6px; }
+    .contact-card .contact-item span { opacity: 0.7; }
+    .contact-card .contact-url { margin-top: 16px; font-size: 12pt; font-weight: bold; letter-spacing: 0.5px; opacity: 0.9; }
 
     ul { padding-left: 20px; margin: 6px 0; }
     li { margin-bottom: 4px; }
@@ -191,8 +205,9 @@ export function generatePDFReportHTML(data) {
   </div>
   <div class="cover-meta" style="margin-top: 60px;">
     frimalo &ndash; KI-Beratung f&uuml;r den Mittelstand<br>
-    Steffen Hefter &bull; Wilhelm-Schrader-Str. 27a &bull; 06120 Halle (Saale)
+    Steffen Hefter &bull; Halle (Saale)
   </div>
+  <div class="cover-url">www.derhefter.com</div>
 </div>
 
 <!-- ==================== INHALTSVERZEICHNIS ==================== -->
@@ -436,7 +451,7 @@ ${categoryScores.map((cat, idx) => `
   <div class="summary-box" style="margin-top: 20px;">
     <h4 style="margin-top: 0;">F&ouml;rdermittelberatung</h4>
     <p>Sie m&ouml;chten wissen, welche F&ouml;rderprogramme konkret f&uuml;r Ihr Unternehmen in Frage kommen? Im Rahmen unseres <strong>Strategie-Pakets (€497)</strong> erhalten Sie eine individuelle F&ouml;rdermittelberatung inklusive Unterst&uuml;tzung bei der Antragstellung.</p>
-    <p><strong>Kontakt:</strong> steffenhefter@googlemail.com</p>
+    <p><strong>Kontakt:</strong> steffenhefter@googlemail.com &bull; <strong>Web:</strong> www.derhefter.com</p>
   </div>
 </div>
 
@@ -570,20 +585,19 @@ ${categoryScores.map((cat, idx) => `
     </ul>
   </div>
 
-  <h3>Kontakt</h3>
-  <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-top: 12px;">
-    <p style="margin: 0;">
-      <strong>Steffen Hefter</strong><br>
-      frimalo &ndash; KI-Beratung f&uuml;r den Mittelstand<br><br>
-      E-Mail: steffenhefter@googlemail.com<br>
-      Web: ki-kompass.de<br><br>
-      Wilhelm-Schrader-Str. 27a<br>
-      06120 Halle (Saale)
-    </p>
+  <h3>Ihr Ansprechpartner</h3>
+  <div class="contact-card">
+    <div class="contact-name">Steffen Hefter</div>
+    <div class="contact-role">KI-Berater f&uuml;r den Mittelstand &bull; frimalo</div>
+    <div class="contact-info">
+      <div class="contact-item"><span>E-Mail:</span> steffenhefter@googlemail.com</div>
+      <div class="contact-item"><span>Standort:</span> 06120 Halle (Saale)</div>
+    </div>
+    <div class="contact-url">www.derhefter.com</div>
   </div>
 
   <div class="footer" style="margin-top: 40px;">
-    <p>&copy; ${new Date().getFullYear()} frimalo &ndash; KI-Kompass. Alle Rechte vorbehalten.</p>
+    <p>&copy; ${new Date().getFullYear()} frimalo &ndash; KI-Kompass &bull; www.derhefter.com</p>
     <p>Dieser Report wurde automatisch erstellt und ist vertraulich. Eine Weitergabe an Dritte ist nur mit Zustimmung von ${companyName} und frimalo gestattet.</p>
   </div>
 </div>

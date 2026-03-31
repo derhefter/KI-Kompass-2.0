@@ -9,7 +9,7 @@ export default function UpsellCards() {
         <div className="bg-white rounded-xl p-6 border-2 border-primary-500">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-primary-500 uppercase">Premium Report</span>
-            <span className="bg-primary-50 text-primary-700 px-2.5 py-0.5 rounded-full text-xs font-bold">&euro;197</span>
+            <span className="bg-primary-50 text-primary-700 px-2.5 py-0.5 rounded-full text-xs font-bold">&euro;147</span>
           </div>
           <p className="text-slate-600 text-sm mb-4">
             Ihr kompletter KI-Fahrplan als PDF &ndash; sofort per E-Mail.

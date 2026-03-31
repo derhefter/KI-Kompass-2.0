@@ -52,7 +52,7 @@ export async function GET(request) {
     const strategieCount = codeList.filter(c => c.plan === 'strategie').length
     const zertifikatCount = codeList.filter(c => c.plan === 'zertifikat').length
     const kursCount = codeList.filter(c => c.plan === 'kurs').length
-    const estimatedRevenue = (premiumCount * 197) + (strategieCount * 497) + (zertifikatCount * 97) + (kursCount * 297)
+    const estimatedRevenue = (premiumCount * 147) + (strategieCount * 497) + (zertifikatCount * 97) + (kursCount * 297)
     const recentActivity = [
       ...customerList.slice(-10).reverse().map(c => ({ type: 'purchase', description: (c.company || c.name) + ' hat "' + c.plan + '" gekauft', date: c.date })),
       ...leadList.slice(-10).reverse().map(l => ({ type: 'lead', description: l.company + ' hat den Schnell-Check gemacht (' + l.score + '%)', date: l.date })),

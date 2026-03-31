@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 const plans = {
   premium: {
     name: 'Premium Report',
-    price: '197',
+    price: '147',
     color: 'primary',
     features: [
       '30+ Detailfragen zur Tiefenanalyse',

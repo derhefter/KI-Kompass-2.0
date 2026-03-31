@@ -86,14 +86,17 @@ function Footer() {
           </div>
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Weitere Angebote</h4>
+            <p className="text-xs text-slate-500 mb-2 italic">Im Aufbau &ndash; bei Interesse gerne anfragen</p>
             <ul className="space-y-1.5 text-xs">
-              <li><a href="/kurs" className="hover:text-white transition-colors">Online-Kurs</a></li>
-              <li><a href="/toolbox" className="hover:text-white transition-colors">KI-Toolbox</a></li>
-              <li><a href="/zertifikat" className="hover:text-white transition-colors">KI-Zertifikat</a></li>
-              <li><a href="/benchmarking" className="hover:text-white transition-colors">Branchen-Benchmark</a></li>
-              <li><a href="/monitoring" className="hover:text-white transition-colors">KI-Monitoring</a></li>
-              <li><a href="/white-label" className="hover:text-white transition-colors">F&uuml;r Berater</a></li>
+              <li><span className="text-slate-500">Online-Kurs</span></li>
+              <li><span className="text-slate-500">KI-Toolbox</span></li>
+              <li><span className="text-slate-500">KI-Zertifikat</span></li>
+              <li><span className="text-slate-500">Branchen-Benchmark</span></li>
+              <li><span className="text-slate-500">KI-Monitoring</span></li>
             </ul>
+            <a href="mailto:steffenhefter@googlemail.com?subject=Interesse%20an%20weiteren%20Angeboten" className="inline-block mt-2 text-xs text-primary-300 hover:text-white transition-colors underline">
+              Individuelles Angebot anfragen
+            </a>
           </div>
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Kontakt</h4>

@@ -50,7 +50,7 @@ function accessCodeBlock(accessCode, accessLink, expiresAtFormatted, buttonText)
 }
 
 // ============================================================
-// PREMIUM REPORT (€197) - Standard-Flow
+// PREMIUM REPORT (€147) - Standard-Flow
 // ============================================================
 function getPremiumEmail({ safeName, safeCompany, amount, accessCode, accessLink, expiresAtFormatted, planName }) {
   return {

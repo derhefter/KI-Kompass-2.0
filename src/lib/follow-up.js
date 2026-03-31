@@ -32,7 +32,7 @@ export function getFollowUpEmailHTML(type, data) {
 
   const cta = `
     <div style="text-align:center;margin:24px 0;">
-      <a href="${baseUrl}/anfrage?plan=premium" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;">Premium Report anfragen (€197)</a>
+      <a href="${baseUrl}/anfrage?plan=premium" style="display:inline-block;background:#2563eb;color:white;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;">Premium Report anfragen (€147)</a>
     </div>`
 
   const templates = {

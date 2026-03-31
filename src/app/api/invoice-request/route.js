@@ -384,7 +384,7 @@ export async function POST(request) {
     const safePlzCity = `${safePlz} ${safeCity}`
 
     const planConfig = {
-      premium: { name: 'Premium Report (197 €)', price: '197' },
+      premium: { name: 'Premium Report (147 €)', price: '147' },
       strategie: { name: 'Strategie-Paket (497 €)', price: '497' },
       zertifikat: { name: 'KI-Zertifikat Premium (97 €)', price: '97' },
       'zertifikat-basic': { name: 'KI-Zertifikat Basic (47 €)', price: '47' },
@@ -395,8 +395,8 @@ export async function POST(request) {
       'monitoring-basic': { name: 'KI-Monitoring Basic (49 €/Monat)', price: '49' },
       'monitoring-pro': { name: 'KI-Monitoring Pro (99 €/Monat)', price: '99' },
     }
-    const planName = planConfig[plan]?.name || 'Premium Report (197 €)'
-    const planPrice = planConfig[plan]?.price || '197'
+    const planName = planConfig[plan]?.name || 'Premium Report (147 €)'
+    const planPrice = planConfig[plan]?.price || '147'
 
     const accessCode = generateAccessCode(safeCompany)
     const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://ki-kompass.de').trim()
