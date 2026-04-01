@@ -8,12 +8,18 @@ export default function UeberMich() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero mit Foto */}
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center gap-10">
+      {/* Hero - pers\u00f6nlich & einladend */}
+      <section className="relative bg-gradient-to-br from-slate-900 via-primary-900 to-primary-800 text-white py-24 overflow-hidden">
+        {/* Subtile Hintergrund-Elemente */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-400 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-20 w-96 h-96 bg-accent-400 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="flex-shrink-0">
-              <div className="w-52 md:w-64 rounded-2xl border-4 border-white/30 overflow-hidden shadow-2xl bg-white/10">
+              <div className="w-56 md:w-72 rounded-2xl border-4 border-white/20 overflow-hidden shadow-2xl ring-4 ring-primary-500/20">
                 <img
                   src="/Steffen2025.jpg"
                   alt="Steffen Hefter - KI-Berater f&uuml;r KMU"
@@ -22,68 +28,91 @@ export default function UeberMich() {
               </div>
             </div>
 
-            <div>
-              <p className="text-primary-200 font-medium mb-2">KI-Berater f&uuml;r KMU</p>
-              <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Steffen Hefter</h1>
-              <p className="text-xl text-primary-100 leading-relaxed max-w-2xl">
-                Gesch&auml;ftsf&uuml;hrer der frimalo &ndash; &uuml;ber 20 Jahre Erfahrung in F&uuml;hrung,
-                Kundenservice, Vertrieb und Digitalisierung. Ich unterstütze kleine und mittlere
-                Unternehmen in Mitteldeutschland, K&uuml;nstliche Intelligenz pragmatisch und
-                gewinnbringend einzusetzen.
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm text-primary-200 font-medium mb-4 border border-white/10">
+                KI-Berater f&uuml;r den Mittelstand
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-5 leading-tight">
+                Steffen Hefter
+              </h1>
+              <p className="text-xl md:text-2xl text-primary-100 leading-relaxed max-w-2xl mb-6">
+                Ich helfe kleinen und mittleren Unternehmen, K&uuml;nstliche Intelligenz
+                pragmatisch einzusetzen &ndash; ohne &Uuml;berforderung, ohne Buzzword-Bingo.
+              </p>
+              <p className="text-primary-300 text-lg italic">
+                &bdquo;Technologie funktioniert nur, wenn die Menschen dahinter mitgenommen werden.&ldquo;
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Meine Mission */}
-      <section className="py-16 bg-white">
+      {/* Pers\u00f6nliche Ansprache - Warum ich das mache */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="prose prose-lg max-w-none">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Warum ich das mache</h2>
+
+            <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
+              <p>
+                Ich war &uuml;ber 20 Jahre lang in F&uuml;hrungspositionen in der Software- und
+                Energiewirtschaft t&auml;tig. Habe Teams mit &uuml;ber 500 Mitarbeitenden gef&uuml;hrt,
+                Budgets von 15 Millionen Euro verantwortet und Unternehmen durch gro&szlig;e
+                Ver&auml;nderungsphasen begleitet.
+              </p>
+
+              <p>
+                Dabei habe ich eines immer wieder erlebt: <strong className="text-gray-900">Die Technologie
+                ist selten das Problem. Es sind die Menschen, die Prozesse und der fehlende Plan.</strong>
+              </p>
+
+              <p>
+                Gerade im Mittelstand sehe ich enormes Potenzial &ndash; aber auch gro&szlig;e
+                Verunsicherung. Gesch&auml;ftsf&uuml;hrer sagen mir: <em>&bdquo;Wir wissen,
+                dass wir etwas tun m&uuml;ssen. Aber wo fangen wir an? Und wer macht das
+                neben dem Tagesgesch&auml;ft?&ldquo;</em>
+              </p>
+
+              <p>
+                Genau hier setze ich an. Mit dem KI-Kompass gebe ich Ihnen einen klaren
+                Startpunkt &ndash; und begleite Sie auf Wunsch pers&ouml;nlich weiter. Schritt
+                f&uuml;r Schritt, in Ihrem Tempo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Zahlen & Fakten - kompakt */}
+      <section className="py-12 bg-primary-50 border-y border-primary-100">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Meine Mission</h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-4">
-                Digitalisierung und K&uuml;nstliche Intelligenz sind kein Luxus f&uuml;r Gro&szlig;konzerne &ndash;
-                sie sind Werkzeuge f&uuml;r den Mittelstand. Mein Ziel ist es, Fachkr&auml;fte zu entlasten,
-                Prozesse effizienter zu gestalten und die Wettbewerbsf&auml;higkeit regionaler Unternehmen
-                zu st&auml;rken.
-              </p>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Dabei bringe ich soziales Verst&auml;ndnis und Wirtschaftskompetenz zusammen:
-                Als Diplom-Sozialp&auml;dagoge mit langj&auml;hriger F&uuml;hrungserfahrung in der
-                Software- und Energiewirtschaft verstehe ich sowohl die Menschen als auch
-                die Gesch&auml;ftslogik hinter erfolgreicher Transformation.
-              </p>
-            </div>
-            <div className="space-y-4">
-              {[
-                { num: '20+', text: 'Jahre F\u00fchrungserfahrung' },
-                { num: '500+', text: 'Mitarbeitende gef\u00fchrt' },
-                { num: '15 Mio.\u20ac', text: 'Budgetverantwortung' },
-                { num: '6+', text: 'Branchen-Expertise' },
-              ].map((stat, i) => (
-                <div key={i} className="flex items-center bg-primary-50 rounded-xl p-4">
-                  <div className="text-2xl font-extrabold text-primary-600 w-28 flex-shrink-0">{stat.num}</div>
-                  <div className="text-gray-700">{stat.text}</div>
-                </div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { num: '20+', label: 'Jahre F\u00fchrungserfahrung' },
+              { num: '500+', label: 'Mitarbeitende gef\u00fchrt' },
+              { num: '15 Mio.\u20ac', label: 'Budgetverantwortung' },
+              { num: '6+', label: 'Branchen-Expertise' },
+            ].map((stat, i) => (
+              <div key={i}>
+                <div className="text-3xl md:text-4xl font-extrabold text-primary-600 mb-1">{stat.num}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Vielseitigkeit - ersetzt den alten Werdegang */}
-      <section className="py-16 bg-gray-50">
+      {/* Was mich besonders macht */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Was mich besonders macht</h2>
           <p className="text-center text-gray-600 text-lg mb-12 max-w-3xl mx-auto">
-            Mein gr&ouml;&szlig;ter Vorteil? Ich denke nicht in Schubladen. Meine Laufbahn hat mich durch
-            v&ouml;llig unterschiedliche Welten gef&uuml;hrt &ndash; und genau das macht meinen Blick auf
-            Ihr Unternehmen so wertvoll.
+            Mein Weg f&uuml;hrte mich durch v&ouml;llig unterschiedliche Welten &ndash; vom Sozialwesen
+            &uuml;ber den Vertrieb bis zur IT. Genau das macht meinen Blick auf Ihr Unternehmen wertvoll.
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="card border-l-4 border-l-primary-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-l-4 border-l-primary-500">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,16 +122,15 @@ export default function UeberMich() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Mensch trifft Technik</h3>
                   <p className="text-gray-600">
-                    Als Diplom-Sozialp&auml;dagoge habe ich gelernt, Menschen zu verstehen, zuzuh&ouml;ren und
-                    Ver&auml;nderungsprozesse empathisch zu begleiten. Diese F&auml;higkeit ist in der
-                    KI-Transformation wichtig &ndash; denn Technologie funktioniert nur, wenn die
-                    Menschen dahinter mitgenommen werden. Es ist kein IT-Projekt.
+                    Als Diplom-Sozialp&auml;dagoge habe ich gelernt, Menschen zu verstehen und
+                    Ver&auml;nderungsprozesse empathisch zu begleiten. KI-Transformation ist kein
+                    IT-Projekt &ndash; es ist ein Change-Prozess. Und genau das ist meine St&auml;rke.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="card border-l-4 border-l-accent-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-l-4 border-l-accent-500">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-accent-100 text-accent-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,15 +140,15 @@ export default function UeberMich() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Vertrieb &amp; Strategie</h3>
                   <p className="text-gray-600">
-                    Jahre im Vertrieb, Key-Account-Management und in der strategischen Unternehmenssteuerung
-                    haben mir beigebracht, wie Gesch&auml;fte wirklich funktionieren. Ich spreche die Sprache
-                    des Mittelstands &ndash; nicht die von Tech-Konzernen.
+                    Jahre im Vertrieb, Key-Account-Management und in der strategischen
+                    Unternehmenssteuerung haben mir beigebracht, wie Gesch&auml;fte wirklich
+                    funktionieren. Ich spreche die Sprache des Mittelstands.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="card border-l-4 border-l-primary-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-l-4 border-l-primary-500">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary-100 text-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -130,16 +158,15 @@ export default function UeberMich() {
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Branchen&uuml;bergreifend denken</h3>
                   <p className="text-gray-600">
-                    Von der Softwarebranche &uuml;ber die Energiewirtschaft bis hin zu Telekommunikation, Software,
-                    Finanzen und Sozialwirtschaft &ndash; in jeder Branche konnte ich wertvolle
-                    Erfahrungen sammeln. Dieses Wissen hilft mir, L&ouml;sungen aus einer Branche
-                    auf eine andere zu &uuml;bertragen.
+                    Von Software &uuml;ber Energiewirtschaft bis zu Telekommunikation, Finanzen
+                    und Sozialwirtschaft &ndash; ich &uuml;bertrage L&ouml;sungen aus einer Branche
+                    auf eine andere. Das bringt frische Perspektiven.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="card border-l-4 border-l-accent-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-l-4 border-l-accent-500">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-accent-100 text-accent-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -147,36 +174,26 @@ export default function UeberMich() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">F&uuml;hrung mit Empathie</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Change Management</h3>
                   <p className="text-gray-600">
-                    &Uuml;ber 500 Mitarbeitende gef&uuml;hrt, Teams aufgebaut und durch Ver&auml;nderungsphasen
-                    begleitet. Ich wei&szlig;, dass Digitalisierung zuerst in den K&ouml;pfen stattfindet &ndash;
-                    bevor sie in der Technik ankommt. Deshalb steht bei mir der Mensch immer im
-                    Mittelpunkt.
+                    Gro&szlig;e Transformationsprojekte erfolgreich umgesetzt &ndash; von der digitalen
+                    Produktionssteuerung bis zur kompletten Neuausrichtung von Teams.
+                    Ich wei&szlig;, wie man alle Beteiligten mitnimmt.
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="mt-12 bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-            <p className="text-gray-700 text-lg leading-relaxed max-w-3xl mx-auto italic">
-              &bdquo;Genau diese Mischung aus sozialer Kompetenz, unternehmerischem Denken und
-              technologischem Know-how macht den Unterschied. Ich sehe Ihr Unternehmen nicht
-              nur durch die Technik-Brille &ndash; sondern verstehe die Menschen, die Prozesse
-              und die Gesch&auml;ftslogik dahinter.&ldquo;
-            </p>
-          </div>
         </div>
       </section>
 
-      {/* Mein Ansatz */}
-      <section className="py-16 bg-white">
+      {/* Mein Ansatz - 3 Phasen */}
+      <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Mein Beratungsansatz</h2>
-          <p className="text-center text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
-            &bdquo;KI in kleinen Happen&ldquo; &ndash; niedrigschwelliger Zugang f&uuml;r KMU,
-            die pragmatisch und schrittweise in die digitale Zukunft starten wollen.
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Mein Ansatz: KI in kleinen Happen</h2>
+          <p className="text-center text-gray-600 text-lg mb-14 max-w-2xl mx-auto">
+            Keine &Uuml;berforderung, kein Big-Bang. Sondern ein klarer Weg in drei Phasen,
+            angepasst an Ihr Tempo und Ihre Ressourcen.
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -189,7 +206,8 @@ export default function UeberMich() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                 ),
-                desc: 'Orientierung schaffen, Mitarbeitende schulen, rechtliche Klarheit gewinnen. Erste KI-Tools testen und Verst\u00e4ndnis aufbauen.',
+                desc: 'Orientierung schaffen, Mitarbeitende sensibilisieren, rechtliche Klarheit gewinnen. Erste KI-Tools ausprobieren.',
+                color: 'primary',
               },
               {
                 phase: 'Phase 2',
@@ -199,7 +217,8 @@ export default function UeberMich() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
                 ),
-                desc: 'Reifegrad analysieren, Daten pr\u00fcfen, Use-Cases identifizieren und priorisieren. Quick-Wins definieren und Roadmap erstellen.',
+                desc: 'Reifegrad analysieren, Daten pr\u00fcfen, Use-Cases priorisieren. Quick-Wins definieren und Roadmap erstellen.',
+                color: 'accent',
               },
               {
                 phase: 'Phase 3',
@@ -209,11 +228,12 @@ export default function UeberMich() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 ),
-                desc: 'Pilotprojekte umsetzen, Erfolge messen und kommunizieren. Prozesse skalieren und KI nachhaltig im Unternehmen verankern.',
+                desc: 'Pilotprojekte umsetzen, Erfolge messen. Prozesse skalieren und KI nachhaltig im Unternehmen verankern.',
+                color: 'primary',
               },
             ].map((item, i) => (
-              <div key={i} className="card text-center hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div key={i} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center hover:shadow-lg transition-shadow">
+                <div className={`w-16 h-16 bg-${item.color}-100 text-${item.color}-600 rounded-2xl flex items-center justify-center mx-auto mb-4`}>
                   {item.icon}
                 </div>
                 <div className="text-xs font-semibold text-primary-500 uppercase tracking-wide mb-1">{item.phase}</div>
@@ -225,83 +245,92 @@ export default function UeberMich() {
         </div>
       </section>
 
-      {/* Was mich antreibt */}
-      <section className="py-16 bg-gray-50">
+      {/* Pers\u00f6nliches - was mich ausmacht als Mensch */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Was mich antreibt</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="card border-t-4 border-t-primary-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-t-4 border-t-primary-500">
               <h3 className="font-bold text-gray-900 mb-3">Meine &Uuml;berzeugung</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                KI ist kein Selbstzweck, sondern ein Werkzeug zur Entlastung von Fachkr&auml;ften,
-                zur Sicherung von Teilhabe und zur St&auml;rkung regionaler Unternehmen. Ich arbeite daran,
-                soziale Wirkung, &ouml;konomische Effizienz und &ouml;kologische Nachhaltigkeit in Einklang zu bringen.
+                KI ist kein Selbstzweck, sondern ein Werkzeug zur Entlastung von Fachkr&auml;ften
+                und zur St&auml;rkung regionaler Unternehmen. Ich bringe soziale Wirkung und
+                &ouml;konomische Effizienz in Einklang.
               </p>
             </div>
-            <div className="card border-t-4 border-t-accent-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-t-4 border-t-accent-500">
               <h3 className="font-bold text-gray-900 mb-3">Warum Mitteldeutschland?</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Ich bin in Halle (Saale) beheimatet und fest in Mitteldeutschland verankert.
-                Die Region hat enormes Potenzial &ndash; und ich m&ouml;chte dazu beitragen,
-                dass KMU hier nicht den Anschluss verlieren, sondern mit KI neue Chancen ergreifen.
+                Ich bin in Halle (Saale) zu Hause und fest in der Region verwurzelt.
+                Mitteldeutschland hat enormes Potenzial &ndash; und ich m&ouml;chte dazu beitragen,
+                dass KMU hier den Anschluss nicht verlieren, sondern mit KI neue Chancen ergreifen.
               </p>
             </div>
-            <div className="card border-t-4 border-t-primary-500">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 border-t-4 border-t-warm-500">
               <h3 className="font-bold text-gray-900 mb-3">Mein Versprechen</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Hilfe zur Selbsthilfe statt Abh&auml;ngigkeit. Ich bef&auml;hige Ihr Team, KI eigenst&auml;ndig
-                zu nutzen. Mein Ansatz &bdquo;KI in kleinen Happen&ldquo; sorgt daf&uuml;r, dass Sie nicht
-                &uuml;berfordert werden, sondern Schritt f&uuml;r Schritt sicher vorankommen.
+                Hilfe zur Selbsthilfe statt Abh&auml;ngigkeit. Ich bef&auml;hige Ihr Team,
+                KI eigenst&auml;ndig zu nutzen. Mein Ansatz sorgt daf&uuml;r, dass Sie nicht
+                &uuml;berfordert werden &ndash; sondern Schritt f&uuml;r Schritt sicher vorankommen.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Termin buchen - Google Calendar */}
-      <section className="py-16 bg-white">
+      {/* Termin buchen */}
+      <section className="py-20 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Termin vereinbaren</h2>
-          <p className="text-gray-600 text-lg mb-8">
-            Lernen wir uns kennen! Buchen Sie direkt eine kostenlose 30-min&uuml;tige
-            Erstberatung &uuml;ber meinen Online-Kalender.
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Lassen Sie uns sprechen</h2>
+          <p className="text-gray-600 text-lg mb-10 max-w-xl mx-auto">
+            Ob Sie gerade erst anfangen oder schon konkrete Fragen haben &ndash;
+            in 30 Minuten finden wir heraus, wie ich Ihnen helfen kann.
           </p>
 
-          <a
-            href={erstberatungUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-semibold text-white bg-primary-600 rounded-xl hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl"
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Erstberatung buchen (30 Min.)
-          </a>
-
-          <p className="text-sm text-gray-500 mt-4">
-            Terminbuchung &uuml;ber Google Kalender &ndash; w&auml;hlen Sie einfach einen freien Termin aus.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Bereit, Ihr Unternehmen KI-ready zu machen?
-          </h2>
-          <p className="text-primary-200 text-lg mb-8">
-            Starten Sie mit dem kostenlosen KI-Readiness Check oder kontaktieren Sie mich direkt.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/assessment" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-700 bg-white rounded-xl hover:bg-primary-50 transition-all shadow-lg">
-              Kostenlosen Check starten
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <a
+              href={erstberatungUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-semibold text-white bg-primary-600 rounded-xl hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Erstberatung buchen (30 Min.)
             </a>
-            <a href={`mailto:steffenhefter@googlemail.com`} className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/30 rounded-xl hover:bg-white/10 transition-all">
+            <a
+              href="mailto:ki-kompass@derhefter.com"
+              className="inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-semibold text-primary-700 bg-primary-50 rounded-xl hover:bg-primary-100 transition-all border border-primary-200"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
               E-Mail schreiben
             </a>
           </div>
+
+          <p className="text-sm text-gray-500">
+            Kostenlos &amp; unverbindlich &ndash; kein Verkaufsdruck, versprochen.
+          </p>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Bereit f&uuml;r den ersten Schritt?
+          </h2>
+          <p className="text-primary-200 text-lg mb-8">
+            Starten Sie mit dem kostenlosen KI-Readiness Check &ndash; in 5 Minuten wissen Sie, wo Sie stehen.
+          </p>
+          <a href="/assessment" className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-700 bg-white rounded-xl hover:bg-primary-50 transition-all shadow-lg">
+            Kostenlosen Check starten
+            <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
         </div>
       </section>
     </div>

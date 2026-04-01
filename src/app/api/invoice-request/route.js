@@ -225,7 +225,7 @@ function generateInvoiceHtml({ safeName, safeMail, safeCompany, safeStreet, safe
       Inhaber: Steffen Hefter<br>
       Wilhelm-Schrader-Str. 27a<br>
       06120 Halle (Saale)<br><br>
-      E-Mail: steffenhefter@googlemail.com<br>
+      E-Mail: ki-kompass@derhefter.com<br>
       Steuernummer: 110/229/09047
     </div>
   </div>
@@ -320,7 +320,7 @@ function generateInvoiceHtml({ safeName, safeMail, safeCompany, safeStreet, safe
       06120 Halle (Saale)
     </div>
     <div style="text-align:center;">
-      E-Mail: steffenhefter@googlemail.com<br>
+      E-Mail: ki-kompass@derhefter.com<br>
       Steuernr.: 110/229/09047
     </div>
     <div style="text-align:right;">

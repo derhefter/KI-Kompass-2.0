@@ -45,7 +45,19 @@ export async function POST(request) {
     if (!matchedCustomer) {
       try {
         const sheetCustomer = await findAccessCode(trimmedCode)
-        if (sheetCustomer && sheetCustomer.status !== 'deaktiviert') {
+        if (sheetCustomer) {
+          // Bereits eingelöster Code
+          if (sheetCustomer.status === 'eingelöst') {
+            return NextResponse.json({
+              valid: false,
+              used: true,
+              message: 'Dieser Zugangscode wurde bereits eingelöst. Jeder Code kann nur einmal verwendet werden. Bei Fragen: ki-kompass@derhefter.com',
+            })
+          }
+          // Deaktivierter Code
+          if (sheetCustomer.status === 'deaktiviert') {
+            return NextResponse.json({ valid: false })
+          }
           matchedCustomer = sheetCustomer
         }
       } catch (err) {
@@ -65,7 +77,7 @@ export async function POST(request) {
         return NextResponse.json({
           valid: false,
           expired: true,
-          message: 'Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns für eine Verlängerung: steffenhefter@googlemail.com',
+          message: 'Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns für eine Verlängerung: ki-kompass@derhefter.com',
         })
       }
     }

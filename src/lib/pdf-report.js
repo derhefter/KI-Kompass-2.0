@@ -451,7 +451,7 @@ ${categoryScores.map((cat, idx) => `
   <div class="summary-box" style="margin-top: 20px;">
     <h4 style="margin-top: 0;">F&ouml;rdermittelberatung</h4>
     <p>Sie m&ouml;chten wissen, welche F&ouml;rderprogramme konkret f&uuml;r Ihr Unternehmen in Frage kommen? Im Rahmen unseres <strong>Strategie-Pakets (€497)</strong> erhalten Sie eine individuelle F&ouml;rdermittelberatung inklusive Unterst&uuml;tzung bei der Antragstellung.</p>
-    <p><strong>Kontakt:</strong> steffenhefter@googlemail.com &bull; <strong>Web:</strong> www.derhefter.com</p>
+    <p><strong>Kontakt:</strong> ki-kompass@derhefter.com &bull; <strong>Web:</strong> www.derhefter.com</p>
   </div>
 </div>
 
@@ -590,7 +590,7 @@ ${categoryScores.map((cat, idx) => `
     <div class="contact-name">Steffen Hefter</div>
     <div class="contact-role">KI-Berater f&uuml;r den Mittelstand &bull; frimalo</div>
     <div class="contact-info">
-      <div class="contact-item"><span>E-Mail:</span> steffenhefter@googlemail.com</div>
+      <div class="contact-item"><span>E-Mail:</span> ki-kompass@derhefter.com</div>
       <div class="contact-item"><span>Standort:</span> 06120 Halle (Saale)</div>
     </div>
     <div class="contact-url">www.derhefter.com</div>

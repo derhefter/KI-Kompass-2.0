@@ -181,7 +181,7 @@ export default function Anfrage() {
         window.location.href = data.checkoutUrl
         return
       } else {
-        setError(data.error || 'Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie mir direkt an steffenhefter@googlemail.com.')
+        setError(data.error || 'Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie mir direkt an ki-kompass@derhefter.com.')
       }
     } catch {
       setError('Verbindungsfehler. Bitte versuchen Sie es erneut.')
@@ -217,7 +217,7 @@ export default function Anfrage() {
       if (data.success) {
         setInvoiceRequested(true)
       } else {
-        setInvoiceError('Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an steffenhefter@googlemail.com.')
+        setInvoiceError('Es gab einen Fehler. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an ki-kompass@derhefter.com.')
       }
     } catch {
       setInvoiceError('Verbindungsfehler. Bitte versuchen Sie es erneut.')

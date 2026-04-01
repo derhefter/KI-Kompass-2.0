@@ -91,7 +91,7 @@ export default function KursZugangAssessment() {
           setCustomerPlan(data.plan || 'kurs')
         }
       } else if (data.expired) {
-        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns f\u00fcr eine Verl\u00e4ngerung: steffenhefter@googlemail.com')
+        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns f\u00fcr eine Verl\u00e4ngerung: ki-kompass@derhefter.com')
       } else {
         setLoginError('Ung\u00fcltiger Zugangscode. Bitte pr\u00fcfen Sie Ihren Link.')
       }

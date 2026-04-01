@@ -28,7 +28,7 @@ export default function Beratung() {
           <div className="bg-warm-50 border border-warm-200 rounded-xl p-6 mb-8 text-center">
             <p className="text-warm-600 font-semibold mb-2">Online-Terminbuchung wird eingerichtet</p>
             <p className="text-slate-600 text-sm mb-3">Bis dahin k&ouml;nnen Sie Ihren Termin direkt per E-Mail vereinbaren:</p>
-            <a href="mailto:steffenhefter@googlemail.com?subject=Erstberatung%20KI-Kompass%20anfragen" className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors">
+            <a href="mailto:ki-kompass@derhefter.com?subject=Erstberatung%20KI-Kompass%20anfragen" className="inline-flex items-center px-5 py-2.5 text-sm font-semibold text-white bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors">
               Termin per E-Mail anfragen
             </a>
           </div>
@@ -65,7 +65,7 @@ export default function Beratung() {
               ))}
             </ul>
             <a
-              href={BOOKING_30_MIN || 'mailto:steffenhefter@googlemail.com?subject=30%20Min%20Erstberatung%20anfragen'}
+              href={BOOKING_30_MIN || 'mailto:ki-kompass@derhefter.com?subject=30%20Min%20Erstberatung%20anfragen'}
               target={BOOKING_30_MIN ? '_blank' : undefined}
               rel={BOOKING_30_MIN ? 'noopener noreferrer' : undefined}
               className="block w-full text-center px-5 py-3 text-white font-semibold bg-accent-500 rounded-lg hover:bg-accent-600 transition-colors text-sm"
@@ -161,8 +161,8 @@ export default function Beratung() {
         <div className="text-center mt-8">
           <p className="text-slate-500 text-xs">
             Kein passender Termin? Schreiben Sie direkt an:{' '}
-            <a href="mailto:steffenhefter@googlemail.com" className="text-primary-500 font-semibold hover:underline">
-              steffenhefter@googlemail.com
+            <a href="mailto:ki-kompass@derhefter.com" className="text-primary-500 font-semibold hover:underline">
+              ki-kompass@derhefter.com
             </a>
           </p>
         </div>

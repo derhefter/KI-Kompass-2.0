@@ -242,6 +242,44 @@ export async function findAccessCode(code) {
 }
 
 // ============================================================
+// ZUGANGSCODE ALS EINGELÖST MARKIEREN (Single-Use Enforcement)
+// ============================================================
+// Setzt den Status eines Codes auf "eingelöst", damit er nicht
+// erneut verwendet werden kann.
+// ============================================================
+
+export async function markCodeAsUsed(code) {
+  if (!code) return false
+
+  const sheetId = process.env.GOOGLE_SHEET_CUSTOMERS
+  const cleanId = extractSheetId(sheetId)
+  if (!cleanId || !isConfigured()) return false
+
+  const auth = await getAuth()
+  if (!auth) return false
+
+  const sheets = google.sheets({ version: 'v4', auth })
+
+  // Zeile mit dem Code finden
+  const rows = await readFromSheet(cleanId, 'Zugangscodes!A:H')
+  if (!rows) return false
+
+  const trimmedCode = code.trim()
+  const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === trimmedCode)
+  if (rowIndex === -1) return false
+
+  // Status (Spalte H) auf "eingelöst" setzen
+  const updateRange = `Zugangscodes!H${rowIndex + 1}`
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: cleanId,
+    range: updateRange,
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values: [['eingelöst']] },
+  })
+  return true
+}
+
+// ============================================================
 // DETAILLIERTE EINZELANTWORTEN speichern (für beide Checks)
 // ============================================================
 // Speichert jede einzelne Antwort in einem eigenen Tab "Einzelantworten"

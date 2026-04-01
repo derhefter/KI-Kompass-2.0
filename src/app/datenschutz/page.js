@@ -25,7 +25,7 @@ export default function Datenschutz() {
                 Gesch&auml;ftsf&uuml;hrer: Steffen Hefter<br />
                 Wilhelm-Schrader-Stra&szlig;e 27a<br />
                 06120 Halle (Saale)<br />
-                E-Mail: steffenhefter@googlemail.com
+                E-Mail: ki-kompass@derhefter.com
               </p>
             </section>
 
@@ -109,7 +109,7 @@ export default function Datenschutz() {
                 <li>Widerspruch gegen die Verarbeitung</li>
               </ul>
               <p className="mt-2">
-                Wenden Sie sich hierzu an: steffenhefter@googlemail.com
+                Wenden Sie sich hierzu an: ki-kompass@derhefter.com
               </p>
             </section>
 

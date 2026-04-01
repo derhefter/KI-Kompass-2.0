@@ -345,7 +345,7 @@ export default function Assessment() {
               Methodik basierend auf etablierten KI-Reifegradmodellen.
             </p>
             <p className="mt-1">
-              Fragen? <a href="mailto:steffenhefter@googlemail.com" className="text-primary-500 hover:underline">steffenhefter@googlemail.com</a>
+              Fragen? <a href="mailto:ki-kompass@derhefter.com" className="text-primary-500 hover:underline">ki-kompass@derhefter.com</a>
             </p>
           </div>
         </div>

@@ -90,8 +90,10 @@ export default function PremiumAssessment() {
         setContactEmail(data.email || '')
         setCompanyName(data.company || '')
         setCustomerPlan(data.plan || 'premium')
+      } else if (data.used) {
+        setLoginError(data.message || 'Dieser Zugangscode wurde bereits eingelöst. Jeder Code kann nur einmal verwendet werden. Bei Fragen: ki-kompass@derhefter.com')
       } else if (data.expired) {
-        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns f\u00fcr eine Verl\u00e4ngerung: steffenhefter@googlemail.com')
+        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns f\u00fcr eine Verl\u00e4ngerung: ki-kompass@derhefter.com')
       } else {
         setLoginError('Ung\u00fcltiger Zugangscode. Bitte pr\u00fcfen Sie Ihren Link.')
       }
@@ -469,7 +471,7 @@ export default function PremiumAssessment() {
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                 <p className="text-red-700">
                   Report-Versand fehlgeschlagen. Bitte kontaktieren Sie uns unter{' '}
-                  <a href="mailto:steffenhefter@googlemail.com" className="underline font-semibold">steffenhefter@googlemail.com</a>{' '}
+                  <a href="mailto:ki-kompass@derhefter.com" className="underline font-semibold">ki-kompass@derhefter.com</a>{' '}
                   &ndash; wir senden Ihnen den Report manuell.
                 </p>
               </div>

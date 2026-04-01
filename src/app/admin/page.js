@@ -11,10 +11,10 @@ export default function AdminGuide() {
       items: [
         'EMAIL_HOST=smtp.gmail.com',
         'EMAIL_PORT=587',
-        'EMAIL_USER=steffenhefter@googlemail.com',
+        'EMAIL_USER=ki-kompass@derhefter.com',
         'EMAIL_PASS=xxxx xxxx xxxx xxxx (Gmail App-Passwort, 16 Zeichen)',
         'EMAIL_FROM="KI-Kompass | frimalo"',
-        'NEXT_PUBLIC_CONTACT_EMAIL=steffenhefter@googlemail.com',
+        'NEXT_PUBLIC_CONTACT_EMAIL=ki-kompass@derhefter.com',
         'NEXT_PUBLIC_BOOKING_URL=https://calendar.google.com/...',
         'GOOGLE_SERVICE_ACCOUNT_KEY={"type":"service_account",...} (komplettes JSON)',
         'GOOGLE_SHEET_FREE_RESULTS=SHEET_ID_HIER',

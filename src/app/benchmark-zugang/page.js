@@ -89,7 +89,7 @@ export default function BenchmarkAssessment() {
           setCustomerPlan(data.plan || 'benchmark')
         }
       } else if (data.expired) {
-        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns für eine Verlängerung: steffenhefter@googlemail.com')
+        setLoginError('Ihr Zugangscode ist abgelaufen. Bitte kontaktieren Sie uns für eine Verlängerung: ki-kompass@derhefter.com')
       } else {
         setLoginError('Ungültiger Zugangscode. Bitte prüfen Sie Ihren Link.')
       }

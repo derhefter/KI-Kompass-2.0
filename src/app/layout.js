@@ -94,7 +94,7 @@ function Footer() {
               <li><span className="text-slate-500">Branchen-Benchmark</span></li>
               <li><span className="text-slate-500">KI-Monitoring</span></li>
             </ul>
-            <a href="mailto:steffenhefter@googlemail.com?subject=Interesse%20an%20weiteren%20Angeboten" className="inline-block mt-2 text-xs text-primary-300 hover:text-white transition-colors underline">
+            <a href="mailto:ki-kompass@derhefter.com?subject=Interesse%20an%20weiteren%20Angeboten" className="inline-block mt-2 text-xs text-primary-300 hover:text-white transition-colors underline">
               Individuelles Angebot anfragen
             </a>
           </div>
@@ -103,7 +103,7 @@ function Footer() {
             <ul className="space-y-1.5 text-xs">
               <li>frimalo &ndash; Steffen Hefter</li>
               <li>06120 Halle (Saale)</li>
-              <li>steffenhefter@googlemail.com</li>
+              <li>ki-kompass@derhefter.com</li>
             </ul>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
-import { savePremiumAssessmentResult, findAccessCode, saveDetailedAnswers } from '../../../lib/google-sheets'
+import { savePremiumAssessmentResult, findAccessCode, saveDetailedAnswers, markCodeAsUsed } from '../../../lib/google-sheets'
 import { premiumQuestions } from '../../../data/questions'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
@@ -296,6 +296,13 @@ export async function POST(request) {
         html: ownerHtml,
       }),
     ])
+
+    // Code als eingelöst markieren (nach erfolgreichem Assessment)
+    try {
+      await markCodeAsUsed(code.trim())
+    } catch (err) {
+      console.error('Code als eingelöst markieren fehlgeschlagen:', err.message)
+    }
 
     return NextResponse.json({
       success: true,

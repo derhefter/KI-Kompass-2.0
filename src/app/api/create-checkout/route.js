@@ -147,7 +147,7 @@ export async function POST(request) {
       ? 'Zahlungssystem-Konfiguration fehlerhaft. Bitte kontaktieren Sie uns.'
       : err.message?.includes('webhookUrl')
       ? 'Webhook-Konfiguration fehlerhaft. Bitte kontaktieren Sie uns.'
-      : 'Zahlungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie an steffenhefter@googlemail.com.'
+      : 'Zahlungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie an ki-kompass@derhefter.com.'
     return NextResponse.json({ error: errorMsg }, { status: 500 })
   }
 }

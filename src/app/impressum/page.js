@@ -23,7 +23,7 @@ export default function Impressum() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900">Kontakt</h2>
               <p className="text-gray-700">
-                E-Mail: steffenhefter@googlemail.com
+                E-Mail: ki-kompass@derhefter.com
               </p>
             </section>
 
