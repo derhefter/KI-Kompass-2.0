@@ -47,42 +47,12 @@ export const testimonials = [
     ergebnis: 'Pilotprojekt (KI-gest\u00fctzte Kundensegmentierung) innerhalb von 6 Wochen live. 12% mehr qualifizierte Leads.',
   },
 
-  // --- VARIANTE B: Zitat + Kennzahlen ---
-  {
-    id: 3,
-    type: 'quote',
-    zitat: 'Der KI-Kompass hat uns gezeigt, dass wir gar nicht so weit weg sind. Die Roadmap war konkret und umsetzbar \u2013 kein Buzzword-Bingo.',
-    name: 'Thomas K.',
-    rolle: 'Gesch\u00e4ftsf\u00fchrer',
-    unternehmen: 'Metallverarbeitung',
-    region: 'Halle (Saale)',
-    mitarbeiter: 35,
-    kennzahlen: [
-      { label: 'Readiness', wert: '38% \u2192 67%', detail: 'nach 3 Monaten' },
-      { label: 'F\u00f6rderung', wert: '\u20ac12.000', detail: '\u00fcber go-digital' },
-    ],
-  },
-  {
-    id: 4,
-    type: 'quote',
-    zitat: 'Wir dachten, KI ist nur was f\u00fcr gro\u00dfe Konzerne. Die Erstberatung hat uns die Augen ge\u00f6ffnet \u2013 und die F\u00f6rdermittel kannten wir vorher gar nicht.',
-    name: 'Sandra M.',
-    rolle: 'Bereichsleiterin Verwaltung',
-    unternehmen: 'Pflegedienst',
-    region: 'Leipzig',
-    mitarbeiter: 80,
-    kennzahlen: [
-      { label: 'Quick-Win', wert: 'Automatisierte Dienstplanung', detail: '' },
-      { label: 'Ersparnis', wert: '5 Stunden/Woche', detail: '' },
-    ],
-  },
-
-  // --- ECHTES PROJEKT: PFX / Ufo Gent ---
+  // --- ECHTES PROJEKT: PFX / Ufuk Genc ---
   {
     id: 5,
     type: 'case',
     branche: 'Film- & Postproduktion (VFX)',
-    region: 'Gent, Belgien',
+    region: 'Berlin',
     ausgangslage: 'Internationales Postproduktions-Studio mit komplexen VFX-Workflows. Fehlende Standardisierung, ineffiziente Ressourcenplanung und hoher manueller Koordinationsaufwand zwischen Teams.',
     massnahme: 'Digitale Transformation mit dem Produktionstool FREISPACE: Standardisierte Workflows, automatisierte Ressourcenplanung, Change-Management-Begleitung \u00fcber 4 Quartale mit klarer Roadmap.',
     ergebnis: 'Strukturierte Produktionsprozesse, messbare KPI-Steuerung und nachhaltige Verankerung der neuen Arbeitsweisen im gesamten Team.',
@@ -91,10 +61,10 @@ export const testimonials = [
     id: 6,
     type: 'quote',
     zitat: 'Steffen hat nicht nur die Technik verstanden, sondern vor allem unser Team mitgenommen. Die Transformation war kein IT-Projekt \u2013 es war ein echter Change-Prozess.',
-    name: 'PFX / Ufo Gent',
+    name: 'PFX / Ufuk Genc',
     rolle: 'Postproduktion & VFX',
     unternehmen: 'Film- & Medienbranche',
-    region: 'Gent, Belgien',
+    region: 'Berlin',
     mitarbeiter: null,
     kennzahlen: [
       { label: 'Projekt', wert: 'Digitale Transformation', detail: 'mit FREISPACE' },

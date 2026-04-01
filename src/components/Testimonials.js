@@ -1,8 +1,8 @@
 import { testimonials } from '../data/testimonials'
 
 export default function Testimonials() {
-  // Zeige eine Auswahl: 1 Case + 1-2 Quotes (PFX bevorzugt)
-  const featured = testimonials.filter((t) => [5, 6, 3].includes(t.id))
+  // Zeige die PFX/Ufuk Genc Testimonials
+  const featured = testimonials.filter((t) => [5, 6].includes(t.id))
 
   return (
     <section className="py-20 bg-white">
@@ -17,7 +17,7 @@ export default function Testimonials() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {featured.map((t) => (
             <div key={t.id}>
               {t.type === 'case' ? <CaseCard data={t} /> : <QuoteCard data={t} />}
