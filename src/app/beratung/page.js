@@ -15,12 +15,24 @@ export default function Beratung() {
             Kostenfrei &middot; Unverbindlich &middot; Per Video-Call
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-primary-700 mb-3">
-            Pers&ouml;nliche Beratung buchen
+            30 Minuten. Klarer Kopf danach.
           </h1>
-          <p className="text-slate-600 max-w-xl mx-auto text-sm leading-relaxed">
-            In einem pers&ouml;nlichen Gespr&auml;ch besprechen wir Ihre Situation, pr&uuml;fen passende
-            F&ouml;rderprogramme und erarbeiten konkrete n&auml;chste Schritte.
+          <p className="text-slate-600 max-w-xl mx-auto text-sm leading-relaxed mb-6">
+            Kein Vortrag, kein Verkaufsgespräch &ndash; sondern ein ehrliches Gespr&auml;ch über Ihre
+            Situation. Was KI für Ihren Betrieb bringt. Und was nicht.
           </p>
+          <div className="inline-flex flex-col sm:flex-row gap-3 text-left mx-auto">
+            {[
+              { icon: '✓', text: 'Klarheit, wo Sie heute stehen und was als N\u00e4chstes sinnvoll ist' },
+              { icon: '✓', text: 'Welche F\u00f6rderprogramme konkret f\u00fcr Sie in Frage kommen' },
+              { icon: '✓', text: '2\u20133 Schritte, die Sie direkt nach dem Gespr\u00e4ch umsetzen k\u00f6nnen' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-2 text-sm text-slate-700 bg-white/70 rounded-lg px-4 py-2 border border-slate-200">
+                <span className="text-accent-500 font-bold flex-shrink-0">{item.icon}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Hinweis wenn Links nicht konfiguriert */}
@@ -51,7 +63,7 @@ export default function Beratung() {
             </p>
             <ul className="space-y-2 text-sm text-slate-700 mb-6">
               {[
-                'Standortbestimmung Ihrer KI-Readiness',
+                'Einsch\u00e4tzung: Wo Sie heute stehen',
                 'Passende F\u00f6rderprogramme identifizieren',
                 'Konkrete n\u00e4chste Schritte',
                 'Kein Verkaufsdruck \u2013 garantiert',
@@ -117,7 +129,7 @@ export default function Beratung() {
           <h2 className="text-lg font-bold text-primary-700 mb-5">Was Sie in der Erstberatung erwartet</h2>
           <div className="grid md:grid-cols-2 gap-5">
             {[
-              { time: '5 Min', title: 'Bestandsaufnahme', desc: 'Kurzer \u00dcberblick \u00fcber Ihre aktuelle Situation, Herausforderungen und Ziele.' },
+              { time: '5 Min', title: 'Kurzer \u00dcberblick', desc: 'Ihre aktuelle Situation, Herausforderungen und was Sie sich konkret erhoffen.' },
               { time: '10 Min', title: 'Einsch\u00e4tzung & Quick-Wins', desc: 'Wir besprechen Ihre Ergebnisse und identifizieren sofort umsetzbare Ma\u00dfnahmen.' },
               { time: '10 Min', title: 'Konkrete Empfehlungen', desc: 'Praxisnahe n\u00e4chste Schritte, passend zu Ihrer Branche und Unternehmensgr\u00f6\u00dfe.' },
               { time: '5 Min', title: 'N\u00e4chste Schritte', desc: 'Klarer Fahrplan und ggf. Angebotserstellung f\u00fcr weiterf\u00fchrende Begleitung.' },

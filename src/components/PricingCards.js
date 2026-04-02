@@ -3,11 +3,11 @@ export default function PricingCards() {
     <section id="preise" className="py-20 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary-700 mb-3">
-            W&auml;hlen Sie Ihr Paket
+          <h2 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">
+            Starten Sie kostenlos &ndash; gehen Sie so weit, wie es passt
           </h2>
           <p className="text-slate-600 text-sm">
-            Vom kostenfreien Schnell-Check bis zur pers&ouml;nlichen Strategieberatung.
+            Kein Abo. Kein Druck. Jeder Schritt ist freiwillig.
           </p>
         </div>
 
@@ -15,7 +15,7 @@ export default function PricingCards() {
           {/* Free */}
           <div className="bg-white rounded-xl p-6 border border-slate-200">
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Schnell-Check</div>
-            <div className="text-3xl font-bold text-primary-700 mb-1">Kostenfrei</div>
+            <div className="text-2xl font-bold text-primary-700 mb-1">Kostenfrei</div>
             <p className="text-slate-500 text-sm mb-5">Ihr erster Schritt</p>
             <ul className="space-y-2.5 mb-7">
               {['12 Fragen zum KI-Reifegrad', 'Sofort-Score mit Einordnung', '3 Quick-Wins zum Umsetzen', 'Branchenvergleich'].map((f) => (
@@ -38,7 +38,7 @@ export default function PricingCards() {
               Beliebteste Wahl
             </div>
             <div className="text-xs font-semibold text-primary-500 uppercase tracking-wide mb-2">Premium Report</div>
-            <div className="text-3xl font-bold text-primary-700 mb-1">&euro;147</div>
+            <div className="text-2xl font-bold text-primary-700 mb-1">&euro;147</div>
             <p className="text-slate-500 text-sm mb-5">einmalig &middot; PDF sofort per E-Mail</p>
             <ul className="space-y-2.5 mb-7">
               {[
@@ -69,7 +69,7 @@ export default function PricingCards() {
               Rundum-Beratung
             </div>
             <div className="text-xs font-semibold text-accent-500 uppercase tracking-wide mb-2">Strategie-Paket</div>
-            <div className="text-3xl font-bold text-primary-700 mb-1">&euro;497</div>
+            <div className="text-2xl font-bold text-primary-700 mb-1">&euro;497</div>
             <p className="text-slate-500 text-sm mb-5">einmalig &middot; inkl. 60-Min. Gespr&auml;ch</p>
             <ul className="space-y-2.5 mb-7">
               {[

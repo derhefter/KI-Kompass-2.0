@@ -191,8 +191,8 @@ export default function Assessment() {
         <div className="max-w-4xl mx-auto px-4">
           {/* Score Header */}
           <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 text-center mb-8 fade-in-up">
-            <h1 className="text-2xl font-bold text-primary-700 mb-2">Ihr KI-Readiness Ergebnis</h1>
-            <p className="text-slate-500 mb-8">Basierend auf dem 3-Phasen-Modell: AI Awareness &rarr; Readiness &rarr; Steadiness</p>
+            <h1 className="text-2xl font-bold text-primary-700 mb-2">Ihr pers&ouml;nliches Ergebnis</h1>
+            <p className="text-slate-500 mb-8">So gut aufgestellt ist Ihr Unternehmen heute &ndash; und das k&ouml;nnen Sie als n&auml;chstes tun.</p>
 
             <div className="flex justify-center mb-8">
               <div className="relative w-48 h-48">

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
+import { sendNotificationToOwner } from '../../../lib/mail'
+import { saveToQueue } from '../../../lib/content-queue'
 import { rateLimit } from '../../../lib/rate-limit'
 import { saveAccessCode } from '../../../lib/google-sheets'
 import crypto from 'crypto'
@@ -526,67 +527,61 @@ Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)`
       ],
     })
 
-    // 2. Bestätigungsmail an den Kunden
-    await sendConfirmationToCustomer({
-      to: safeMail,
-      subject: `Ihre Rechnungsanforderung: KI-Kompass ${planName}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-          <div style="background:#2563eb;color:white;padding:24px;border-radius:12px 12px 0 0;text-align:center;">
-            <h1 style="margin:0;font-size:24px;">KI-Kompass</h1>
-            <p style="margin:8px 0 0;opacity:0.9;">KI-Readiness Assessment f&uuml;r KMU</p>
-          </div>
-          <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
-            <h2 style="color:#1e3a8a;margin-top:0;">Vielen Dank f&uuml;r Ihre Bestellung, ${safeName}!</h2>
+    // 2. Rechnung in die Freigabe-Queue stellen (Steffen prüft Rechnungsnummer vor Versand)
+    const netto = planPrice
+    const ust = (parseFloat(planPrice) * 0.19).toFixed(2)
+    const brutto = (parseFloat(planPrice) * 1.19).toFixed(2)
+    const zahlungszielDatum = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+      .toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
-            <p>Sie haben den <strong>${planName}</strong> bestellt und die Zahlung <strong>per Rechnung</strong> gew&auml;hlt.</p>
-
-            <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:20px;margin:24px 0;text-align:center;">
-              <p style="margin:0 0 8px;font-weight:bold;color:#92400e;font-size:16px;">Rechnung wird erstellt</p>
-              <p style="margin:0;color:#78350f;font-size:14px;">
-                Sie erhalten in K&uuml;rze eine Rechnung &uuml;ber <strong>${(parseFloat(planPrice) * 1.19).toFixed(2)} &euro;</strong> (inkl. 19% USt) per E-Mail.
-              </p>
-            </div>
-
-            <div style="background:#ecfdf5;border:1px solid #10b981;border-radius:8px;padding:20px;margin:24px 0;text-align:center;">
-              <p style="margin:0 0 8px;font-weight:bold;color:#065f46;font-size:16px;">Freischaltung Ihres Zugangs</p>
-              <p style="margin:0;color:#064e3b;font-size:14px;">
-                Ihr Zugang zum Premium Assessment wird <strong>innerhalb der n&auml;chsten 12 Stunden</strong> freigeschaltet.
-                Sie erhalten dann eine separate E-Mail mit Ihrem pers&ouml;nlichen Zugangscode und Link.
-              </p>
-            </div>
-
-            <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;margin:24px 0;text-align:center;">
-              <p style="margin:0;font-weight:bold;color:#991b1b;font-size:14px;">
-                Bitte beachten Sie: Ihr Zugangscode ist <strong>7 Tage</strong> g&uuml;ltig. Bitte l&ouml;sen Sie ihn innerhalb dieses Zeitraums ein.
-              </p>
-            </div>
-
-            <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:24px 0;">
-              <h3 style="margin-top:0;color:#2563eb;">So geht es weiter</h3>
-              <ol style="margin-bottom:0;padding-left:20px;">
-                <li>Sie erhalten Ihre Rechnung per E-Mail</li>
-                <li>Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet</li>
-                <li>Sie erhalten Ihren pers&ouml;nlichen Zugangscode per E-Mail</li>
-                <li>Sie starten das Premium Assessment (30 Detailfragen)</li>
-                <li>Sie erhalten Ihren individuellen KI-Readiness Report</li>
-                ${plan === 'strategie' ? '<li>Wir vereinbaren einen Termin f&uuml;r Ihr 60-Min. Strategiegespr&auml;ch</li>' : ''}
-              </ol>
-            </div>
-
-            <p>Bei Fragen erreichen Sie mich jederzeit &uuml;ber diese E-Mail-Adresse.</p>
-            <p style="margin-bottom:0;">
-              Mit freundlichen Gr&uuml;&szlig;en<br />
-              <strong>Steffen Hefter</strong><br />
-              frimalo &ndash; KI-Beratung<br />
-              Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)
-            </p>
-          </div>
+    const customerConfirmHtml = `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
+        <div style="background:#2563eb;color:white;padding:24px;border-radius:12px 12px 0 0;text-align:center;">
+          <h1 style="margin:0;font-size:24px;">KI-Kompass</h1>
+          <p style="margin:8px 0 0;opacity:0.9;">KI-Readiness Assessment f&uuml;r KMU</p>
         </div>
-      `,
+        <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
+          <h2 style="color:#1e3a8a;margin-top:0;">Vielen Dank f&uuml;r Ihre Bestellung, ${safeName}!</h2>
+          <p>Sie haben den <strong>${planName}</strong> bestellt und die Zahlung <strong>per Rechnung</strong> gew&auml;hlt.</p>
+          <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:20px;margin:24px 0;text-align:center;">
+            <p style="margin:0 0 8px;font-weight:bold;color:#92400e;font-size:16px;">Rechnung wird erstellt</p>
+            <p style="margin:0;color:#78350f;font-size:14px;">Sie erhalten in K&uuml;rze eine Rechnung &uuml;ber <strong>${brutto} &euro;</strong> (inkl. 19% USt) per E-Mail.</p>
+          </div>
+          <div style="background:#ecfdf5;border:1px solid #10b981;border-radius:8px;padding:20px;margin:24px 0;text-align:center;">
+            <p style="margin:0 0 8px;font-weight:bold;color:#065f46;font-size:16px;">Freischaltung Ihres Zugangs</p>
+            <p style="margin:0;color:#064e3b;font-size:14px;">Ihr Zugang wird <strong>innerhalb von 12 Stunden</strong> freigeschaltet. Sie erhalten Ihren Zugangscode per E-Mail.</p>
+          </div>
+          <div style="background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin:24px 0;">
+            <h3 style="margin-top:0;color:#2563eb;">So geht es weiter</h3>
+            <ol style="margin-bottom:0;padding-left:20px;">
+              <li>Sie erhalten Ihre Rechnung per E-Mail</li>
+              <li>Ihr Zugang wird innerhalb von 12 Stunden freigeschaltet</li>
+              <li>Sie starten das Premium Assessment (30 Detailfragen)</li>
+              <li>Sie erhalten Ihren individuellen KI-Readiness Report</li>
+              ${plan === 'strategie' ? '<li>Wir vereinbaren einen Termin f&uuml;r Ihr 60-Min. Strategiegespr&auml;ch</li>' : ''}
+            </ol>
+          </div>
+          <p style="margin-bottom:0;">Mit freundlichen Gr&uuml;&szlig;en<br /><strong>Steffen Hefter</strong><br />frimalo &ndash; KI-Beratung</p>
+        </div>
+      </div>`
+
+    const queueId = await saveToQueue({
+      type: 'invoice',
+      recipientName: safeName,
+      recipientEmail: safeMail,
+      companyName: safeCompany,
+      subject: `Ihre Rechnung: KI-Kompass ${planName}`,
+      htmlContent: customerConfirmHtml,
+      metadata: {
+        plan, planName, planPrice: netto, netto, ust, brutto,
+        zahlungsziel: zahlungszielDatum, safeStreet, safePlzCity, datum,
+        invoiceNumber: '', // wird beim Freigeben im Dashboard ausgefüllt
+        accessCode, accessLink,
+      },
+      attachmentHtml: invoiceHtml,
     })
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, pendingApproval: true, queueId })
   } catch {
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })
   }

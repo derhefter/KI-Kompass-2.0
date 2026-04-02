@@ -55,28 +55,30 @@ export default function UeberMich() {
 
             <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
               <p>
-                Ich war &uuml;ber 20 Jahre lang in F&uuml;hrungspositionen in der Software- und
-                Energiewirtschaft t&auml;tig. Habe Teams mit &uuml;ber 500 Mitarbeitenden gef&uuml;hrt,
-                Budgets von 15 Millionen Euro verantwortet und Unternehmen durch gro&szlig;e
-                Ver&auml;nderungsphasen begleitet.
+                Ich bin kein klassischer IT-Berater. Ich bin Diplom-Sozialp&auml;dagoge, habe Vertrieb
+                gemacht, Teams gef&uuml;hrt, Budgets verantwortet &ndash; und irgendwann gemerkt, dass
+                die spannendsten Ver&auml;nderungen nicht an der Technik scheitern, sondern an den
+                Menschen dahinter.
               </p>
 
               <p>
-                Dabei habe ich eines immer wieder erlebt: <strong className="text-gray-900">Die Technologie
-                ist selten das Problem. Es sind die Menschen, die Prozesse und der fehlende Plan.</strong>
+                &Uuml;ber 20 Jahre in Softwarewirtschaft, Energie und Change-Management haben mich
+                gelehrt: <strong className="text-gray-900">Wer KI einf&uuml;hren will, muss zuerst
+                verstehen, wie der Betrieb wirklich tickt &ndash; und wer die Menschen sind, die
+                damit arbeiten sollen.</strong>
               </p>
 
               <p>
-                Gerade im Mittelstand sehe ich enormes Potenzial &ndash; aber auch gro&szlig;e
-                Verunsicherung. Gesch&auml;ftsf&uuml;hrer sagen mir: <em>&bdquo;Wir wissen,
-                dass wir etwas tun m&uuml;ssen. Aber wo fangen wir an? Und wer macht das
-                neben dem Tagesgesch&auml;ft?&ldquo;</em>
+                Heute sitze ich in Halle (Saale), arbeite mit kleinen und mittleren Unternehmen &ndash;
+                und tue genau das: Ich schaue mir an, was wirklich gebraucht wird. Kein Hype,
+                keine Versprechen, die ich nicht halten kann. Nur ehrliche Einsch&auml;tzungen und
+                konkrete n&auml;chste Schritte.
               </p>
 
               <p>
-                Genau hier setze ich an. Mit dem KI-Kompass gebe ich Ihnen einen klaren
-                Startpunkt &ndash; und begleite Sie auf Wunsch pers&ouml;nlich weiter. Schritt
-                f&uuml;r Schritt, in Ihrem Tempo.
+                Gesch&auml;ftsf&uuml;hrer sagen mir oft: <em>&bdquo;Wir wissen, dass wir etwas
+                tun m&uuml;ssen. Aber wo fangen wir an? Und wer macht das neben dem
+                Tagesgesch&auml;ft?&ldquo;</em> Genau daf&uuml;r bin ich da.
               </p>
             </div>
           </div>
@@ -199,36 +201,36 @@ export default function UeberMich() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                phase: 'Phase 1',
-                name: 'AI Awareness',
+                phase: 'Schritt 1',
+                name: 'Klarheit schaffen',
                 icon: (
                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                 ),
-                desc: 'Orientierung schaffen, Mitarbeitende sensibilisieren, rechtliche Klarheit gewinnen. Erste KI-Tools ausprobieren.',
+                desc: 'Verstehen, wo das Unternehmen steht. Mitarbeitende abholen. Erste KI-Tools ausprobieren und rechtliche Grundlagen kl\u00e4ren.',
                 color: 'primary',
               },
               {
-                phase: 'Phase 2',
-                name: 'AI Readiness',
+                phase: 'Schritt 2',
+                name: 'Hebel finden',
                 icon: (
                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
                 ),
-                desc: 'Reifegrad analysieren, Daten pr\u00fcfen, Use-Cases priorisieren. Quick-Wins definieren und Roadmap erstellen.',
+                desc: 'Daten und Prozesse analysieren, die gr\u00f6\u00dften Zeitfresser identifizieren. Quick-Wins priorisieren und einen konkreten 90-Tage-Plan erstellen.',
                 color: 'accent',
               },
               {
-                phase: 'Phase 3',
-                name: 'AI Steadiness',
+                phase: 'Schritt 3',
+                name: 'Umsetzen & verankern',
                 icon: (
                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 ),
-                desc: 'Pilotprojekte umsetzen, Erfolge messen. Prozesse skalieren und KI nachhaltig im Unternehmen verankern.',
+                desc: 'Erste Projekte umsetzen, Ergebnisse messen. Was funktioniert, wird ausgebaut \u2013 so dass das Team KI eigenst\u00e4ndig weiternutzt.',
                 color: 'primary',
               },
             ].map((item, i) => (
@@ -272,6 +274,43 @@ export default function UeberMich() {
                 Hilfe zur Selbsthilfe statt Abh&auml;ngigkeit. Ich bef&auml;hige Ihr Team,
                 KI eigenst&auml;ndig zu nutzen. Mein Ansatz sorgt daf&uuml;r, dass Sie nicht
                 &uuml;berfordert werden &ndash; sondern Schritt f&uuml;r Schritt sicher vorankommen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pers\u00f6nliches: Whisky-Leidenschaft */}
+      <section className="py-16 bg-white border-t border-gray-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-start gap-8">
+            <div className="flex-shrink-0 text-5xl mt-1">🥃</div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Was mich abseits der Arbeit antreibt
+              </h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Wenn ich nicht gerade KMU durch die KI-Welt navigiere, schreibe ich &uuml;ber Single
+                Malt Whisky &ndash; auf{' '}
+                <a
+                  href="https://www.whisky-reise.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-600 font-semibold hover:underline"
+                >
+                  whisky-reise.com
+                </a>
+                .
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Das klingt zun&auml;chst weit weg vom Thema &ndash; aber guter Whisky und gute Beratung
+                haben mehr gemeinsam, als man denkt: Beides braucht Zeit, Geduld und die Bereitschaft,
+                keine Abk&uuml;rzungen zu nehmen. Und beides ist besser, wenn man versteht, was
+                wirklich dahintersteckt.
+              </p>
+              <p className="text-gray-500 text-sm italic">
+                Diese Leidenschaft daf&uuml;r, Dinge wirklich zu verstehen und zu erkl&auml;ren &ndash;
+                das bringe ich auch in jedes Gespr&auml;ch mit meinen Kunden.
               </p>
             </div>
           </div>

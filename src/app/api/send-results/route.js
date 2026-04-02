@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { customers } from '../../../data/customers'
-import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
+import { sendNotificationToOwner } from '../../../lib/mail'
+import { saveToQueue } from '../../../lib/content-queue'
 import { rateLimit } from '../../../lib/rate-limit'
 import { savePremiumAssessmentResult, findAccessCode, saveDetailedAnswers, markCodeAsUsed } from '../../../lib/google-sheets'
 import { premiumQuestions } from '../../../data/questions'
@@ -284,18 +285,22 @@ export async function POST(request) {
       </div>
     `
 
-    // Beide E-Mails senden
-    const [customerSent, ownerSent] = await Promise.all([
-      sendConfirmationToCustomer({
-        to: safeEmail,
-        subject: `Ihr KI-Readiness Report – ${safeCompany} (${percentage}%)`,
-        html: customerHtml,
-      }),
-      sendNotificationToOwner({
-        subject: `${sheetsErrors.length > 0 ? '[SHEETS-FEHLER] ' : ''}Premium Assessment: ${safeCompany} – ${percentage}% (Level ${level})`,
-        html: ownerHtml,
-      }),
-    ])
+    // Assessment in die Freigabe-Queue stellen (Steffen prüft vor Versand)
+    const queueId = await saveToQueue({
+      type: 'assessment',
+      recipientName: safeName,
+      recipientEmail: safeEmail,
+      companyName: safeCompany,
+      subject: `Ihr KI-Readiness Report – ${safeCompany} (${percentage}%)`,
+      htmlContent: customerHtml,
+      metadata: { percentage, level, levelTitle, categoryScores, plan: customer.plan },
+    })
+
+    // Steffen benachrichtigen (direkt, nicht über Queue)
+    const ownerSent = await sendNotificationToOwner({
+      subject: `${sheetsErrors.length > 0 ? '[SHEETS-FEHLER] ' : ''}Premium Assessment: ${safeCompany} – ${percentage}% (Level ${level})`,
+      html: ownerHtml + `<div style="margin-top:24px;padding:16px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;"><p style="margin:0;font-weight:bold;color:#1e40af;">📋 Assessment wartet auf Freigabe</p><p style="margin:8px 0 0;font-size:14px;color:#1e3a5f;">Die Kunden-E-Mail wurde NICHT automatisch versendet. Bitte im <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.derhefter.com'}/dashboard" style="color:#2563eb;font-weight:bold;">Dashboard freigeben</a>.</p></div>`,
+    })
 
     // Code als eingelöst markieren (nach erfolgreichem Assessment)
     try {
@@ -306,7 +311,8 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
-      customerSent,
+      pendingApproval: true,
+      queueId,
       ownerSent,
     })
   } catch {

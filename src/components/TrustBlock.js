@@ -12,7 +12,7 @@ export default function TrustBlock() {
                 </svg>
               ),
               title: 'DSGVO-konform',
-              desc: 'Ihre Daten werden auf europ\u00e4ischen Servern verarbeitet und nicht an Dritte weitergegeben.',
+              desc: 'Ihre Antworten im Check werden nur lokal in Ihrem Browser verarbeitet \u2013 kein Upload w\u00e4hrend des Checks. Kontaktdaten werden DSGVO-konform gespeichert.',
             },
             {
               icon: (
@@ -20,8 +20,8 @@ export default function TrustBlock() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               ),
-              title: 'Bew\u00e4hrte Methodik',
-              desc: 'Basierend auf etablierten KI-Reifegradmodellen, angepasst an die Realit\u00e4t im Mittelstand.',
+              title: 'Methodik aus der Praxis',
+              desc: 'Basierend auf etablierten KI-Reifegradmodellen \u2013 angepasst an die Realit\u00e4t kleiner und mittlerer Betriebe.',
             },
             {
               icon: (
@@ -29,35 +29,49 @@ export default function TrustBlock() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               ),
-              title: 'Kostenfreie Erstberatung',
-              desc: '30 Minuten pers\u00f6nliches Gespr\u00e4ch \u2013 ohne Verpflichtung, ohne Verkaufsdruck.',
+              title: 'Erstberatung kostenlos',
+              desc: '30 Minuten per Video-Call \u2013 ohne Verpflichtung, ohne Verkaufsdruck. Einfach ehrliches Feedback.',
             },
           ].map((item, i) => (
             <div key={i} className="text-center text-white">
               <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                 {item.icon}
               </div>
-              <h3 className="font-semibold mb-1 text-sm">{item.title}</h3>
+              <h3 className="font-semibold mb-1 text-base">{item.title}</h3>
               <p className="text-sm text-slate-300 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Stats */}
-        <div className="border-t border-white/15 pt-8">
+        <div className="border-t border-white/15 pt-8 mb-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
             {[
-              { num: '50+', label: 'Unternehmen gepr\u00fcft' },
-              { num: '94%', label: 'Weiterempfehlung' },
               { num: '12', label: 'Fragen im Schnell-Check' },
               { num: '5 Min', label: 'bis zum Ergebnis' },
+              { num: '€0', label: 'Kosten f\u00fcr den Check' },
+              { num: '30 Min', label: 'kostenlose Erstberatung' },
             ].map((stat, i) => (
               <div key={i}>
-                <div className="text-2xl md:text-3xl font-bold mb-1">{stat.num}</div>
+                <div className="text-2xl font-bold mb-1">{stat.num}</div>
                 <div className="text-slate-300 text-xs">{stat.label}</div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center">
+          <a
+            href="/assessment"
+            className="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold text-primary-700 bg-white rounded-lg hover:bg-slate-50 transition-colors"
+          >
+            Jetzt kostenlos testen
+            <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+          <p className="text-xs text-slate-400 mt-3">Keine Registrierung erforderlich</p>
         </div>
       </div>
     </section>

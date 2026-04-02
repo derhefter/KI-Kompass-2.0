@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { rateLimit } from '../../../lib/rate-limit'
 import { generateCertificateHTML, generateBadgeHTML, generateCertificateId } from '../../../lib/certificate'
-import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
+import { sendNotificationToOwner } from '../../../lib/mail'
+import { saveToQueue } from '../../../lib/content-queue'
 import { customers } from '../../../data/customers'
 import { findAccessCode } from '../../../lib/google-sheets'
 
@@ -67,16 +68,25 @@ export async function POST(request) {
       ? 'Oeffnen Sie die Datei im Browser. Sie koennen einen Screenshot erstellen und auf Ihrer Website einbetten.'
       : 'Oeffnen Sie die Datei im Browser und drucken Sie sie als PDF (Querformat, Strg+P).'
 
-    await sendConfirmationToCustomer({
-      to: safeEmail,
+    // Zertifikat in die Freigabe-Queue stellen (Steffen prüft vor Versand)
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.derhefter.com'
+    const customerHtml = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;"><div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:30px;text-align:center;border-radius:12px 12px 0 0;"><h1 style="color:white;margin:0;font-size:24px;">Ihr KI-Readiness ' + productLabel + '</h1></div><div style="padding:30px;background:white;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;"><p>Hallo ' + safeName + ',</p><p>Ihr ' + productLabel + ' ist fertig!</p><div style="background:#f0fdf4;padding:16px;border-radius:8px;margin:20px 0;text-align:center;"><div style="font-size:36px;font-weight:bold;color:#2563eb;">' + safePercentage + '%</div><div style="font-size:18px;font-weight:bold;color:#1e3a8a;">Level ' + safeLevel + ': ' + safeLevelTitle + '</div><div style="font-size:12px;color:#6b7280;margin-top:8px;">Zertifikat-Nr.: ' + certificateId + '</div></div><p>' + printHint + '</p><p>Mit freundlichen Gruessen,<br><strong>Steffen Hefter</strong><br>KI-Berater | frimalo</p></div></div>'
+    const queueId = await saveToQueue({
+      type: 'certificate',
+      recipientName: safeName,
+      recipientEmail: safeEmail,
+      companyName: safeCompany,
       subject: 'Ihr KI-Readiness ' + productLabel + ' - ' + safeCompany,
-      html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;"><div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:30px;text-align:center;border-radius:12px 12px 0 0;"><h1 style="color:white;margin:0;font-size:24px;">Ihr KI-Readiness ' + productLabel + '</h1></div><div style="padding:30px;background:white;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;"><p>Hallo ' + safeName + ',</p><p>Ihr ' + productLabel + ' ist fertig!</p><div style="background:#f0fdf4;padding:16px;border-radius:8px;margin:20px 0;text-align:center;"><div style="font-size:36px;font-weight:bold;color:#2563eb;">' + safePercentage + '%</div><div style="font-size:18px;font-weight:bold;color:#1e3a8a;">Level ' + safeLevel + ': ' + safeLevelTitle + '</div><div style="font-size:12px;color:#6b7280;margin-top:8px;">Zertifikat-Nr.: ' + certificateId + '</div></div><p>' + printHint + '</p><p>Mit freundlichen Gruessen,<br><strong>Steffen Hefter</strong><br>KI-Berater | frimalo</p></div></div>',
-      attachments: [{ filename, content: certificateHTML, contentType: 'text/html' }],
+      htmlContent: customerHtml,
+      metadata: { percentage: safePercentage, level: safeLevel, levelTitle: safeLevelTitle, certificateId, productLabel, filename, isBasic },
+      attachmentHtml: certificateHTML,
     })
+
+    // Steffen benachrichtigen (direkt)
     sendNotificationToOwner({
       subject: productLabel + ' erstellt: ' + safeCompany + ' - Level ' + safeLevel + ' (' + safePercentage + '%)',
-      html: '<h2>Neues Zertifikat erstellt</h2><table style="border-collapse:collapse;width:100%;max-width:400px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Kontakt</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + safeEmail + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Score</td><td style="padding:8px;border:1px solid #ddd;">' + safePercentage + '%</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Level</td><td style="padding:8px;border:1px solid #ddd;">' + safeLevel + ': ' + safeLevelTitle + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Zertifikat-Nr.</td><td style="padding:8px;border:1px solid #ddd;">' + certificateId + '</td></tr></table>',
+      html: '<h2>Neues Zertifikat erstellt</h2><table style="border-collapse:collapse;width:100%;max-width:400px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Kontakt</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + safeEmail + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Score</td><td style="padding:8px;border:1px solid #ddd;">' + safePercentage + '%</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Level</td><td style="padding:8px;border:1px solid #ddd;">' + safeLevel + ': ' + safeLevelTitle + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Zertifikat-Nr.</td><td style="padding:8px;border:1px solid #ddd;">' + certificateId + '</td></tr></table><div style="margin-top:16px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;"><p style="margin:0;font-size:13px;color:#1e40af;">📋 Zertifikat wartet auf Freigabe im <a href="' + baseUrl + '/dashboard" style="color:#2563eb;font-weight:bold;">Dashboard</a>.</p></div>',
     }).catch(() => {})
-    return NextResponse.json({ success: true, certificateId })
+    return NextResponse.json({ success: true, pendingApproval: true, certificateId, queueId })
   } catch { return NextResponse.json({ error: 'Serverfehler' }, { status: 500 }) }
 }

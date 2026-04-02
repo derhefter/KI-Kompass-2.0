@@ -6,6 +6,7 @@ import HowItWorks from '../components/HowItWorks'
 import ResultPreview from '../components/ResultPreview'
 import TrustBlock from '../components/TrustBlock'
 import Testimonials from '../components/Testimonials'
+import PersonBlock from '../components/PersonBlock'
 import PricingCards from '../components/PricingCards'
 import FoerderBlock from '../components/FoerderBlock'
 import FAQ from '../components/FAQ'
@@ -20,6 +21,7 @@ export default function Home() {
       <ResultPreview />
       <TrustBlock />
       <Testimonials />
+      <PersonBlock />
       <PricingCards />
       <FoerderBlock />
       <FAQ />

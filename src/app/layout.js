@@ -8,14 +8,36 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Kostenloser KI-Readiness Check für KMU | In 5 Min wissen, wo Sie stehen | KI-Kompass',
-  description: 'Prüfen Sie in 5 Minuten, wie bereit Ihr Unternehmen für Künstliche Intelligenz ist. Kostenloser KI-Readiness Check mit konkreten Handlungsempfehlungen, Quick-Wins und Fördermittel-Übersicht für den Mittelstand.',
-  keywords: 'KI Readiness, KI für KMU, Künstliche Intelligenz Mittelstand, KI Check, KI Beratung, Digital Transformation, AI Readiness Assessment, Fördermittel KI',
+  title: {
+    default: 'KI-Kompass | Spart KI Ihrem Betrieb Zeit und Geld – oder nicht?',
+    template: '%s | KI-Kompass',
+  },
+  description: 'In 5 Minuten wissen, wo KI in Ihrem Unternehmen wirklich etwas bringt – und wo nicht. Kostenloser Check für KMU, mit konkreten Handlungsempfehlungen und Fördermittel-Überblick.',
+  keywords: 'KI für KMU, KI Check, KI Beratung Mittelstand, Künstliche Intelligenz Handwerk, Fördermittel KI Digitalisierung, go-digital, Digital Jetzt, KI Halle Sachsen-Anhalt',
+  metadataBase: new URL('https://www.derhefter.com'),
   openGraph: {
-    title: 'KI-Kompass | Wie bereit ist Ihr Unternehmen für KI?',
-    description: 'Kostenloser KI-Readiness Check für den Mittelstand. In 5 Minuten wissen Sie, wo Sie stehen.',
+    title: 'KI-Kompass | Spart KI Ihrem Betrieb Zeit und Geld?',
+    description: 'In 5 Minuten wissen, wo KI in Ihrem Unternehmen wirklich etwas bringt – und wo nicht.',
     type: 'website',
     locale: 'de_DE',
+    url: 'https://www.derhefter.com',
+    siteName: 'KI-Kompass',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KI-Kompass | Kostenloser KI-Check für KMU',
+    description: '5 Minuten. Sofortergebnis. Kein Fachwissen nötig.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.derhefter.com',
   },
 }
 
@@ -45,6 +67,7 @@ function NavBar() {
           <div className="hidden md:flex items-center space-x-8">
             <a href="/#so-funktionierts" className="text-slate-600 hover:text-primary-500 transition-colors text-sm">So funktioniert&apos;s</a>
             <a href="/#preise" className="text-slate-600 hover:text-primary-500 transition-colors text-sm">Preise</a>
+            <a href="/blog" className="text-slate-600 hover:text-primary-500 transition-colors text-sm">Blog</a>
             <a href="/ueber-mich" className="text-slate-600 hover:text-primary-500 transition-colors text-sm">&Uuml;ber mich</a>
             <a href="/assessment" className="inline-flex items-center px-5 py-2 text-sm font-semibold text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors">
               Jetzt starten
@@ -82,33 +105,32 @@ function Footer() {
               <li><a href="/assessment" className="hover:text-white transition-colors">Kostenloser Check</a></li>
               <li><a href="/#preise" className="hover:text-white transition-colors">Premium Report</a></li>
               <li><a href="/beratung" className="hover:text-white transition-colors">Erstberatung buchen</a></li>
+              <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-semibold text-sm mb-3">Weitere Angebote</h4>
-            <p className="text-xs text-slate-500 mb-2 italic">Im Aufbau &ndash; bei Interesse gerne anfragen</p>
+            <h4 className="text-white font-semibold text-sm mb-3">Rechtliches</h4>
             <ul className="space-y-1.5 text-xs">
-              <li><span className="text-slate-500">Online-Kurs</span></li>
-              <li><span className="text-slate-500">KI-Toolbox</span></li>
-              <li><span className="text-slate-500">KI-Zertifikat</span></li>
-              <li><span className="text-slate-500">Branchen-Benchmark</span></li>
-              <li><span className="text-slate-500">KI-Monitoring</span></li>
+              <li><a href="/impressum" className="hover:text-white transition-colors">Impressum</a></li>
+              <li><a href="/datenschutz" className="hover:text-white transition-colors">Datenschutzerkl&auml;rung</a></li>
+              <li><a href="/ueber-mich" className="hover:text-white transition-colors">&Uuml;ber mich</a></li>
+              <li><a href="mailto:ki-kompass@derhefter.com" className="hover:text-white transition-colors">Kontakt</a></li>
             </ul>
-            <a href="mailto:ki-kompass@derhefter.com?subject=Interesse%20an%20weiteren%20Angeboten" className="inline-block mt-2 text-xs text-primary-300 hover:text-white transition-colors underline">
-              Individuelles Angebot anfragen
-            </a>
           </div>
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Kontakt</h4>
             <ul className="space-y-1.5 text-xs">
               <li>frimalo &ndash; Steffen Hefter</li>
-              <li>06120 Halle (Saale)</li>
-              <li>ki-kompass@derhefter.com</li>
+              <li>Halle (Saale)</li>
+              <li><a href="mailto:ki-kompass@derhefter.com" className="hover:text-white transition-colors">ki-kompass@derhefter.com</a></li>
             </ul>
+            <a href="/beratung" className="inline-block mt-4 text-xs text-primary-300 hover:text-white transition-colors underline">
+              Kostenlose Erstberatung buchen &rarr;
+            </a>
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs">
-          <p>&copy; {new Date().getFullYear()} frimalo &ndash; KI-Kompass</p>
+          <p>&copy; {new Date().getFullYear()} frimalo &ndash; KI-Kompass &middot; Halle (Saale)</p>
           <div className="flex space-x-6 mt-3 md:mt-0">
             <a href="/impressum" className="hover:text-white transition-colors">Impressum</a>
             <a href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</a>

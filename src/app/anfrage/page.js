@@ -444,8 +444,11 @@ export default function Anfrage() {
           <h1 className="text-3xl font-bold text-primary-700 mb-3">
             {currentPlan.name} bestellen
           </h1>
-          <p className="text-slate-600">
+          <p className="text-slate-600 mb-3">
             F&uuml;llen Sie das Formular aus &ndash; im n&auml;chsten Schritt werden Sie zur sicheren Zahlung weitergeleitet.
+          </p>
+          <p className="text-sm text-accent-600 font-medium">
+            Nach Zahlung erhalten Sie Ihren Zugangscode per E-Mail &ndash; in der Regel innerhalb weniger Minuten.
           </p>
         </div>
 
@@ -483,7 +486,9 @@ export default function Anfrage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Firma</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Firma <span className="text-slate-400 font-normal">(f&uuml;r Ihre Rechnung)</span>
+                  </label>
                   <input
                     type="text"
                     value={company}
@@ -580,6 +585,12 @@ export default function Anfrage() {
 
               <div className="border-t border-slate-100 pt-4 space-y-2">
                 <div className="flex items-center text-sm text-slate-500">
+                  <svg className="w-4 h-4 mr-2 text-accent-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Zugangscode per E-Mail nach Zahlung
+                </div>
+                <div className="flex items-center text-sm text-slate-500">
                   <svg className="w-4 h-4 mr-2 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
@@ -597,6 +608,9 @@ export default function Anfrage() {
                   </svg>
                   Sicher &amp; DSGVO-konform via Mollie
                 </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center">
+                Fragen? <a href="mailto:ki-kompass@derhefter.com" className="text-primary-500 hover:underline">ki-kompass@derhefter.com</a>
               </div>
             </div>
           </div>

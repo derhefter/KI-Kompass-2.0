@@ -48,7 +48,8 @@ export default function PremiumAssessment() {
       })
       const data = await res.json()
       if (data.success) {
-        setResultsSent(true)
+        // pendingApproval = Assessment wartet auf Prüfung durch Steffen (wird im Dashboard freigegeben)
+        setResultsSent(data.pendingApproval ? 'pending' : true)
         // Auto-PDF Report generieren und senden (mit Feedback)
         setReportStatus('generating')
         try {
@@ -64,7 +65,8 @@ export default function PremiumAssessment() {
             }),
           })
           const reportData = await reportRes.json()
-          setReportStatus(reportData.success ? 'sent' : 'error')
+          // pendingApproval = Report wartet auf Prüfung durch Steffen
+          setReportStatus(reportData.success ? (reportData.pendingApproval ? 'pending' : 'sent') : 'error')
         } catch {
           setReportStatus('error')
         }
@@ -300,12 +302,21 @@ export default function PremiumAssessment() {
               KI-Readiness Report f&uuml;r {companyName}
             </h1>
             <p className="text-gray-500">Erstellt am {new Date().toLocaleDateString('de-DE')} &bull; Kontakt: {contactName}</p>
-            {resultsSent && (
+            {resultsSent === true && (
               <div className="mt-4 inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm">
                 <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Report wurde an {contactEmail} gesendet
+                Ergebnisse wurden an {contactEmail} gesendet
+              </div>
+            )}
+            {resultsSent === 'pending' && (
+              <div className="mt-4 inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm">
+                <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Steffen Hefter prüft Ihre Ergebnisse persönlich – Sie erhalten Ihre Auswertung per E-Mail.
               </div>
             )}
           </div>
@@ -459,12 +470,21 @@ export default function PremiumAssessment() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                Report wird erstellt und per E-Mail gesendet...
+                Ihr Report wird gerade aufbereitet&hellip;
+              </div>
+            )}
+            {reportStatus === 'pending' && (
+              <div className="bg-primary-50 border border-primary-100 rounded-lg p-4 mb-4">
+                <p className="text-primary-700 font-semibold mb-1">✓ Ihre Antworten wurden &uuml;bermittelt</p>
+                <p className="text-primary-600 text-sm">
+                  Steffen Hefter pr&uuml;ft Ihren Report pers&ouml;nlich und sendet ihn mit pers&ouml;nlicher Einsch&auml;tzung an{' '}
+                  <strong>{contactEmail}</strong> &ndash; in der Regel innerhalb von 24 Stunden.
+                </p>
               </div>
             )}
             {reportStatus === 'sent' && (
               <p className="text-accent-600 font-semibold mb-4">
-                Ihr ausf&uuml;hrlicher PDF-Report (20+ Seiten) wurde an <strong>{contactEmail}</strong> gesendet.
+                Ihr ausf&uuml;hrlicher Report (20+ Seiten) wurde an <strong>{contactEmail}</strong> gesendet.
               </p>
             )}
             {reportStatus === 'error' && (

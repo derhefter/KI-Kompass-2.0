@@ -1,5 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      { source: '/toolbox', destination: '/#preise', permanent: true },
+      { source: '/toolbox-zugang', destination: '/#preise', permanent: true },
+      { source: '/kurs', destination: '/beratung', permanent: true },
+      { source: '/kurs-zugang', destination: '/beratung', permanent: true },
+      { source: '/monitoring', destination: '/beratung', permanent: true },
+      { source: '/monitoring-zugang', destination: '/beratung', permanent: true },
+      { source: '/benchmarking', destination: '/assessment', permanent: true },
+      { source: '/benchmark-zugang', destination: '/assessment', permanent: true },
+      { source: '/white-label', destination: '/', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {
@@ -15,7 +28,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com;",
           },
         ],
       },
@@ -23,7 +36,7 @@ const nextConfig = {
         // CORS: API-Endpunkte nur von eigener Domain erreichbar
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: 'https://ki-kompass-v2-seven.vercel.app' },
+          { key: 'Access-Control-Allow-Origin', value: 'https://www.derhefter.com' },
           { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS' },
           { key: 'Access-Control-Allow-Headers', value: 'Content-Type, x-admin-token' },
         ],
