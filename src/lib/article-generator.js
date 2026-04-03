@@ -1,8 +1,8 @@
 // ============================================================
 // KI-ARTIKEL-GENERATOR – KI-Kompass Blog
-// Verwendet Claude (Anthropic API) um wöchentlich neue
+// Verwendet OpenAI GPT-4o-mini um wöchentlich neue
 // Praxis-Artikel für KMU-Unternehmer zu generieren.
-// Benötigt: ANTHROPIC_API_KEY in Vercel Env Vars
+// Benötigt: OPENAI_API_KEY in Vercel Env Vars
 // ============================================================
 
 import { projectConfig } from '../config/project-config'
@@ -42,10 +42,10 @@ export function estimateReadTime(html) {
   return Math.max(2, Math.ceil(words / 200))
 }
 
-// Artikel mit Claude generieren
+// Artikel mit OpenAI GPT-4o-mini generieren
 export async function generateArticle(topicOverride = null) {
-  const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY nicht konfiguriert')
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) throw new Error('OPENAI_API_KEY nicht konfiguriert')
 
   const { category, topic } = topicOverride || getCurrentTopic()
   const today = new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -58,28 +58,29 @@ export async function generateArticle(topicOverride = null) {
     .replace('{{date}}', today)
     .replace('{{domain}}', projectConfig.domain)
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'claude-opus-4-5',
+      model: 'gpt-4o-mini',
       max_tokens: 2048,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userPrompt }],
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ],
     }),
   })
 
   if (!response.ok) {
     const err = await response.text()
-    throw new Error(`Anthropic API Fehler ${response.status}: ${err}`)
+    throw new Error(`OpenAI API Fehler ${response.status}: ${err}`)
   }
 
   const data = await response.json()
-  const rawText = data.content?.[0]?.text || ''
+  const rawText = data.choices?.[0]?.message?.content || ''
 
   // JSON-Metadaten und HTML trennen
   const separatorIndex = rawText.indexOf('---ARTIKEL---')
