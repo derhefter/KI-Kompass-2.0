@@ -17,6 +17,25 @@
 
 export const blogPosts = [
   {
+    id: 4,
+    slug: 'weniger-papierkram-mehr-umsatz-ki-gestuetzte-e-mail-filter-im-handwerk',
+    title: 'Weniger Papierkram, mehr Umsatz: KI-gestützte E-Mail-Filter im Handwerk',
+    excerpt: 'Handwerksbetriebe ertrinken oft in allgemeinen Kundenanfragen. Eine pragmatische KI-Lösung sichtet den Posteingang, bewertet Anfragen nach Vollständigkeit und ordnet sie direkt zu.',
+    content: `
+<p><strong>Ausgangslage:</strong><br>Handwerksbetriebe ertrinken oft in allgemeinen Kundenanfragen ("Was kostet ein neues Bad?"). Es kostet wertvolle Stunden im Büro, diese manuell auszusortieren und echte Aufträge von vagen Preisanfragen zu trennen.</p>
+<p><strong>Maßnahme:</strong><br>Eine pragmatische KI-Lösung sichtet den Posteingang, bewertet Anfragen nach Vollständigkeit (Sind Fotos oder Maße vorhanden?) und ordnet sie direkt dem richtigen Mitarbeiter zu. Fehlen wichtige Daten, schickt die KI automatisch eine höfliche Nachfrage-E-Mail.</p>
+<p><strong>Ergebnis:</strong><br>Das Team im Büro spart bis zu 40 % Bearbeitungszeit. Echte, lukrative Kunden werden schneller bedient, während unvollständige Anfragen vollautomatisiert vorqualifiziert werden.</p>
+<p><strong>Quick-Win:</strong><br>Starten Sie klein: Nutzen Sie Automatisierungs-Tools wie Zapier, um Ihre Info-Adresse an eine KI anzubinden. Lassen Sie sich jeden Morgen eine priorisierte Zusammenfassung der wichtigsten E-Mails generieren. Das dauert in der Einrichtung keine 30 Minuten und zeigt sofort erste Erfolge.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-03',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 1,
     slug: 'ki-im-handwerk-erste-schritte',
     title: 'KI im Handwerk: So starten Sie ohne IT-Kenntnisse',
