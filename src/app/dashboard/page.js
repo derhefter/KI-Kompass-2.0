@@ -95,7 +95,7 @@ export default function Dashboard() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {tab === 'overview' && <OverviewTab data={data} />}
+        {tab === 'overview' && <OverviewTab data={data} token={token} />}
         {tab === 'queue' && <QueueTab token={token} onCountChange={count => setData(d => ({ ...(d || {}), pendingCount: count }))} />}
         {tab === 'blog' && <BlogTab />}
       </div>
@@ -118,12 +118,14 @@ const CHECKLIST_ITEMS = [
   { key: 'testdata',   label: 'Testdaten aus Google Sheets gelöscht',                   hint: 'Kunden-, Zugangscodes- und Ergebnisse-Tabs bereinigen' },
 ]
 
-function OverviewTab({ data }) {
+function OverviewTab({ data, token }) {
   const d = data
   const [checked, setChecked] = useState(() => {
     if (typeof window === 'undefined') return {}
     try { return JSON.parse(localStorage.getItem('ki_checklist') || '{}') } catch { return {} }
   })
+  const [testLoading, setTestLoading] = useState(false)
+  const [testMsg, setTestMsg] = useState('')
 
   function toggleCheck(key) {
     setChecked(prev => {
@@ -131,6 +133,26 @@ function OverviewTab({ data }) {
       try { localStorage.setItem('ki_checklist', JSON.stringify(next)) } catch {}
       return next
     })
+  }
+
+  async function createTestData() {
+    setTestLoading(true); setTestMsg('')
+    try {
+      const r = await fetch('/api/admin/create-test-data', {
+        method: 'POST',
+        headers: { 'x-admin-token': token() },
+      })
+      const d = await r.json()
+      if (d.success) {
+        setTestMsg(`✓ ${d.queue.created} Freigaben + ${d.blog.created} Blog-Entwürfe erstellt. Tab wechseln zum Testen.`)
+      } else {
+        const errs = [...(d.queue?.errors || []), ...(d.blog?.errors || [])].map(e => e.error).join(', ')
+        setTestMsg('Teilweise Fehler: ' + errs)
+      }
+    } catch (err) {
+      setTestMsg('Fehler: ' + err.message)
+    }
+    setTestLoading(false)
   }
 
   const doneCount = CHECKLIST_ITEMS.filter(i => checked[i.key]).length
@@ -205,6 +227,28 @@ function OverviewTab({ data }) {
             </a>
           </p>
         </div>
+      </div>
+
+      {/* Testdaten-Block */}
+      <div className="bg-white rounded-xl border border-dashed border-slate-300 p-5 mt-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-600">Testdaten erstellen</h3>
+            <p className="text-xs text-slate-400 mt-1">
+              Erstellt 3 Muster-Freigaben (Assessment, Zertifikat, Rechnung) + 3 Blog-Entwürfe
+              zum Testen des Workflows. Die Einträge danach einfach ablehnen oder löschen.
+            </p>
+          </div>
+          <button onClick={createTestData} disabled={testLoading}
+            className="flex-shrink-0 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap">
+            {testLoading ? 'Erstelle…' : '🧪 Testdaten erstellen'}
+          </button>
+        </div>
+        {testMsg && (
+          <div className={`mt-3 text-xs rounded-lg px-3 py-2 ${testMsg.startsWith('✓') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+            {testMsg}
+          </div>
+        )}
       </div>
     </div>
   )
