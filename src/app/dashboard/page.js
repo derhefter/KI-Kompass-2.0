@@ -106,8 +106,36 @@ export default function Dashboard() {
 // ============================================================
 // TAB: Übersicht
 // ============================================================
+const CHECKLIST_ITEMS = [
+  { key: 'mollie',     label: 'Mollie Live API-Key setzen (MOLLIE_API_KEY)',            hint: 'my.mollie.com → Einstellungen → API-Keys → live_...' },
+  { key: 'email',      label: 'E-Mail-Konto ki-kompass@derhefter.com einrichten',       hint: 'Google Workspace App-Passwort → EMAIL_PASS in Vercel' },
+  { key: 'openai',     label: 'OpenAI API-Key gesetzt (OPENAI_API_KEY)',                hint: 'platform.openai.com → API Keys' },
+  { key: 'cron',       label: 'CRON_SECRET in Vercel setzen',                           hint: 'Beliebiger sicherer String, z.B. blog-cron-2026' },
+  { key: 'freigaben',  label: 'Tab "Freigaben" im Premium-Sheet angelegt',              hint: 'GOOGLE_SHEET_PREMIUM_RESULTS → neuer Tab "Freigaben" mit 13 Spalten' },
+  { key: 'blogsheet',  label: 'Blog-Sheet angelegt & GOOGLE_SHEET_BLOG gesetzt',        hint: 'Tabs: "Artikel" und "Entwuerfe" – Service Account als Editor einladen' },
+  { key: 'booking',    label: 'Booking-URL gesetzt (NEXT_PUBLIC_BOOKING_URL_30)',        hint: 'Google Calendar Buchungslink → Vercel Env Var' },
+  { key: 'admin',      label: 'ADMIN_PASSWORD gesetzt',                                 hint: 'Sicheres Passwort für dieses Dashboard' },
+  { key: 'testdata',   label: 'Testdaten aus Google Sheets gelöscht',                   hint: 'Kunden-, Zugangscodes- und Ergebnisse-Tabs bereinigen' },
+]
+
 function OverviewTab({ data }) {
   const d = data
+  const [checked, setChecked] = useState(() => {
+    if (typeof window === 'undefined') return {}
+    try { return JSON.parse(localStorage.getItem('ki_checklist') || '{}') } catch { return {} }
+  })
+
+  function toggleCheck(key) {
+    setChecked(prev => {
+      const next = { ...prev, [key]: !prev[key] }
+      try { localStorage.setItem('ki_checklist', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }
+
+  const doneCount = CHECKLIST_ITEMS.filter(i => checked[i.key]).length
+  const allDone = doneCount === CHECKLIST_ITEMS.length
+
   return (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -123,29 +151,53 @@ function OverviewTab({ data }) {
           </div>
         ))}
       </div>
+      <p className="text-xs text-slate-400 -mt-5 mb-8">
+        Zahlen aus Google Sheets. Zum Zurücksetzen Testzeilen direkt in den Sheets löschen (Tabs: Kunden, Zugangscodes, Ergebnisse).
+      </p>
 
       <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <h2 className="text-base font-bold text-primary-700 mb-4">Setup-Checkliste</h2>
-        <div className="space-y-3">
-          {[
-            { label: 'Mollie API-Key (MOLLIE_API_KEY) in Vercel setzen', hint: 'my.mollie.com → Einstellungen → API-Keys → live_...', key: 'mollie' },
-            { label: 'Booking-URL (NEXT_PUBLIC_BOOKING_URL_30) in Vercel setzen', hint: 'https://calendar.app.google/gjtXAaWXxCi2nJBU9', key: 'booking' },
-            { label: 'E-Mail-Konto ki-kompass@derhefter.com einrichten', hint: 'Google Workspace App-Passwort → EMAIL_PASS in Vercel', key: 'email' },
-            { label: 'Google Sheet "Berichte"-Tab anlegen', hint: 'Im GOOGLE_SHEET_PREMIUM_RESULTS Sheet: neues Tab "Berichte" mit Spalten A-L (s. API-Doku)', key: 'sheets' },
-            { label: 'ADMIN_PASSWORD in Vercel setzen', hint: 'Sicheres Passwort für dieses Dashboard', key: 'admin' },
-          ].map(item => (
-            <div key={item.key} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-              <div className="w-5 h-5 rounded border-2 border-slate-300 flex-shrink-0 mt-0.5"></div>
-              <div>
-                <p className="text-sm font-medium text-slate-700">{item.label}</p>
-                <p className="text-xs text-slate-400 mt-0.5 font-mono">{item.hint}</p>
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-bold text-primary-700">Setup-Checkliste</h2>
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${allDone ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
+            {doneCount} / {CHECKLIST_ITEMS.length} erledigt
+          </span>
         </div>
-        <div className="mt-6 pt-4 border-t border-slate-100">
+
+        {allDone && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 text-sm text-green-700 font-medium">
+            Alles erledigt – KI-Kompass ist produktionsbereit.
+          </div>
+        )}
+
+        <div className="space-y-2">
+          {CHECKLIST_ITEMS.map(item => {
+            const done = !!checked[item.key]
+            return (
+              <button key={item.key} onClick={() => toggleCheck(item.key)}
+                className={`w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-colors ${
+                  done
+                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
+                    : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
+                }`}>
+                <div className={`w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center border-2 transition-colors ${
+                  done ? 'bg-green-500 border-green-500' : 'border-slate-300'
+                }`}>
+                  {done && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <div>
+                  <p className={`text-sm font-medium transition-colors ${done ? 'text-green-700 line-through decoration-green-400' : 'text-slate-700'}`}>
+                    {item.label}
+                  </p>
+                  <p className="text-xs text-slate-400 mt-0.5 font-mono">{item.hint}</p>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="mt-5 pt-4 border-t border-slate-100">
           <p className="text-xs text-slate-400">
-            Alle Env Vars setzen unter:{' '}
+            Env Vars setzen unter:{' '}
             <a href="https://vercel.com/steffens-projects-89ed6db5/ki-kompass-v2/settings/environment-variables"
               target="_blank" rel="noopener noreferrer"
               className="text-primary-500 hover:underline">
