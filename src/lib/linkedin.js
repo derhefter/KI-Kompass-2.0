@@ -88,7 +88,7 @@ export function getLinkedInAuthUrl() {
   if (!clientId) return null
 
   const redirectUri = encodeURIComponent(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/linkedin-setup/callback`)
-  const scope = encodeURIComponent('r_liteprofile w_member_social')
+  const scope = encodeURIComponent('openid profile email w_member_social')
   const state = Buffer.from(Date.now().toString()).toString('base64')
 
   return `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`
@@ -119,19 +119,21 @@ export async function exchangeLinkedInCode(code) {
 
     const data = await res.json()
     if (data.access_token) {
-      // Person URN laden
-      const profileRes = await fetch(`${LINKEDIN_API}/me`, {
+      // Person URN über OpenID UserInfo-Endpoint laden (r_liteprofile ist deprecated)
+      const profileRes = await fetch('https://api.linkedin.com/v2/userinfo', {
         headers: { Authorization: `Bearer ${data.access_token}` },
       })
       const profile = await profileRes.json()
-      const personUrn = `urn:li:person:${profile.id}`
+      // sub enthält die LinkedIn Person-ID
+      const personUrn = `urn:li:person:${profile.sub}`
+      const profileName = [profile.given_name, profile.family_name].filter(Boolean).join(' ') || profile.name || 'Unbekannt'
 
       return {
         success: true,
         accessToken: data.access_token,
         expiresIn: data.expires_in,
         personUrn,
-        profileName: `${profile.localizedFirstName} ${profile.localizedLastName}`,
+        profileName,
       }
     }
     return { success: false, error: data.error_description || 'Token-Austausch fehlgeschlagen' }
