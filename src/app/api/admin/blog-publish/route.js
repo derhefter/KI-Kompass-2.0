@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 import { getPendingDrafts, publishArticle, updateDraftStatus, markLinkedInPosted } from '../../../../lib/blog-sheets'
 import { postToLinkedIn } from '../../../../lib/linkedin'
 import { revalidatePath } from 'next/cache'
+import { verifyAdminToken } from '../login/route'
 
 function auth(request) {
-  return request.headers.get('x-admin-token') === process.env.ADMIN_PASSWORD
+  return verifyAdminToken(request.headers.get('x-admin-token'))
 }
 
 export async function POST(request) {

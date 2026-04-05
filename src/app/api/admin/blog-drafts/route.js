@@ -1,9 +1,10 @@
 // Admin: Entwürfe verwalten – GET: Liste | PUT: Inhalt bearbeiten | DELETE: ablehnen
 import { NextResponse } from 'next/server'
 import { getPendingDrafts, updateDraftStatus, updateDraftContent } from '../../../../lib/blog-sheets'
+import { verifyAdminToken } from '../login/route'
 
 function auth(request) {
-  return request.headers.get('x-admin-token') === process.env.ADMIN_PASSWORD
+  return verifyAdminToken(request.headers.get('x-admin-token'))
 }
 
 export async function GET(request) {

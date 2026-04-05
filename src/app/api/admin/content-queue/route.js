@@ -8,10 +8,10 @@
 import { NextResponse } from 'next/server'
 import { getPendingItems, approveItem, rejectItem, getItemByRow } from '../../../../lib/content-queue'
 import { sendConfirmationToCustomer } from '../../../../lib/mail'
+import { verifyAdminToken } from '../login/route'
 
 function checkAuth(request) {
-  const token = request.headers.get('x-admin-token')
-  return token === process.env.ADMIN_PASSWORD
+  return verifyAdminToken(request.headers.get('x-admin-token'))
 }
 
 // ── GET: Alle pendenden Items ODER Einzelitem für Vorschau ──

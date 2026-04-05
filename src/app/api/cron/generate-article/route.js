@@ -7,13 +7,14 @@ import { NextResponse } from 'next/server'
 import { generateArticle, getCurrentTopic } from '../../../../lib/article-generator'
 import { saveDraft } from '../../../../lib/blog-sheets'
 import { sendNotificationToOwner } from '../../../../lib/mail'
+import { verifyAdminToken } from '../../admin/login/route'
 
 export async function GET(request) {
   // Sicherheit: Nur Vercel Cron oder Admin darf auslösen
   const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
   const isVercelCron = authHeader === `Bearer ${cronSecret}`
-  const isAdmin = request.headers.get('x-admin-token') === process.env.ADMIN_PASSWORD
+  const isAdmin = verifyAdminToken(request.headers.get('x-admin-token'))
 
   if (!isVercelCron && !isAdmin) {
     return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
@@ -79,8 +80,7 @@ export async function GET(request) {
 
 // Admin kann auch manuell auslösen (POST mit optionalem Topic-Override)
 export async function POST(request) {
-  const authToken = request.headers.get('x-admin-token')
-  if (authToken !== process.env.ADMIN_PASSWORD) {
+  if (!verifyAdminToken(request.headers.get('x-admin-token'))) {
     return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
   }
 
