@@ -17,6 +17,28 @@
 
 export const blogPosts = [
   {
+    id: 5,
+    slug: 'von-der-spielerei-zum-werkzeug-wie-ki-2026-das-handwerk-und-den-mittelstand-automatisiert',
+    title: 'Von der Spielerei zum Werkzeug: Wie KI 2026 das Handwerk und den Mittelstand automatisiert',
+    excerpt: 'Viele Handwerks- und mittelständische Betriebe kämpfen mit überbordender Bürokratie. Statt isolierter KI-Chatbots implementieren Betriebe nun intelligente Agenten, die mehrschrittige Prozesse übernehmen.',
+    content: `
+<p><strong>Ausgangslage:</strong><br>Viele Handwerks- und mittelständische Betriebe kämpfen mit überbordender Bürokratie, Fachkräftemangel und ineffizienten Routineaufgaben. Rechnungsverarbeitung, Terminplanung und Angebotserstellung fressen wertvolle Zeit, die beim Kunden oder auf der Baustelle fehlt. KI war bisher oft nur ein Buzzword oder ein isoliertes Pilotprojekt ohne direkten Bezug zur täglichen Wertschöpfung.</p>
+<p><strong>Maßnahme:</strong><br>Der Fokus verlagert sich 2026 auf "Agentische KI" und die nahtlose Integration in bestehende ERP- und Branchensoftware. Statt isolierter KI-Chatbots implementieren Betriebe nun intelligente Agenten, die mehrschrittige Prozesse übernehmen: Sie lesen E-Mails aus, sortieren Dokumente, generieren daraufhin automatisch Entwürfe für Angebote im ERP-System und planen Wartungstermine vor. Alles nach klaren internen Nutzungsrichtlinien, um Datenschutz und Sicherheit zu gewährleisten.</p>
+<p><strong>Ergebnis:</strong><br>Echter Praxisnutzen statt KI-Hype: Die Durchlaufzeiten für Angebote sinken rapide, die Fehlerquote bei der Dateneingabe minimiert sich und die Mitarbeiter im Backoffice werden massiv entlastet. Das Unternehmen arbeitet effizienter, schneller und kann sich wieder auf das Kerngeschäft und die Kundenzufriedenheit konzentrieren.</p>
+<p><strong>Quick-Wins:</strong><br>
+- <strong>Automatisierte E-Mail-Sortierung & Beantwortung:</strong> KI filtert Standardanfragen und erstellt sofort passende Antwortentwürfe.<br>
+- <strong>Intelligente Dokumentenverarbeitung:</strong> Eingangsrechnungen werden per KI ausgelesen und direkt ins Buchhaltungssystem übertragen.<br>
+- <strong>Sprache-zu-Text auf der Baustelle:</strong> Handwerker diktieren das Aufmaß oder Projektnotizen vor Ort, die KI wandelt es sofort in strukturierte Aufgaben im System um.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-06',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 4,
     slug: 'weniger-papierkram-mehr-umsatz-ki-gestuetzte-e-mail-filter-im-handwerk',
     title: 'Weniger Papierkram, mehr Umsatz: KI-gestützte E-Mail-Filter im Handwerk',
