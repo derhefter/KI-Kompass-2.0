@@ -17,6 +17,33 @@
 
 export const blogPosts = [
   {
+    id: 6,
+    slug: 'agentic-ai-im-handwerk-wenn-die-ki-zum-digitalen-kollegen-wird',
+    title: 'Agentic AI im Handwerk: Wenn die KI zum digitalen Kollegen wird',
+    excerpt: 'Die Leute fehlen auf der Baustelle, sitzen stattdessen aber im Büro und tippen stundenlang Daten aus Lieferanten-E-Mails ab. Agentic AI macht ab sofort die Drecksarbeit.',
+    content: `
+<p><strong>Ausgangslage:</strong><br>Die Leute fehlen auf der Baustelle, sitzen stattdessen aber im Büro und tippen stundenlang Daten aus Lieferanten-E-Mails ab. Zettelwirtschaft und alte Software rauben den letzten Nerv, während draußen der Kunde wartet. Die Arbeit stapelt sich, für theoretischen Bullshit fehlt schlichtweg die Zeit.</p>
+
+<p><strong>Maßnahme:</strong><br>Schluss mit Berater-Gerede über "Digitalisierungsansätze". Agentic AI (handelnde KI) macht ab sofort die Drecksarbeit im Büro. Das sind keine kleinen Chatbots, die nur Standardtexte spucken, sondern echte digitale Kollegen, die direkt ins ERP-System greifen. Sie sortieren Kunden-Anfragen vor, bereiten Lieferanten-Mails auf und legen dir die fertigen Angebote auf den Schreibtisch – komplett eigenständig.</p>
+
+<p><strong>Ergebnis:</strong><br>Weniger Papierkram, mehr Umsatz. Die Fachkräfte machen endlich wieder das, wofür sie da sind: echtes Handwerk beim Kunden. Die KI arbeitet als verlässlicher Motor im Hintergrund, tippt keine Zahlendreher mehr ab und reduziert die administrative Durchlaufzeit drastisch.</p>
+
+<p><strong>Quick-Wins für den Einstieg:</strong></p>
+<ul>
+  <li><strong>Erstkontakt auf Autopilot:</strong> Ein intelligenter Website-Bot klärt Standardfragen und bucht Termine, bevor das Telefon überhaupt das erste Mal klingelt.</li>
+  <li><strong>Kamera statt Klemmbrett:</strong> KI-Bilderkennung für rasante Bestandsaufnahmen auf der Baustelle oder im Lager.</li>
+  <li><strong>Mails direkt ins ERP:</strong> Rechnungen und Lieferantendaten werden automatisch ausgelesen und direkt in die Kalkulation gepumpt – ohne manuelles Abtippen.</li>
+</ul>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-07',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 5,
     slug: 'von-der-spielerei-zum-werkzeug-wie-ki-2026-das-handwerk-und-den-mittelstand-automatisiert',
     title: 'Von der Spielerei zum Werkzeug: Wie KI 2026 das Handwerk und den Mittelstand automatisiert',
