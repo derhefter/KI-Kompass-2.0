@@ -17,6 +17,33 @@
 
 export const blogPosts = [
   {
+    id: 7,
+    slug: 'der-mittelstand-zoegert-bei-ki-weil-oft-am-falschen-ende-angesetzt-wird',
+    title: 'Der Mittelstand zögert bei KI – weil oft am falschen Ende angesetzt wird',
+    excerpt: 'Aktuelle Studien zeigen: Die KI-Investitionen im deutschen Mittelstand sind zuletzt leicht gesunken. Wer einfach nur KI-Tools in sein Netzwerk holt, verbrennt Zeit und Geld.',
+    content: `
+<p><strong>Ausgangslage:</strong><br>Aktuelle Studien zeigen: Die KI-Investitionen im deutschen Mittelstand sind zuletzt leicht gesunken. Der Grund? Erste Pilotprojekte brachten oft nicht den erhofften Effizienz-Boost. Wer einfach nur KI-Tools in sein Netzwerk holt und auf wundersame Produktivität hofft, verbrennt Zeit und Geld. Die Realität in Handwerk und Fertigung ist eindeutig: Fachkräfte fehlen nicht in theoretischen Strategie-Meetings, sondern draußen beim Kunden, weil sie im Büro Lieferscheine abtippen und händisch Daten ins System übertragen müssen.</p>
+
+<p><strong>Maßnahme:</strong><br>Statt abstrakter "digitaler Transformation" rücken jetzt europäische, hochspezialisierte KI-Lösungen in den Fokus. Mit dem Inkrafttreten des EU AI Acts setzen immer mehr Betriebe auf lokale Anbieter und DSGVO-konforme Agenten-Systeme (statt auf US- oder asiatische Giganten). Diese übernehmen exakt die zeitraubenden Büro-Routinen – sicher, transparent und nach unseren europäischen Standards.</p>
+
+<p><strong>Ergebnis:</strong><br>Die Lösung ist pragmatisch: Identifizieren Sie den größten administrativen Zeitfresser im Büro und automatisieren Sie diesen gezielt. Wenn der Meister oder Bauleiter wieder beim Kunden vor Ort ist, anstatt abends noch E-Mails zu sortieren und Angebote zusammenzukopieren, hat sich die KI rentiert. Alles andere lenkt nur vom Kerngeschäft ab.</p>
+
+<p><strong>Quick-Wins für den Einstieg:</strong></p>
+<ul>
+  <li><strong>Rechnungseingang automatisieren:</strong> Europäische OCR-Tools lesen Belege datenschutzkonform aus und übergeben sie ans Buchhaltungssystem.</li>
+  <li><strong>E-Mail-Postfach entlasten:</strong> Kundenanfragen werden intelligent nach Relevanz sortiert und mit Textbausteinen vorbereitet.</li>
+  <li><strong>Lokale KI-Modelle nutzen:</strong> Europäische Open-Source-Modelle stellen sicher, dass sensible Kundendaten das Unternehmen niemals verlassen.</li>
+</ul>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-08',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 6,
     slug: 'agentic-ai-im-handwerk-wenn-die-ki-zum-digitalen-kollegen-wird',
     title: 'Agentic AI im Handwerk: Wenn die KI zum digitalen Kollegen wird',
