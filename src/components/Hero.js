@@ -16,7 +16,7 @@ export default function Hero() {
           wirklich etwas bringt &ndash; und wo nicht. Kein Fachwissen nötig.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center fade-in-up fade-in-up-delay-3">
+        <div className="flex justify-center fade-in-up fade-in-up-delay-3">
           <a
             href="/assessment"
             className="btn-primary"
@@ -26,15 +26,21 @@ export default function Hero() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
-          <a
-            href="/beratung"
-            className="btn-secondary"
-          >
-            Lieber erst beraten lassen?
-          </a>
         </div>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-8 text-sm text-slate-500 fade-in-up fade-in-up-delay-4">
+        {/* Trust-Zeile: Steffen Hefter direkt unter dem CTA */}
+        <div className="mt-5 flex items-center justify-center gap-2.5 fade-in-up fade-in-up-delay-3">
+          <img
+            src="/Steffen2025.jpg"
+            alt="Steffen Hefter"
+            className="w-8 h-8 rounded-full object-cover object-top border border-slate-200"
+          />
+          <span className="text-xs text-slate-400">
+            Entwickelt von <span className="text-slate-500 font-medium">Steffen Hefter</span> &middot; 20+ Jahre Mittelstandserfahrung
+          </span>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-8 text-sm text-slate-500 fade-in-up fade-in-up-delay-4">
           {[
             'DSGVO-konform',
             'Kein Verkaufsdruck',

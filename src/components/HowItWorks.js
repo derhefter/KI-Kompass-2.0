@@ -17,30 +17,6 @@ export default function HowItWorks() {
     },
   ]
 
-  const guide = [
-    {
-      when: 'Schnell-Check reicht, wenn\u2026',
-      desc: '\u2026 Sie erst mal wissen wollen, wo Sie stehen \u2013 ohne Verpflichtung.',
-      color: 'border-slate-200 bg-slate-50',
-      labelColor: 'text-slate-500',
-      cta: null,
-    },
-    {
-      when: 'Premium Report empfiehlt sich, wenn\u2026',
-      desc: '\u2026 Sie konkrete Handlungsempfehlungen, eine priorisierte Roadmap und Tool-Tipps für Ihren Betrieb brauchen.',
-      color: 'border-primary-200 bg-primary-50',
-      labelColor: 'text-primary-600',
-      cta: { text: 'Mehr erfahren', href: '/#preise' },
-    },
-    {
-      when: 'Pers\u00f6nliche Beratung ist richtig, wenn\u2026',
-      desc: '\u2026 Sie nicht allein starten wollen oder F\u00f6rdermittel pr\u00fcfen m\u00f6chten.',
-      color: 'border-accent-200 bg-accent-50',
-      labelColor: 'text-accent-600',
-      cta: { text: 'Termin buchen', href: '/beratung' },
-    },
-  ]
-
   return (
     <section id="so-funktionierts" className="py-20 bg-slate-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,31 +40,9 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        {/* Entscheidungshilfe */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 md:p-8 mb-10">
-          <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-5 text-center">
-            Was passt zu mir?
-          </p>
-          <div className="grid md:grid-cols-3 gap-4">
-            {guide.map((g, i) => (
-              <div key={i} className={`rounded-lg border p-4 ${g.color}`}>
-                <p className={`text-xs font-bold uppercase tracking-wide mb-2 ${g.labelColor}`}>
-                  {g.when}
-                </p>
-                <p className="text-slate-600 text-sm leading-relaxed mb-3">{g.desc}</p>
-                {g.cta && (
-                  <a href={g.cta.href} className="text-xs font-semibold text-primary-500 hover:underline">
-                    {g.cta.text} &rarr;
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="text-center">
           <a href="/assessment" className="btn-primary">
-            Jetzt starten &ndash; kostenlos
+            Jetzt kostenlos starten
             <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
