@@ -17,6 +17,31 @@
 
 export const blogPosts = [
   {
+    id: 8,
+    slug: 'ki-automatisierung-2026-raus-aus-dem-labor-rein-in-die-prozesse',
+    title: 'KI-Automatisierung 2026: Raus aus dem Labor, rein in die Prozesse',
+    excerpt: 'Die Zeit der KI-Spielereien ist vorbei. Im Mittelstand geht es 2026 nicht mehr darum, ob man ChatGPT im Browser nutzt, sondern wie smarte Systeme ganze Prozessketten selbst übernehmen.',
+    content: `
+<p><strong>Die Zeit der KI-Spielereien ist vorbei.</strong> Im Mittelstand geht es 2026 nicht mehr darum, ob man ChatGPT im Browser nutzt, sondern wie smarte Systeme ganze Prozessketten selbst übernehmen.</p>
+
+<p><strong>Was passiert gerade?</strong></p>
+<ul>
+  <li><strong>KI als Macher:</strong> KI ist nicht mehr nur der schlaue Assistent. Sogenannte "Agentic AI" plant und erledigt Aufgaben wie Rechnungsfreigaben oder Datenabgleiche inzwischen völlig autark.</li>
+  <li><strong>Eigene Daten, eigene KI:</strong> Statt sensible Firmendaten blind auf US-Server auszulagern, setzen europäische KMUs auf souveräne "Corporate LLMs" – passgenaue KI-Modelle, die lokal laufen. Das macht den EU AI Act vom Schreckgespenst zum klaren Qualitätsmerkmal.</li>
+  <li><strong>Vom Pilotprojekt zum Rollout:</strong> Fördertöpfe helfen aktuell enorm, doch das Problem bleibt oft der Sprung von der Test-Idee zur flächendeckenden Automatisierung.</li>
+</ul>
+
+<p><strong>Praxis-Tipp:</strong><br>Startet nicht beim Tool, sondern beim Schmerz. Wo im Betrieb liegen die nervigsten Routine-Aufgaben, die eure Leute frustrieren und wertvolle Zeit fressen? Genau dort setzt ihr an.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-09',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 7,
     slug: 'der-mittelstand-zoegert-bei-ki-weil-oft-am-falschen-ende-angesetzt-wird',
     title: 'Der Mittelstand zögert bei KI – weil oft am falschen Ende angesetzt wird',
