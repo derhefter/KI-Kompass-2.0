@@ -17,6 +17,28 @@
 
 export const blogPosts = [
   {
+    id: 9,
+    slug: 'vom-hype-zur-rendite-ki-agenten-automatisieren-den-mittelstand',
+    title: 'Vom Hype zur Rendite: KI-Agenten automatisieren den Mittelstand',
+    excerpt: 'Die Zeit der endlosen Pilotprojekte ist vorbei. 2026 markiert im Mittelstand den Wendepunkt: KI und Prozessautomatisierung müssen messbare Ergebnisse liefern.',
+    content: `
+<p><strong>Die Zeit der endlosen Pilotprojekte ist vorbei.</strong> 2026 markiert im Mittelstand den Wendepunkt: KI und Prozessautomatisierung müssen messbare Ergebnisse liefern. Erste Erfolge ("Quick Wins") werden bereits nach 3 bis 9 Monaten erwartet.</p>
+
+<p><strong>Was ist neu?</strong><br>Der Fokus verlagert sich auf <em>Hyperautomatisierung</em> und <em>KI-Agenten</em>. Diese Agenten orchestrieren komplette Workflows selbstständig. Anstatt nur Daten zu analysieren, buchen sie Rechnungen, planen Termine oder bereiten Reklamationen entscheidungsreif vor. Besonders in der Buchhaltung und in Finanzprozessen zeigt sich ein massives Einsparpotenzial von 18 bis 32 %.</p>
+
+<p><strong>EU AI Act im Nacken</strong><br>Gleichzeitig rückt der EU AI Act näher. Ab August 2026 gelten die Vorgaben für Hochrisikosysteme vollumfänglich. Der Trend geht deshalb eindeutig zu "Sovereign AI" und abgesicherten Corporate-LLMs – also Sprachmodellen, bei denen die Datenhoheit strikt im Unternehmen bleibt.</p>
+
+<p><strong>Der pragmatische Weg:</strong><br>Nicht bei der Technologie anfangen, sondern beim Prozess. Wo brennt es? Wo sind die meisten manuellen Routineaufgaben? Zuerst die Datenbasis aufräumen, dann gezielt KI-Agenten auf diese Engpässe ansetzen. So gelingt der Umstieg von der Experimentierphase in den produktiven Alltag.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-10',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 8,
     slug: 'ki-automatisierung-2026-raus-aus-dem-labor-rein-in-die-prozesse',
     title: 'KI-Automatisierung 2026: Raus aus dem Labor, rein in die Prozesse',
