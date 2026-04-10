@@ -3,31 +3,28 @@
 import { useEffect, useRef } from 'react'
 
 export default function ForWho() {
-  const cardRefs = useRef([])
-  const headingRef = useRef(null)
+  const sectionRef = useRef(null)
 
   useEffect(() => {
+    const elements = sectionRef.current?.querySelectorAll('.scroll-reveal')
+    if (!elements) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const delay = entry.target.dataset.delay || 0
+            const delay = Number(entry.target.dataset.delay) || 80
             setTimeout(() => {
-              entry.target.classList.remove('scroll-hidden')
-              entry.target.classList.add('scroll-visible')
-            }, Number(delay))
+              entry.target.classList.add('visible')
+            }, delay)
             observer.unobserve(entry.target)
           }
         })
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     )
 
-    cardRefs.current.forEach((el) => {
-      if (el) observer.observe(el)
-    })
-    if (headingRef.current) observer.observe(headingRef.current)
-
+    elements.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
 
@@ -62,16 +59,15 @@ export default function ForWho() {
   ]
 
   return (
-    <section className="py-20 bg-white">
+    <section ref={sectionRef} className="py-20 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Karten zuerst – erscheinen nacheinander beim Scrollen */}
         <div className="grid md:grid-cols-3 gap-6">
           {situations.map((s, i) => (
             <div
               key={i}
-              ref={(el) => (cardRefs.current[i] = el)}
-              data-delay={i * 200}
-              className="bg-warm-50 rounded-xl p-6 scroll-hidden"
+              data-delay={80 + i * 200}
+              className="bg-warm-50 rounded-xl p-6 scroll-reveal"
             >
               <div className="w-12 h-12 bg-white text-primary-500 rounded-lg flex items-center justify-center mb-5 border border-slate-100">
                 {s.icon}
@@ -84,9 +80,8 @@ export default function ForWho() {
 
         {/* Überschrift erscheint NACH den Karten */}
         <div
-          ref={headingRef}
-          data-delay="200"
-          className="text-center mt-14 scroll-hidden"
+          data-delay="150"
+          className="text-center mt-14 scroll-reveal"
         >
           <h2 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">
             Kommt Ihnen das bekannt vor?
