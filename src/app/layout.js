@@ -103,7 +103,7 @@ function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Kontakt</h4>
             <ul className="space-y-1.5 text-xs">
-              <li>frimalo &ndash; Steffen Hefter</li>
+              <li><a href="/ueber-mich" className="hover:text-white transition-colors">frimalo &ndash; Steffen Hefter</a></li>
               <li>Halle (Saale)</li>
               <li><a href="mailto:ki-kompass@derhefter.com" className="hover:text-white transition-colors">ki-kompass@derhefter.com</a></li>
             </ul>

@@ -7,11 +7,13 @@ export default function PersonBlock() {
 
             {/* Foto */}
             <div className="flex-shrink-0">
-              <img
-                src="/Steffen2025.jpg"
-                alt="Steffen Hefter \u2013 KI-Berater f&uuml;r KMU"
-                className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover object-top shadow-md border-2 border-slate-100"
-              />
+              <a href="/ueber-mich">
+                <img
+                  src="/Steffen2025.jpg"
+                  alt="Steffen Hefter \u2013 KI-Berater f&uuml;r KMU"
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover object-top shadow-md border-2 border-slate-100 hover:opacity-90 transition-opacity"
+                />
+              </a>
             </div>
 
             {/* Text */}
@@ -20,7 +22,9 @@ export default function PersonBlock() {
                 Der Mensch dahinter
               </p>
               <h2 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">
-                Steffen Hefter &ndash; frimalo, Halle (Saale)
+                <a href="/ueber-mich" className="hover:text-primary-500 transition-colors">
+                  Steffen Hefter &ndash; frimalo, Halle (Saale)
+                </a>
               </h2>
               <p className="text-slate-600 text-sm leading-relaxed mb-4 max-w-xl">
                 Ich helfe kleinen und mittleren Unternehmen, KI pragmatisch einzusetzen &ndash;

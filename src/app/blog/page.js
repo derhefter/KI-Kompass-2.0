@@ -86,7 +86,7 @@ export default async function BlogPage() {
                   </h2>
                   <p className="text-slate-600 text-sm leading-relaxed mb-4">{post.excerpt}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">von {post.author || 'Steffen Hefter'}</span>
+                    <a href="/ueber-mich" className="text-xs text-slate-400 hover:text-primary-500 transition-colors">von {post.author || 'Steffen Hefter'}</a>
                     <a href={`/blog/${post.slug}`}
                       className="inline-flex items-center text-sm font-semibold text-primary-500 hover:text-primary-700 transition-colors">
                       Weiterlesen

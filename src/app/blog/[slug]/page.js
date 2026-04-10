@@ -101,10 +101,12 @@ export default async function BlogArticle({ params }) {
               {post.excerpt}
             </p>
             <div className="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
-              <img src="/Steffen2025.jpg" alt="Steffen Hefter"
-                className="w-10 h-10 rounded-full object-cover object-top border border-slate-200" />
+              <a href="/ueber-mich">
+                <img src="/Steffen2025.jpg" alt="Steffen Hefter"
+                  className="w-10 h-10 rounded-full object-cover object-top border border-slate-200 hover:opacity-80 transition-opacity" />
+              </a>
               <div>
-                <p className="text-sm font-semibold text-primary-700">{post.author || 'Steffen Hefter'}</p>
+                <a href="/ueber-mich" className="text-sm font-semibold text-primary-700 hover:text-primary-500 transition-colors">{post.author || 'Steffen Hefter'}</a>
                 <p className="text-xs text-slate-500">frimalo &ndash; KI-Beratung f&uuml;r KMU</p>
               </div>
               {/* Social Share */}
@@ -153,11 +155,13 @@ export default async function BlogArticle({ params }) {
 
           {/* Autor-Box */}
           <div className="mt-10 bg-white border border-slate-200 rounded-xl p-6 flex gap-5">
-            <img src="/Steffen2025.jpg" alt="Steffen Hefter"
-              className="w-16 h-16 rounded-xl object-cover object-top border border-slate-100 flex-shrink-0" />
+            <a href="/ueber-mich" className="flex-shrink-0">
+              <img src="/Steffen2025.jpg" alt="Steffen Hefter"
+                className="w-16 h-16 rounded-xl object-cover object-top border border-slate-100 hover:opacity-80 transition-opacity" />
+            </a>
             <div>
               <p className="text-xs font-semibold text-primary-500 uppercase tracking-wide mb-1">&Uuml;ber den Autor</p>
-              <p className="text-sm font-bold text-primary-700 mb-1">Steffen Hefter</p>
+              <a href="/ueber-mich" className="text-sm font-bold text-primary-700 hover:text-primary-500 transition-colors mb-1 inline-block">Steffen Hefter</a>
               <p className="text-xs text-slate-600 leading-relaxed">
                 KI-Berater bei frimalo, Halle (Saale). &Uuml;ber 20 Jahre Erfahrung in
                 F&uuml;hrung, Digitalisierung und Change-Management. Hilft KMU, KI pragmatisch einzusetzen.

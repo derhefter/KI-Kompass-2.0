@@ -1,4 +1,36 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+
 export default function ForWho() {
+  const cardRefs = useRef([])
+  const headingRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = entry.target.dataset.delay || 0
+            setTimeout(() => {
+              entry.target.classList.remove('scroll-hidden')
+              entry.target.classList.add('scroll-visible')
+            }, Number(delay))
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    cardRefs.current.forEach((el) => {
+      if (el) observer.observe(el)
+    })
+    if (headingRef.current) observer.observe(headingRef.current)
+
+    return () => observer.disconnect()
+  }, [])
+
   const situations = [
     {
       icon: (
@@ -24,7 +56,7 @@ export default function ForWho() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      situation: '\u201eIch h\u00f6re, man kann F\u00f6rdermittel bekommen \u2013 weiß aber nicht wie.\u201c',
+      situation: '\u201eIch h\u00f6re, man kann F\u00f6rdermittel bekommen \u2013 wei\u00df aber nicht wie.\u201c',
       desc: 'Bis zu 50\u202f% der Digitalisierungskosten sind f\u00f6rderf\u00e4hig. Die meisten KMU wissen nicht, welche Programme zu ihnen passen.',
     },
   ]
@@ -32,18 +64,15 @@ export default function ForWho() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <h2 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">
-            Kommt Ihnen das bekannt vor?
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            Dann sind Sie hier richtig. Der KI-Kompass gibt Ihnen in 5 Minuten
-            klare Antworten &ndash; ohne Beratersprech.
-          </p>
-        </div>
+        {/* Karten zuerst – erscheinen nacheinander beim Scrollen */}
         <div className="grid md:grid-cols-3 gap-6">
           {situations.map((s, i) => (
-            <div key={i} className="bg-warm-50 rounded-xl p-6">
+            <div
+              key={i}
+              ref={(el) => (cardRefs.current[i] = el)}
+              data-delay={i * 200}
+              className="bg-warm-50 rounded-xl p-6 scroll-hidden"
+            >
               <div className="w-12 h-12 bg-white text-primary-500 rounded-lg flex items-center justify-center mb-5 border border-slate-100">
                 {s.icon}
               </div>
@@ -52,13 +81,28 @@ export default function ForWho() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-10">
-          <a href="/assessment" className="btn-primary">
-            Jetzt kostenlos pr&uuml;fen
-            <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </a>
+
+        {/* Überschrift erscheint NACH den Karten */}
+        <div
+          ref={headingRef}
+          data-delay="200"
+          className="text-center mt-14 scroll-hidden"
+        >
+          <h2 className="text-xl md:text-2xl font-bold text-primary-700 mb-3">
+            Kommt Ihnen das bekannt vor?
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Dann sind Sie hier richtig. Der KI-Kompass gibt Ihnen in 5 Minuten
+            klare Antworten &ndash; ohne Beratersprech.
+          </p>
+          <div className="mt-10">
+            <a href="/assessment" className="btn-primary">
+              Jetzt kostenlos pr&uuml;fen
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -29,16 +29,19 @@ export default function Hero() {
         </div>
 
         {/* Trust-Zeile: Steffen Hefter direkt unter dem CTA */}
-        <div className="mt-5 flex items-center justify-center gap-2.5 fade-in-up fade-in-up-delay-3">
+        <a
+          href="/ueber-mich"
+          className="mt-5 flex items-center justify-center gap-2.5 fade-in-up fade-in-up-delay-3 group"
+        >
           <img
             src="/Steffen2025.jpg"
             alt="Steffen Hefter"
             className="w-8 h-8 rounded-full object-cover object-top border border-slate-200"
           />
-          <span className="text-xs text-slate-400">
-            Entwickelt von <span className="text-slate-500 font-medium">Steffen Hefter</span> &middot; 20+ Jahre Mittelstandserfahrung
+          <span className="text-xs text-slate-400 group-hover:text-slate-600 transition-colors">
+            Entwickelt von <span className="text-slate-500 font-medium group-hover:text-primary-500 transition-colors">Steffen Hefter</span> &middot; 20+ Jahre Mittelstandserfahrung
           </span>
-        </div>
+        </a>
 
         <div className="mt-8 flex flex-wrap justify-center gap-8 text-sm text-slate-500 fade-in-up fade-in-up-delay-4">
           {[
