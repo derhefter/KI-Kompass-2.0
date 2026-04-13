@@ -126,6 +126,7 @@ function OverviewTab({ data, token }) {
   })
   const [testLoading, setTestLoading] = useState(false)
   const [testMsg, setTestMsg] = useState('')
+  const [detailModal, setDetailModal] = useState(null) // 'customers' | 'codes' | 'leads' | 'revenue'
 
   function toggleCheck(key) {
     setChecked(prev => {
@@ -157,77 +158,277 @@ function OverviewTab({ data, token }) {
 
   const doneCount = CHECKLIST_ITEMS.filter(i => checked[i.key]).length
   const allDone = doneCount === CHECKLIST_ITEMS.length
+  const openItems = CHECKLIST_ITEMS.filter(i => !checked[i.key])
 
   return (
     <div>
+      {/* KPI Cards – klickbar */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Kunden gesamt', val: d?.totalCustomers || 0, color: 'text-primary-600 bg-primary-50' },
-          { label: 'Codes aktiv', val: d?.activeCodes || 0, color: 'text-green-600 bg-green-50' },
-          { label: 'Free Checks', val: d?.freeAssessments || 0, color: 'text-purple-600 bg-purple-50' },
-          { label: 'Umsatz', val: `€${d?.estimatedRevenue || 0}`, color: 'text-amber-600 bg-amber-50' },
+          { id: 'customers', label: 'Kunden gesamt', val: d?.totalCustomers || 0, color: 'text-primary-600 bg-primary-50 hover:bg-primary-100' },
+          { id: 'codes', label: 'Codes aktiv', val: d?.activeCodes || 0, color: 'text-green-600 bg-green-50 hover:bg-green-100' },
+          { id: 'leads', label: 'Free Checks', val: d?.freeAssessments || 0, color: 'text-purple-600 bg-purple-50 hover:bg-purple-100' },
+          { id: 'revenue', label: 'Umsatz', val: `€${d?.estimatedRevenue || 0}`, color: 'text-amber-600 bg-amber-50 hover:bg-amber-100' },
         ].map(s => (
-          <div key={s.label} className={`rounded-xl p-5 border border-slate-200 ${s.color}`}>
+          <button key={s.id} onClick={() => setDetailModal(s.id)}
+            className={`rounded-xl p-5 border border-slate-200 ${s.color} text-left transition-colors cursor-pointer`}>
             <div className="text-2xl font-bold">{s.val}</div>
             <div className="text-sm opacity-70 mt-1">{s.label}</div>
-          </div>
+            <div className="text-xs opacity-40 mt-2">Details anzeigen →</div>
+          </button>
         ))}
       </div>
       <p className="text-xs text-slate-400 -mt-5 mb-8">
-        Zahlen aus Google Sheets. Zum Zurücksetzen Testzeilen direkt in den Sheets löschen (Tabs: Kunden, Zugangscodes, Ergebnisse).
+        Zahlen aus Google Sheets. Klicke auf eine Karte für Details.
       </p>
 
-      <div className="bg-white rounded-xl border border-slate-200 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-primary-700">Setup-Checkliste</h2>
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${allDone ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
-            {doneCount} / {CHECKLIST_ITEMS.length} erledigt
-          </span>
-        </div>
+      {/* Detail-Modal */}
+      {detailModal && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={() => setDetailModal(null)}>
+          <div className="bg-white rounded-xl w-full max-w-3xl shadow-2xl flex flex-col max-h-[85vh]" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-5 border-b border-slate-200 flex-shrink-0">
+              <h3 className="font-bold text-primary-700">
+                {detailModal === 'customers' && `Kunden gesamt (${d?.totalCustomers || 0})`}
+                {detailModal === 'codes' && `Aktive Zugangscodes (${d?.activeCodes || 0})`}
+                {detailModal === 'leads' && `Free Checks (${d?.freeAssessments || 0})`}
+                {detailModal === 'revenue' && `Umsatz-Übersicht (€${d?.estimatedRevenue || 0})`}
+              </h3>
+              <button onClick={() => setDetailModal(null)} className="text-slate-400 hover:text-slate-600 text-xl">×</button>
+            </div>
+            <div className="overflow-y-auto flex-1 p-5">
 
-        {allDone && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 text-sm text-green-700 font-medium">
-            Alles erledigt – KI-Kompass ist produktionsbereit.
-          </div>
-        )}
-
-        <div className="space-y-2">
-          {CHECKLIST_ITEMS.map(item => {
-            const done = !!checked[item.key]
-            return (
-              <button key={item.key} onClick={() => toggleCheck(item.key)}
-                className={`w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-colors ${
-                  done
-                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                    : 'bg-slate-50 border-slate-100 hover:bg-slate-100'
-                }`}>
-                <div className={`w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center border-2 transition-colors ${
-                  done ? 'bg-green-500 border-green-500' : 'border-slate-300'
-                }`}>
-                  {done && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                </div>
+              {/* Kunden-Liste */}
+              {detailModal === 'customers' && (
                 <div>
-                  <p className={`text-sm font-medium transition-colors ${done ? 'text-green-700 line-through decoration-green-400' : 'text-slate-700'}`}>
-                    {item.label}
-                  </p>
+                  {(d?.customers || []).length === 0 ? (
+                    <p className="text-slate-400 text-sm">Noch keine Kunden vorhanden.</p>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-xs text-slate-500 border-b border-slate-200">
+                          <th className="pb-2 pr-3">Datum</th>
+                          <th className="pb-2 pr-3">Name</th>
+                          <th className="pb-2 pr-3">Firma</th>
+                          <th className="pb-2 pr-3">E-Mail</th>
+                          <th className="pb-2 pr-3">Plan</th>
+                          <th className="pb-2 text-right">Betrag</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(d?.customers || []).map((c, i) => (
+                          <tr key={i} className="border-b border-slate-50 hover:bg-slate-50">
+                            <td className="py-2 pr-3 text-slate-500 text-xs whitespace-nowrap">{c.date}</td>
+                            <td className="py-2 pr-3 font-medium text-slate-700">{c.name || '–'}</td>
+                            <td className="py-2 pr-3 text-slate-600">{c.company || '–'}</td>
+                            <td className="py-2 pr-3 text-slate-500 text-xs">{c.email}</td>
+                            <td className="py-2 pr-3">
+                              <span className="text-xs bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">{c.plan || '–'}</span>
+                            </td>
+                            <td className="py-2 text-right text-slate-700">{c.amount ? `€${c.amount}` : '–'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              )}
+
+              {/* Aktive Codes */}
+              {detailModal === 'codes' && (
+                <div>
+                  {(d?.accessCodes || []).filter(c => c.status === 'aktiv').length === 0 ? (
+                    <p className="text-slate-400 text-sm">Keine aktiven Zugangscodes vorhanden.</p>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-xs text-slate-500 border-b border-slate-200">
+                          <th className="pb-2 pr-3">Code</th>
+                          <th className="pb-2 pr-3">Name</th>
+                          <th className="pb-2 pr-3">Firma</th>
+                          <th className="pb-2 pr-3">Plan</th>
+                          <th className="pb-2 pr-3">Erstellt</th>
+                          <th className="pb-2">Läuft ab</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(d?.accessCodes || []).filter(c => c.status === 'aktiv').map((c, i) => {
+                          const isExpiringSoon = c.expiresAt && new Date(c.expiresAt) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                          return (
+                            <tr key={i} className="border-b border-slate-50 hover:bg-slate-50">
+                              <td className="py-2 pr-3 font-mono text-xs font-bold text-primary-600">{c.code}</td>
+                              <td className="py-2 pr-3 font-medium text-slate-700">{c.name || '–'}</td>
+                              <td className="py-2 pr-3 text-slate-600">{c.company || '–'}</td>
+                              <td className="py-2 pr-3">
+                                <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">{c.plan}</span>
+                              </td>
+                              <td className="py-2 pr-3 text-slate-500 text-xs">{c.createdAt ? new Date(c.createdAt).toLocaleDateString('de-DE') : '–'}</td>
+                              <td className={`py-2 text-xs font-medium ${isExpiringSoon ? 'text-red-600' : 'text-slate-500'}`}>
+                                {c.expiresAt ? new Date(c.expiresAt).toLocaleDateString('de-DE') : '–'}
+                                {isExpiringSoon && ' ⚠️'}
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  )}
+                  {/* Auch abgelaufene/inaktive anzeigen */}
+                  {(d?.accessCodes || []).filter(c => c.status !== 'aktiv').length > 0 && (
+                    <div className="mt-6">
+                      <h4 className="text-xs font-semibold text-slate-400 uppercase mb-2">Inaktive / Abgelaufene Codes</h4>
+                      <table className="w-full text-sm">
+                        <tbody>
+                          {(d?.accessCodes || []).filter(c => c.status !== 'aktiv').map((c, i) => (
+                            <tr key={i} className="border-b border-slate-50 text-slate-400">
+                              <td className="py-1.5 pr-3 font-mono text-xs">{c.code}</td>
+                              <td className="py-1.5 pr-3">{c.name || '–'}</td>
+                              <td className="py-1.5 pr-3">{c.company || '–'}</td>
+                              <td className="py-1.5 pr-3 text-xs">{c.plan}</td>
+                              <td className="py-1.5 text-xs">{c.status}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Free Checks / Leads */}
+              {detailModal === 'leads' && (
+                <div>
+                  {(d?.freeLeads || []).length === 0 ? (
+                    <p className="text-slate-400 text-sm">Noch keine Free Checks durchgeführt.</p>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-xs text-slate-500 border-b border-slate-200">
+                          <th className="pb-2 pr-3">Datum</th>
+                          <th className="pb-2 pr-3">Firma</th>
+                          <th className="pb-2 pr-3">E-Mail</th>
+                          <th className="pb-2 pr-3">Score</th>
+                          <th className="pb-2">Level</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(d?.freeLeads || []).map((l, i) => (
+                          <tr key={i} className="border-b border-slate-50 hover:bg-slate-50">
+                            <td className="py-2 pr-3 text-slate-500 text-xs whitespace-nowrap">{l.date}</td>
+                            <td className="py-2 pr-3 font-medium text-slate-700">{l.company || '–'}</td>
+                            <td className="py-2 pr-3 text-slate-500 text-xs">{l.email}</td>
+                            <td className="py-2 pr-3">
+                              <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${
+                                l.score > 60 ? 'bg-green-100 text-green-700' : l.score > 35 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
+                              }`}>{l.score}%</span>
+                            </td>
+                            <td className="py-2 text-slate-600 text-xs">{l.levelTitle || `Level ${l.level}`}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              )}
+
+              {/* Umsatz-Aufschlüsselung */}
+              {detailModal === 'revenue' && (
+                <div>
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {[
+                      { label: 'Premium Reports', count: d?.premiumCount || 0, price: 147, color: 'bg-blue-50 text-blue-700' },
+                      { label: 'Strategie-Pakete', count: d?.strategieCount || 0, price: 497, color: 'bg-purple-50 text-purple-700' },
+                      { label: 'Zertifikate', count: d?.zertifikatCount || 0, price: 97, color: 'bg-green-50 text-green-700' },
+                      { label: 'Online-Kurse', count: d?.kursCount || 0, price: 297, color: 'bg-amber-50 text-amber-700' },
+                    ].map(p => (
+                      <div key={p.label} className={`rounded-lg p-4 ${p.color}`}>
+                        <div className="text-lg font-bold">{p.count}×</div>
+                        <div className="text-sm font-medium">{p.label}</div>
+                        <div className="text-xs opacity-70 mt-1">à €{p.price} = €{p.count * p.price}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-slate-700">Gesamt (geschätzt)</span>
+                      <span className="text-xl font-bold text-amber-600">€{d?.estimatedRevenue || 0}</span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-2">Basierend auf angelegten Zugangscodes in Google Sheets. Tatsächliche Zahlungen im Mollie-Dashboard prüfen.</p>
+                  </div>
+                  {/* Letzte Kunden-Transaktionen */}
+                  {(d?.customers || []).filter(c => c.amount).length > 0 && (
+                    <div className="mt-6">
+                      <h4 className="text-xs font-semibold text-slate-400 uppercase mb-2">Letzte Transaktionen</h4>
+                      <table className="w-full text-sm">
+                        <tbody>
+                          {(d?.customers || []).filter(c => c.amount).map((c, i) => (
+                            <tr key={i} className="border-b border-slate-50 hover:bg-slate-50">
+                              <td className="py-2 pr-3 text-slate-500 text-xs">{c.date}</td>
+                              <td className="py-2 pr-3 font-medium text-slate-700">{c.company || c.name}</td>
+                              <td className="py-2 pr-3 text-xs">
+                                <span className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">{c.plan}</span>
+                              </td>
+                              <td className="py-2 text-right font-medium text-slate-700">€{c.amount}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
+
+            </div>
+            <div className="p-4 border-t border-slate-200 flex-shrink-0">
+              <button onClick={() => setDetailModal(null)}
+                className="w-full px-4 py-2.5 bg-slate-100 text-slate-600 font-semibold rounded-lg hover:bg-slate-200 text-sm">
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Setup-Checkliste – nur offene Items anzeigen */}
+      {openItems.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base font-bold text-primary-700">Setup-Checkliste</h2>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${allDone ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
+              {doneCount} / {CHECKLIST_ITEMS.length} erledigt
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {openItems.map(item => (
+              <button key={item.key} onClick={() => toggleCheck(item.key)}
+                className="w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-colors bg-slate-50 border-slate-100 hover:bg-slate-100">
+                <div className="w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center border-2 transition-colors border-slate-300" />
+                <div>
+                  <p className="text-sm font-medium text-slate-700">{item.label}</p>
                   <p className="text-xs text-slate-400 mt-0.5 font-mono">{item.hint}</p>
                 </div>
               </button>
-            )
-          })}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-5 pt-4 border-t border-slate-100">
-          <p className="text-xs text-slate-400">
-            Env Vars setzen unter:{' '}
-            <a href="https://vercel.com/steffens-projects-89ed6db5/ki-kompass-v2/settings/environment-variables"
-              target="_blank" rel="noopener noreferrer"
-              className="text-primary-500 hover:underline">
-              Vercel → Settings → Environment Variables
-            </a>
-          </p>
+          <div className="mt-5 pt-4 border-t border-slate-100">
+            <p className="text-xs text-slate-400">
+              Env Vars setzen unter:{' '}
+              <a href="https://vercel.com/steffens-projects-89ed6db5/ki-kompass-v2/settings/environment-variables"
+                target="_blank" rel="noopener noreferrer"
+                className="text-primary-500 hover:underline">
+                Vercel → Settings → Environment Variables
+              </a>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
+
+      {allDone && (
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700 font-medium">
+          Setup komplett – alle {CHECKLIST_ITEMS.length} Punkte erledigt.
+        </div>
+      )}
 
       {/* Testdaten-Block */}
       <div className="bg-white rounded-xl border border-dashed border-slate-300 p-5 mt-4">
