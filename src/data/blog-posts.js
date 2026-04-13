@@ -17,6 +17,35 @@
 
 export const blogPosts = [
   {
+    id: 11,
+    slug: 'ki-automatisierung-im-mittelstand-warum-abwarten-teurer-ist-als-anfangen',
+    title: 'KI-Automatisierung im Mittelstand: Warum Abwarten teurer ist als Anfangen',
+    excerpt: 'Die Theorie kennen wir alle: Künstliche Intelligenz macht Prozesse schneller. Aber wie sieht das in der Praxis aus, wenn man nicht Google oder Microsoft ist, sondern ein 100-Mann-Betrieb im Maschinenbau? Wir schauen uns an, was 2026 wirklich funktioniert.',
+    content: `
+<p><strong>Der Status Quo (ohne Buzzwords)</strong><br>Die Realität in vielen Unternehmen sieht so aus: PDFs werden ausgedruckt, abgetippt und in drei verschiedene Systeme eingepflegt. Das ist nicht nur fehleranfällig, sondern bindet genau die Fachkräfte, die wir eigentlich woanders brauchen. Aktuelle Zahlen zeigen: 75% der Unternehmen nutzen bereits erste KI-Ansätze, aber oft fehlt der Mut für den nächsten Schritt.</p>
+
+<p><strong>Was jetzt schon geht (und sich rechnet):</strong></p>
+<ul>
+  <li><strong>Intelligente Dokumentenverarbeitung (IDP):</strong> Rechnungen und Lieferscheine werden nicht mehr nur eingescannt, sondern die KI liest die relevanten Daten aus und bucht sie direkt ins ERP-System.</li>
+  <li><strong>Predictive Maintenance:</strong> Maschinen melden sich, bevor sie kaputtgehen. Ein Kunststoffhersteller nutzt das bereits, um Ausschuss zu minimieren.</li>
+  <li><strong>Software-Roboter (RPA):</strong> Kleine, KI-gestützte Helfer übernehmen das stumpfe Copy-Paste zwischen alten Systemen, die keine moderne API haben.</li>
+</ul>
+
+<p><strong>Die Hürde im Kopf (und wie man sie nimmt)</strong><br>Das größte Hindernis ist oft nicht die Technik, sondern fehlendes Wissen und die Angst vor riesigen IT-Projekten. Der Fehler: Man will sofort den perfekten, vollautomatisierten Prozess. Der bessere Weg: Einen kleinen, schmerzhaften Prozess suchen (z.B. die Spesenerfassung), diesen automatisieren und dann skalieren.</p>
+
+<p><strong>Fazit für die Praxis</strong><br>Wer auf die "perfekte" KI-Lösung wartet, wartet zu lange. Die Werkzeuge für den Mittelstand sind da, die Einstiegshürden sinken. Der europäische Weg liegt nicht in wilden Experimenten, sondern in der pragmatischen Automatisierung von echten Problemen.</p>
+
+<p><em>Start small, scale smart.</em></p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-13',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 10,
     slug: 'ki-als-infrastruktur-nicht-als-pflaster-warum-2026-das-jahr-der-entscheidung-fuer-den-mittelstand-ist',
     title: 'KI als Infrastruktur, nicht als Pflaster: Warum 2026 das Jahr der Entscheidung für den Mittelstand ist',
