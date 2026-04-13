@@ -5,13 +5,14 @@
 // ============================================================
 import { NextResponse } from 'next/server'
 import { google } from 'googleapis'
+import { verifyAdminToken } from '../login/route'
 import { sendConfirmationToCustomer } from '../../../../lib/mail'
 import { generatePDFReportHTML } from '../../../../lib/pdf-report'
 import { premiumQuestions, foerderprogramme } from '../../../../data/questions'
 
 function verifyAdmin(request) {
   const token = request.headers.get('x-admin-token')
-  return token === process.env.ADMIN_PASSWORD
+  return verifyAdminToken(token)
 }
 
 async function getSheets() {

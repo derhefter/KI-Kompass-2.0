@@ -59,7 +59,7 @@ export async function POST(request) {
       crypto.timingSafeEqual(inputBuffer, expectedBuffer)
 
     if (!match) {
-      return NextResponse.json({ error: 'Falsches Passwort' }, { status: 401 })
+      return NextResponse.json({ error: 'Ungültige Anmeldedaten' }, { status: 401 })
     }
 
     const token = createToken(adminPassword)

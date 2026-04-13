@@ -406,17 +406,22 @@ export default function Assessment() {
             ))}
           </div>
 
-          {currentQuestion > 0 && (
-            <button
-              onClick={handleBack}
-              className="mt-6 text-sm text-slate-500 hover:text-slate-700 flex items-center transition-colors"
-            >
-              <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Zur&uuml;ck
-            </button>
-          )}
+          <div className="mt-6 flex items-center justify-between">
+            {currentQuestion > 0 ? (
+              <button
+                onClick={handleBack}
+                className="text-sm text-slate-500 hover:text-slate-700 flex items-center transition-colors"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Zur&uuml;ck
+              </button>
+            ) : <span />}
+            <a href="/" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+              Abbrechen
+            </a>
+          </div>
         </div>
 
         {/* Tipp below card */}

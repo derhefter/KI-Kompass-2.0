@@ -38,7 +38,7 @@ export async function POST(request) {
       if (rows[i][0] && rows[i][0].trim() === code.trim()) { rowIndex = i; break }
     }
     if (rowIndex === -1) {
-      return NextResponse.json({ error: 'Code "' + code + '" nicht gefunden' }, { status: 404 })
+      return NextResponse.json({ error: 'Zugangscode nicht gefunden' }, { status: 404 })
     }
     const currentExpiry = rows[rowIndex][6] ? new Date(rows[rowIndex][6]) : new Date()
     const baseDate = currentExpiry > new Date() ? currentExpiry : new Date()

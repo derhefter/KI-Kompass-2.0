@@ -451,7 +451,7 @@ function QueueTab({ token, onCountChange }) {
               </div>
               {preview.htmlContent ? (
                 <div className="border border-slate-200 rounded-lg overflow-hidden">
-                  <div dangerouslySetInnerHTML={{ __html: preview.htmlContent }} />
+                  <iframe srcDoc={preview.htmlContent} sandbox="" className="w-full min-h-[400px] border-0" title="E-Mail-Vorschau" />
                 </div>
               ) : (
                 <p className="text-slate-400 text-sm">Kein E-Mail-Body – Dokument wird als Anhang gesendet.</p>
@@ -460,7 +460,7 @@ function QueueTab({ token, onCountChange }) {
                 <div className="mt-4">
                   <p className="text-xs font-semibold text-slate-600 mb-2">Anhang (Vorschau):</p>
                   <div className="border-2 border-dashed border-slate-200 rounded-lg overflow-hidden max-h-96 overflow-y-auto">
-                    <div dangerouslySetInnerHTML={{ __html: preview.attachmentHtml }} className="scale-75 origin-top-left" style={{ width: '133%' }} />
+                    <iframe srcDoc={preview.attachmentHtml} sandbox="" className="w-full min-h-[300px] border-0 scale-75 origin-top-left" style={{ width: '133%' }} title="Anhang-Vorschau" />
                   </div>
                 </div>
               )}
@@ -747,7 +747,7 @@ function BlogTab() {
       {/* HTML-Vorschau */}
       <div className="mt-6 bg-white rounded-xl border border-slate-200 p-6">
         <h3 className="text-sm font-bold text-slate-600 mb-3">Vorschau</h3>
-        <div className="prose prose-slate prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: editForm.content }} />
+        <iframe srcDoc={editForm.content} sandbox="" className="w-full min-h-[400px] border border-slate-200 rounded-lg" title="Blog-Vorschau" />
       </div>
     </div>
   )
