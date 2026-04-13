@@ -198,11 +198,14 @@ export async function getPendingDrafts() {
       spreadsheetId: sid,
       range: 'Entwuerfe!A:J',
     })
-    const rows = (res.data.values || []).slice(1)
-    return rows
-      .filter(r => r[0] && (r[8] === 'pending' || !r[8]))
-      .map((r, i) => ({
-        rowIndex: i + 2,
+    const allRows = res.data.values || []
+    // rowIndex muss die echte Zeile im Sheet sein (1-basiert, +1 für Header)
+    return allRows
+      .map((r, i) => ({ row: r, sheetRow: i + 1 })) // i=0 ist Header → sheetRow=1
+      .slice(1) // Header überspringen
+      .filter(({ row: r }) => r[0] && (r[8] === 'pending' || !r[8]))
+      .map(({ row: r, sheetRow }) => ({
+        rowIndex: sheetRow,
         id: r[0] || '',
         slug: r[1] || '',
         title: r[2] || '',

@@ -43,10 +43,11 @@ export async function GET(request) {
       readSheetSafe(process.env.GOOGLE_SHEET_PREMIUM_RESULTS, 'Ergebnisse!A:K'),
       readSheetSafe(process.env.GOOGLE_SHEET_CUSTOMERS, 'FollowUps!A:F'),
     ])
-    const customerList = customers.map(row => ({ date: row[0] || '', company: row[4] || row[1] || '', name: row[2] || '', email: row[3] || '', plan: row[6] || '', paymentMethod: row[7] || '', amount: row[8] || '' }))
-    const codeList = accessCodes.map(row => ({ code: row[0] || '', name: row[1] || '', email: row[2] || '', company: row[3] || '', plan: row[4] || '', createdAt: row[5] || '', expiresAt: row[6] || '', status: row[7] || '' }))
-    const leadList = freeResults.map(row => ({ date: row[0] || '', company: row[1] || '', email: row[2] || '', score: parseInt(row[3]) || 0, level: parseInt(row[4]) || 0, levelTitle: row[5] || '' }))
-    const followUpList = followUps.map(row => ({ email: row[0] || '', type: row[1] || '', scheduledDate: row[2] || '', dueDate: row[3] || '', status: row[4] || 'ausstehend', sentDate: row[5] || '' }))
+    // .slice(1) überspringt die Header-Zeile in Google Sheets
+    const customerList = customers.slice(1).map(row => ({ date: row[0] || '', company: row[4] || row[1] || '', name: row[2] || '', email: row[3] || '', plan: row[6] || '', paymentMethod: row[7] || '', amount: row[8] || '' }))
+    const codeList = accessCodes.slice(1).map(row => ({ code: row[0] || '', name: row[1] || '', email: row[2] || '', company: row[3] || '', plan: row[4] || '', createdAt: row[5] || '', expiresAt: row[6] || '', status: row[7] || '' }))
+    const leadList = freeResults.slice(1).map(row => ({ date: row[0] || '', company: row[1] || '', email: row[2] || '', score: parseInt(row[3]) || 0, level: parseInt(row[4]) || 0, levelTitle: row[5] || '' }))
+    const followUpList = followUps.slice(1).map(row => ({ email: row[0] || '', type: row[1] || '', scheduledDate: row[2] || '', dueDate: row[3] || '', status: row[4] || 'ausstehend', sentDate: row[5] || '' }))
     const activeCodes = codeList.filter(c => c.status === 'aktiv').length
     const premiumCount = codeList.filter(c => c.plan === 'premium').length
     const strategieCount = codeList.filter(c => c.plan === 'strategie').length
