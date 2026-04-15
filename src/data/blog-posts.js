@@ -17,6 +17,29 @@
 
 export const blogPosts = [
   {
+    id: 13,
+    slug: 'ki-im-mittelstand-2026-von-der-isolierten-loesung-zur-echten-prozessmaschine',
+    title: 'KI im Mittelstand 2026: Von der isolierten Lösung zur echten Prozessmaschine',
+    excerpt: 'Viele mittelständische Unternehmen haben in den letzten zwei Jahren erste Erfahrungen mit KI gesammelt. Oft blieb es jedoch bei isolierten Anwendungen. 2026 rückt nun die Kernfrage in den Fokus: Wie wird aus einem netten Werkzeug eine echte Maschine, die unsere Wertschöpfung aktiv unterstützt?',
+    content: `
+<p>Viele mittelständische Unternehmen haben in den letzten zwei Jahren erste Erfahrungen mit KI gesammelt. Oft blieb es jedoch bei isolierten Anwendungen – ein Chatbot auf der Website oder ChatGPT zur Texterstellung. Der messbare Einfluss auf das Betriebsergebnis lässt in diesen Szenarien meist auf sich warten. 2026 rückt nun die Kernfrage in den Fokus: Wie wird aus einem netten Werkzeug eine Maschine, die unsere Wertschöpfung aktiv unterstützt?</p>
+<p><strong>Der Trend: End-to-End-Automatisierung</strong><br>Der Schlüssel liegt in der durchgängigen Automatisierung ganzer Prozessketten. Statt einzelner Aufgaben werden komplette Abläufe durch die clevere Kombination von KI (für das Verstehen unstrukturierter Daten wie E-Mails) und RPA (Software-Roboter für die Dateneingabe) übernommen. Die gute Nachricht: Diese Technologien sind mittlerweile standardisiert und damit endlich auch für mittlere Budgets wirtschaftlich darstellbar.</p>
+<p><strong>Ein konkretes Praxisbeispiel</strong><br>Wo früher ein Mitarbeiter eine E-Mail öffnen, das PDF herunterladen, Daten abtippen und in das System übertragen musste, arbeitet heute ein KI-Agent. Er liest das Postfach aus, extrahiert fehlerfrei Beträge, gleicht sie mit der Bestellung ab und bereitet die Buchung vor. Die Fachkraft wird vom reinen "Abtipper" zum Entscheider, der nur noch prüft und freigibt.</p>
+<p><strong>Der EU AI Act: Qualitätssiegel statt Schreckgespenst</strong><br>Im August 2026 tritt der EU AI Act in Kraft. Für Betriebe bedeutet das: Der unkontrollierte Daten-Upload auf ausländische Server ist ein Risiko. Gefragt sind europäische, DSGVO-konforme Lösungen. Wer hier professionell aufgestellt ist, nutzt Regulierung künftig als echten Wettbewerbsvorteil bei Ausschreibungen.</p>
+<p><strong>Handlungsempfehlungen für die Praxis:</strong><br>Vermeiden Sie endlose Theorie-Projekte. Der pragmatische Weg:<br>
+1. Identifizieren Sie den Prozess, der die meiste manuelle Zeit frisst.<br>
+2. Automatisieren Sie diesen einen Prozess durchgängig.<br>
+3. Messen Sie den Erfolg anhand der eingesparten Durchlaufzeit.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-15',
+    status: 'published',
+    image: '',
+    readTime: 4
+  },
+
+  {
     id: 12,
     slug: 'ki-automatisierung-2026-warum-94-der-deutschen-mittelstaendler-aktuell-geld-auf-der-strasse-liegen-lassen',
     title: 'KI-Automatisierung 2026: Warum 94 % der deutschen Mittelständler aktuell Geld auf der Straße liegen lassen',
