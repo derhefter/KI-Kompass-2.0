@@ -10,6 +10,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const post = await fetchPost(params.slug)
   if (!post) return {}
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.derhefter.com'
   return {
     title: post.title,
     description: post.excerpt,
@@ -19,6 +20,20 @@ export async function generateMetadata({ params }) {
       type: 'article',
       locale: 'de_DE',
       publishedTime: post.date,
+      images: [
+        {
+          url: `${baseUrl}/api/og?text=${encodeURIComponent(post.title)}`,
+          width: 1080,
+          height: 1080,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [`${baseUrl}/api/og?text=${encodeURIComponent(post.title)}`],
     },
   }
 }
