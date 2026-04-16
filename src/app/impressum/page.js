@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Impressum | KI-Kompass',
+  title: 'Impressum',
   description: 'Impressum der KI-Kompass-Plattform von frimalo, Steffen Hefter, Halle (Saale).',
   robots: 'noindex, nofollow',
 }

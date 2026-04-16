@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Datenschutzerklärung | KI-Kompass',
+  title: 'Datenschutzerklärung',
   description: 'Datenschutzerklärung des KI-Kompass: Wie Ihre Daten verarbeitet werden – transparent und DSGVO-konform.',
   robots: 'noindex, nofollow',
 }

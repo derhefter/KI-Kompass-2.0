@@ -3,8 +3,11 @@ import { getPublishedPosts as getStaticPosts } from '../../data/blog-posts'
 export const revalidate = 1800 // 30 Min. Cache
 
 export const metadata = {
-  title: 'Blog | KI-Kompass – Praxiswissen für den Mittelstand',
+  title: 'Blog – Praxiswissen für den Mittelstand',
   description: 'Praxisnahes Wissen zu KI, Fördermitteln und Digitalisierung für kleine und mittlere Unternehmen. Kein Beratersprech – nur was wirklich hilft.',
+  alternates: {
+    canonical: '/blog',
+  },
   openGraph: {
     title: 'KI-Kompass Blog | Praxiswissen für KMU',
     description: 'Konkrete Tipps zu KI, Förderung und Digitalisierung für den Mittelstand.',

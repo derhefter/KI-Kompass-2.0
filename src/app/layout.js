@@ -38,9 +38,6 @@ export const metadata = {
       follow: true,
     },
   },
-  alternates: {
-    canonical: 'https://www.derhefter.com',
-  },
 }
 
 export default function RootLayout({ children }) {

@@ -1,6 +1,9 @@
 export const metadata = {
-  title: '\u00dcber mich | Steffen Hefter - KI-Kompass',
+  title: '\u00dcber mich | Steffen Hefter',
   description: 'Steffen Hefter, Gesch\u00e4ftsf\u00fchrer der frimalo und KI-Berater f\u00fcr KMU in Mitteldeutschland. \u00dcber 20 Jahre Erfahrung in F\u00fchrung, Digitalisierung und Prozessoptimierung.',
+  alternates: {
+    canonical: '/ueber-mich',
+  },
 }
 
 export default function UeberMich() {
