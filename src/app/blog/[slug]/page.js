@@ -86,8 +86,54 @@ export default async function BlogArticle({ params }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.derhefter.com'
   const articleUrl = `${baseUrl}/blog/${post.slug}`
 
+  const jsonLdArticle = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    url: articleUrl,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Person',
+      name: post.author || 'Steffen Hefter',
+      url: `${baseUrl}/ueber-mich`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KI-Kompass – frimalo',
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/frimalo logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl,
+    },
+  }
+
+  const jsonLdBreadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${baseUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: articleUrl },
+    ],
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
+      />
       {/* Breadcrumb */}
       <div className="bg-slate-50 border-b border-slate-100 py-3">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
