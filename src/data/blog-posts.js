@@ -17,6 +17,30 @@
 
 export const blogPosts = [
   {
+    id: 14,
+    slug: 'ki-im-mittelstand-foerdergelder-nutzen-daten-drain-stoppen',
+    title: 'KI im Mittelstand: Fördergelder nutzen, Daten-Drain stoppen',
+    excerpt: 'Viele mittelständische Betriebe zögern beim Thema KI noch immer. Die Gründe? Angst vor Datenabfluss und unklare Startpunkte. Doch der April 2026 zeigt: Wer jetzt nicht anfängt, die stupiden Prozesse zu automatisieren, verliert den Anschluss.',
+    content: `
+<p>Viele mittelständische Betriebe zögern beim Thema KI noch immer. Die Gründe? Angst vor Datenabfluss und unklare Startpunkte. Doch der April 2026 zeigt: Wer jetzt nicht anfängt, die stupiden Prozesse zu automatisieren, verliert den Anschluss. Hier sind die drei wichtigsten Entwicklungen für Pragmatiker.</p>
+
+<p><strong>1. Es gibt Geld vom Staat</strong><br>KI-Projekte müssen nicht teuer sein, und oft zahlt der Staat mit. Aktuelles Beispiel: Seit dem 1. April gibt es in Bremen das Förderprogramm "Digitaler Mittelstand KI" mit bis zu 17.000 Euro Zuschuss für Automatisierung und Cybersicherheit. Auch andere Bundesländer ziehen nach. Die Lektion: Erst die Fördertöpfe checken, dann die Software einkaufen.</p>
+
+<p><strong>2. Modulare KI-Agenten erledigen die Fleißarbeit</strong><br>Vergessen Sie die Vorstellung von KI als allwissendem Orakel. Der wahre Wert liegt in kleinen, modularen KI-Agenten, die genau eine Sache extrem gut können. Die Angebotserstellung lässt sich beispielsweise oft zu 80% automatisieren. Auch bei der Lead-Qualifizierung im B2B-Vertrieb übernehmen KI-Tools zunehmend den Erstkontakt. Das spart Zeit für die wirklich wichtigen Kunden-Gespräche.</p>
+
+<p><strong>3. EU-Datenschutz: Lokale KI als Lösung</strong><br>Mehr als die Hälfte der Unternehmen fürchtet Datenspionage durch außereuropäische Anbieter. Die Lösung ist simpel: Setzen Sie auf lokale KI-Modelle oder europäische Cloud-Anbieter, die den EU AI Act (dessen strenge Regeln ab August 2026 vollständig für Hochrisiko-Systeme greifen) bereits im Blut haben. Wer seine Datenstrategie jetzt aufräumt, schläft ruhiger.</p>
+
+<p><strong>Fazit:</strong> Fangen Sie klein an. Suchen Sie sich den nervigsten, wiederkehrendsten Prozess im Büro und automatisieren Sie ihn.</p>
+`,
+    category: 'Förderung',
+    author: 'Steffen Hefter',
+    date: '2026-04-16',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 13,
     slug: 'ki-im-mittelstand-2026-von-der-isolierten-loesung-zur-echten-prozessmaschine',
     title: 'KI im Mittelstand 2026: Von der isolierten Lösung zur echten Prozessmaschine',
