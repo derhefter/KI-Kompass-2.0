@@ -6,9 +6,10 @@ export async function GET(request) {
   const { searchParams, origin } = new URL(request.url);
   const text = searchParams.get('text') || 'Wer auf die "perfekte" KI-Lösung wartet, wartet zu lange.';
   
-  // Wir nutzen als Fallback die Live-Domain, falls origin lokal ist
   const baseUrl = origin.includes('localhost') ? 'https://www.derhefter.com' : origin;
-  const avatarUrl = `${baseUrl}/Steffen2025.jpg`;
+  
+  // Lade das Bild als Buffer für die Edge Runtime
+  const avatarImageData = await fetch(new URL(`${baseUrl}/Steffen2025.jpg`)).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -32,14 +33,13 @@ export async function GET(request) {
           KI-Kompass
         </div>
 
-        {/* Neues Element: Autoren-Badge oben rechts */}
         <div style={{ position: 'absolute', top: '80px', right: '120px', display: 'flex', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '20px' }}>
             <span style={{ fontSize: '24px', fontWeight: 700, color: 'white' }}>Steffen Hefter</span>
             <span style={{ fontSize: '18px', color: '#BAE6FD' }}>frimalo KI-Beratung</span>
           </div>
           <img
-            src={avatarUrl}
+            src={avatarImageData}
             style={{
               width: '80px',
               height: '80px',
