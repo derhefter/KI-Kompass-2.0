@@ -3,8 +3,12 @@ import { ImageResponse } from 'next/og';
 export const runtime = 'edge';
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
+  const { searchParams, origin } = new URL(request.url);
   const text = searchParams.get('text') || 'Wer auf die "perfekte" KI-Lösung wartet, wartet zu lange.';
+  
+  // Wir nutzen als Fallback die Live-Domain, falls origin lokal ist
+  const baseUrl = origin.includes('localhost') ? 'https://www.derhefter.com' : origin;
+  const avatarUrl = `${baseUrl}/Steffen2025.jpg`;
 
   return new ImageResponse(
     (
@@ -23,11 +27,32 @@ export async function GET(request) {
         }}
       >
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '24px', background: 'linear-gradient(to right, #FDE68A, #FFFFFF)' }} />
-        <div style={{ position: 'absolute', top: '80px', left: '120px', fontSize: '36px', fontWeight: 900, color: 'white' }}>KI-Kompass</div>
+        
+        <div style={{ position: 'absolute', top: '80px', left: '120px', display: 'flex', fontSize: '36px', fontWeight: 900, color: 'white' }}>
+          KI-Kompass
+        </div>
+
+        {/* Neues Element: Autoren-Badge oben rechts */}
+        <div style={{ position: 'absolute', top: '80px', right: '120px', display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '20px' }}>
+            <span style={{ fontSize: '24px', fontWeight: 700, color: 'white' }}>Steffen Hefter</span>
+            <span style={{ fontSize: '18px', color: '#BAE6FD' }}>frimalo KI-Beratung</span>
+          </div>
+          <img
+            src={avatarUrl}
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '40px',
+              border: '3px solid white',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
         
         <div style={{ display: 'flex', marginBottom: '50px' }}>
           <div style={{ background: '#1E293B', color: 'white', padding: '12px 28px', borderRadius: '50px', fontWeight: 700, fontSize: '32px', textTransform: 'uppercase', letterSpacing: '2px' }}>
-            Strategie
+            Praxiswissen
           </div>
         </div>
 
