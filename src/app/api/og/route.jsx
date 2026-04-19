@@ -9,7 +9,7 @@ export async function GET(request) {
   const baseUrl = origin.includes('localhost') ? 'https://www.derhefter.com' : origin;
   
   // Lade das Bild als Buffer für die Edge Runtime
-  const avatarImageData = await fetch(new URL(`${baseUrl}/Steffen2025.jpg`)).then((res) => res.arrayBuffer());
+  const avatarImageData = await fetch(new URL(`${baseUrl}/avatar-steffen-linkedin.jpg`)).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
