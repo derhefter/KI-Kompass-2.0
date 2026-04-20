@@ -17,6 +17,22 @@
 
 export const blogPosts = [
   {
+    id: 18,
+    slug: 'ki-haftung-neu-geregelt-warum-das-neue-produkthaftungsgesetz-ein-gamechanger-fuer-die-softwareentwicklung-ist',
+    title: 'KI-Haftung neu geregelt: Warum das neue Produkthaftungsgesetz ein Gamechanger für die Softwareentwicklung ist',
+    excerpt: 'Nach 36 Jahren erhält das Produkthaftungsgesetz ein Major Release. Apps, Cloud-Dienste und KI-Systeme werden künftig als eigenständige Produkte eingestuft – mit unbegrenzter Haftung für den Hersteller.',
+    content: `
+<p>Nach 36 Jahren – eine Ewigkeit in der IT-Welt – erhält das Produkthaftungsgesetz (ProdHaftG) sein erstes großes Major Release seit 1990. In Software-Jahren gemessen ist das in etwa die Distanz zwischen einer Lochkarte und einem modernen Large Language Model. Was früher ausschließlich für physische Gegenstände wie Toaster, Autos oder Industriemaschinen galt, erreicht nun vollumfänglich die Welt der Software und Künstlichen Intelligenz. Die Botschaft des Gesetzgebers ist unmissverständlich: Wer KI-Systeme baut und auf den Markt bringt, steht künftig in der direkten Verantwortung.</p><br><h3>Vom Bit zum Atom: Software ist jetzt ein "Produkt"</h3><p>Für alle, die bisher nach dem Motto agierten "Wir bauen ja nur Software, kein physisches Gerät": Willkommen in der neuen Realität. Die Grenzen zwischen digitalen Bits und physischen Atomen waren für Richter in der Vergangenheit oft unscharf. Nun hat der Gesetzgeber Klarheit geschaffen. Apps, Cloud-Dienste und insbesondere KI-Systeme werden künftig ganz offiziell als eigenständige Produkte eingestuft. Damit unterliegen sie denselben strengen Haftungsregeln wie klassische Konsumgüter.</p><br><h3>Die drei wichtigsten Änderungen im Überblick:</h3><ul><li><strong>Herstellerhaftung statt "Anwender-Pech":</strong> Die Haftung verschiebt sich massiv. Wenn eine KI eine fehlerhafte Entscheidung trifft, die zu einem Schaden führt, kann dies nicht mehr einfach als "Schicksal" oder "Anwendungsfehler" abgetan werden. Der Hersteller steht in der Pflicht. Wer bisher Bugs einfach in den AGB wegdefiniert hat, bekommt nun ein ernstes rechtliches Problem.</li><li><strong>Beweiserleichterung für Geschädigte:</strong> Das ist einer der zentralsten Punkte für die Praxis. Bisher war es für Kläger fast unmöglich, bei komplexen Black-Box-Modellen nachzuweisen, <em>warum</em> genau ein Algorithmus versagt hat. Das neue Gesetz sieht hier endlich eine Beweiserleichterung vor. Wer durch fehlerhafte KI zu Schaden kommt, muss nicht mehr den gesamten technischen Kausalzusammenhang bis ins letzte Detail beweisen.</li><li><strong>Wegfall des Haftungsdeckels:</strong> Mit Haftungsdeckel nach oben: unbegrenzt. Für Unternehmen bedeutet dies ein potenziell unlimitiertes finanzielles Risiko bei schwerwiegenden Fehlern. Das konzentriert – wie Johann-Georg V. treffend auf LinkedIn anmerkte – die Gedanken im Management wunderbar.</li></ul><br><h3>Fazit: Eine Chance für Qualität</h3><p>Dieser Wandel sollte nicht als Innovationsbremse verstanden werden. Vielmehr ist es eine gewaltige Chance und ein externer Motivator. Anbieter, die bereits heute massiv in Qualitätssicherung, Transparenz, Red Teaming und robuste Evaluierung ihrer KI-Modelle investieren, werden diesen Wandel kaum spüren. Für sie wird die Qualität vom "Nice-to-have" zum klaren Wettbewerbsvorteil und existenziellen Schutzschild.</p><p>Wer Vertrauen in KI schaffen will, muss auch Verantwortung dafür übernehmen. Das neue Produkthaftungsgesetz schafft genau dafür jetzt den rechtlichen Rahmen.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-20',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 17,
     slug: 'hyperautomatisierung-statt-pilotprojekte-so-skaliert-der-mittelstand-2026',
     title: 'Hyperautomatisierung statt Pilotprojekte: So skaliert der Mittelstand 2026',
