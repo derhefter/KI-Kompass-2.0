@@ -28,15 +28,18 @@ export async function verifyMailTransport() {
 
 function getTransporter() {
   if (!transporterInstance) {
-    const host = process.env.EMAIL_HOST
-    const user = process.env.EMAIL_USER
-    const pass = process.env.EMAIL_PASS
+    // Trim: Whitespace/Tabs/CRLF schleichen sich beim Copy/Paste aus
+    // Strato-/Gmail-/Vercel-UIs gerne in ENV-Variablen ein und führen
+    // zu kryptischen Fehlern wie "queryA EBADNAME \tsmtp.strato.de".
+    const host = process.env.EMAIL_HOST?.trim()
+    const user = process.env.EMAIL_USER?.trim()
+    const pass = process.env.EMAIL_PASS // Passwörter NICHT trimmen – Spaces können legitim sein
 
     if (!host || !user || !pass || pass === 'DEIN_16_STELLIGES_APP_PASSWORT') {
       return null
     }
 
-    const port = parseInt(process.env.EMAIL_PORT || '587')
+    const port = parseInt((process.env.EMAIL_PORT || '587').trim())
     // secure: explizit via EMAIL_SECURE überschreibbar, sonst aus Port abgeleitet
     // (465 = TLS direkt; 587 = STARTTLS, also secure=false und nodemailer
     // verhandelt TLS automatisch). Funktioniert für Gmail, Strato, IONOS etc.
