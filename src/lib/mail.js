@@ -36,10 +36,20 @@ function getTransporter() {
       return null
     }
 
+    const port = parseInt(process.env.EMAIL_PORT || '587')
+    // secure: explizit via EMAIL_SECURE überschreibbar, sonst aus Port abgeleitet
+    // (465 = TLS direkt; 587 = STARTTLS, also secure=false und nodemailer
+    // verhandelt TLS automatisch). Funktioniert für Gmail, Strato, IONOS etc.
+    const secure = process.env.EMAIL_SECURE === 'true'
+      ? true
+      : process.env.EMAIL_SECURE === 'false'
+      ? false
+      : port === 465
+
     transporterInstance = nodemailer.createTransport({
       host,
-      port: parseInt(process.env.EMAIL_PORT || '587'),
-      secure: false,
+      port,
+      secure,
       auth: { user, pass },
     })
   }

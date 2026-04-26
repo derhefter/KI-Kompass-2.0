@@ -634,16 +634,34 @@ Alle Variablen müssen in **Vercel** unter Settings → Environment Variables ei
 | `NEXT_PUBLIC_COMPANY_NAME`    | `frimalo`                                        | –             |
 | `NEXT_PUBLIC_CONTACT_ADDRESS` | `Wilhelm-Schrader-Str. 27a, 06120 Halle (Saale)` | –             |
 
-### E-Mail (Gmail SMTP)
+### E-Mail (SMTP – Provider-agnostisch)
 
-| Variable         | Wert/Beschreibung                                  | Wo zu finden                         |
-| ---------------- | -------------------------------------------------- | ------------------------------------ |
-| `EMAIL_HOST`     | `smtp.gmail.com`                                   | Fest                                 |
-| `EMAIL_PORT`     | `587`                                              | Fest                                 |
-| `EMAIL_USER`     | `ki-kompass@derhefter.com`                         | Dein Gmail                           |
-| `EMAIL_PASS`     | 16-stelliges App-Passwort                          | Google → Sicherheit → App-Passwörter |
-| `EMAIL_FROM`     | `KI-Kompass \| frimalo <ki-kompass@derhefter.com>` | –                                    |
-| `EMAIL_REPLY_TO` | `ki-kompass@derhefter.com`                         | –                                    |
+Funktioniert mit jedem SMTP-Anbieter (Strato, Gmail, IONOS, Mailgun …).
+`secure` wird automatisch aus `EMAIL_PORT` abgeleitet (465 → TLS direkt, 587 → STARTTLS).
+Manuell überschreibbar via `EMAIL_SECURE=true|false`.
+
+| Variable         | Wert/Beschreibung                                                                       |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `EMAIL_HOST`     | SMTP-Server, z.B. `smtp.strato.de`, `smtp.gmail.com`, `smtp.ionos.de`                   |
+| `EMAIL_PORT`     | `465` oder `587` (empfohlen)                                                            |
+| `EMAIL_SECURE`   | Optional. Default: `true` für 465, sonst `false`. Selten manuell nötig.                 |
+| `EMAIL_USER`     | **Echte SMTP-Login-Adresse** (= Postfach-Login beim Provider, nicht zwingend Anzeige-From) |
+| `EMAIL_PASS`     | Postfach-Passwort beim Provider (bei Gmail: 16-stelliges App-Passwort, kein Konto-Pwd!) |
+| `EMAIL_FROM`     | Anzeige-Absender, z.B. `KI-Kompass \| frimalo <ki-kompass@derhefter.com>`               |
+| `EMAIL_REPLY_TO` | Antwortadresse, z.B. `ki-kompass@derhefter.com`                                         |
+
+**Beispiel Strato (empfohlen, da `derhefter.com` dort liegt):**
+
+```
+EMAIL_HOST=smtp.strato.de
+EMAIL_PORT=587
+EMAIL_USER=ki-kompass@derhefter.com
+EMAIL_PASS=<Postfach-Passwort aus dem Strato Communication Center>
+EMAIL_FROM=KI-Kompass | frimalo <ki-kompass@derhefter.com>
+EMAIL_REPLY_TO=ki-kompass@derhefter.com
+```
+
+**Wichtig (Falle):** Bei Gmail-SMTP muss `EMAIL_USER` ein echtes Google-Konto sein – Domain-Aliase funktionieren nicht. Für eigene Domain wie `ki-kompass@derhefter.com` ist Strato (oder der jeweilige Hoster) der saubere Weg.
 
 ### Terminbuchung
 
