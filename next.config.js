@@ -26,8 +26,12 @@ const nextConfig = {
             value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
+            // 'unsafe-inline' für script-src ist nötig wegen GA-Init-Snippet
+            // im ConsentBanner. Verschärfung mit Nonces oder next/third-parties
+            // ist als TODO offen (M7). Style-Inline bleibt für Tailwind.
+            // frame-ancestors + base-uri + form-action zusätzlich gehärtet.
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://www.mollie.com;",
           },
         ],
       },

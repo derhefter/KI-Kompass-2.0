@@ -67,6 +67,12 @@
    - Tab Blog → „LinkedIn verbinden" → durch den OAuth-Dialog → die zwei angezeigten Werte (Access Token + Person URN) kopieren → in **Vercel** unter Settings → Environment Variables eintragen (`LINKEDIN_ACCESS_TOKEN`, ggf. `LINKEDIN_PERSON_URN`) → Redeploy auslösen.
    - **Tipp:** Trag dir alle 50 Tage einen Kalender-Reminder ein, nicht erst am Tag 60.
 4. **Mail-Limit checken** — Gmail erlaubt 500 Mails/Tag. Wenn du je nahe rankommst (Massen-Newsletter o.ä.): zweites Mail-Konto erwägen.
+5. **Backup der Google Sheets** (5 Min):
+   - Drive → Ordner "KI-Kompass" → jedes der 4 Sheets öffnen
+   - Datei → Herunterladen → Microsoft Excel (.xlsx)
+   - Sicher in Cloud-Backup oder externer Festplatte ablegen
+   - Empfehlung: 1× im Monat reicht. Bei wichtigen Änderungen ad hoc.
+6. **LinkedIn-Token-Status** — Wenn du eine Mail mit Betreff "[REMINDER] LinkedIn-Token..." bekommst, ist das Token abgelaufen. Schritte siehe Abschnitt 4.
 
 ---
 

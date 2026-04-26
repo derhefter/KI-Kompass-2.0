@@ -146,3 +146,19 @@ export async function exchangeLinkedInCode(code) {
 export function isLinkedInConfigured() {
   return !!(process.env.LINKEDIN_ACCESS_TOKEN && process.env.LINKEDIN_PERSON_URN)
 }
+
+// Liveness-Check: ruft /v2/userinfo auf. Liefert {ok, statusCode, error}.
+// 401/403 = Token abgelaufen/widerrufen → Reminder an Owner.
+export async function checkLinkedInToken() {
+  const accessToken = process.env.LINKEDIN_ACCESS_TOKEN
+  if (!accessToken) return { ok: false, statusCode: 0, error: 'LINKEDIN_ACCESS_TOKEN nicht gesetzt' }
+  try {
+    const res = await fetch('https://api.linkedin.com/v2/userinfo', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    if (res.ok) return { ok: true, statusCode: res.status }
+    return { ok: false, statusCode: res.status, error: `HTTP ${res.status}` }
+  } catch (err) {
+    return { ok: false, statusCode: 0, error: err.message }
+  }
+}
