@@ -9,9 +9,19 @@
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { rateLimit } from '../../../../lib/rate-limit'
+import { getRecentFailures, recordAttempt, isLockedOut, LOGIN_LOCK_WINDOW_MIN } from '../../../../lib/login-attempts'
 
-// Brute-Force-Schutz: Max. 5 Versuche pro 15 Minuten
+// Brute-Force-Schutz Layer 1: In-Memory pro Serverless-Instanz (schneller Filter).
+// Layer 2 (persistent über Cold-Starts): Sheets-basiert via login-attempts.js
 const loginLimiter = rateLimit({ maxRequests: 5, windowMs: 15 * 60 * 1000 })
+
+function getClientIp(request) {
+  return (
+    request.headers.get('x-real-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  )
+}
 
 // Token erzeugen: timestamp + HMAC-Signatur
 function createToken(adminPassword) {
@@ -37,11 +47,22 @@ export function verifyAdminToken(token) {
 }
 
 export async function POST(request) {
+  const ip = getClientIp(request)
   try {
+    // Layer 1: In-Memory
     const { allowed } = loginLimiter(request)
     if (!allowed) {
       return NextResponse.json(
-        { error: 'Zu viele Login-Versuche. Bitte warten Sie 15 Minuten.' },
+        { error: `Zu viele Login-Versuche. Bitte warten Sie ${LOGIN_LOCK_WINDOW_MIN} Minuten.` },
+        { status: 429 }
+      )
+    }
+
+    // Layer 2: Persistenter Sheets-Lock (überlebt Cold-Starts).
+    const failures = await getRecentFailures(ip)
+    if (isLockedOut(failures)) {
+      return NextResponse.json(
+        { error: `Zu viele Login-Versuche. Bitte warten Sie ${LOGIN_LOCK_WINDOW_MIN} Minuten.` },
         { status: 429 }
       )
     }
@@ -59,12 +80,16 @@ export async function POST(request) {
       crypto.timingSafeEqual(inputBuffer, expectedBuffer)
 
     if (!match) {
+      // Versuch persistent loggen (fire & forget – nicht await blocking)
+      recordAttempt(ip, false, 'wrong_password').catch(() => {})
       return NextResponse.json({ error: 'Ungültige Anmeldedaten' }, { status: 401 })
     }
 
+    recordAttempt(ip, true).catch(() => {})
     const token = createToken(adminPassword)
     return NextResponse.json({ token, expiresIn: '24h' })
-  } catch {
+  } catch (err) {
+    console.error('Login-Route Fehler:', err.message)
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })
   }
 }

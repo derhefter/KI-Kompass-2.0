@@ -17,6 +17,15 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
+// Health-Check: prüft, ob der SMTP-Transport authentifizieren kann.
+// Wirft bei Konfigurationsfehler. Aufrufer sollte try/catch.
+export async function verifyMailTransport() {
+  const transporter = getTransporter()
+  if (!transporter) throw new Error('SMTP nicht konfiguriert (EMAIL_HOST/USER/PASS prüfen)')
+  await transporter.verify()
+  return true
+}
+
 function getTransporter() {
   if (!transporterInstance) {
     const host = process.env.EMAIL_HOST
@@ -37,13 +46,40 @@ function getTransporter() {
   return transporterInstance
 }
 
-// E-Mail an Steffen senden (Benachrichtigung bei neuem Lead / Kaufanfrage)
-// Unterstützt optionale Attachments: [{ filename, content, contentType }]
+// Fallback-Notification an einen Webhook (Discord/Slack), wenn Mail fehlschlägt.
+// Aktivierung via ENV `OWNER_FALLBACK_WEBHOOK_URL`. Discord/Slack akzeptieren
+// beide ein POST mit JSON `{ content }` bzw. `{ text }` – wir senden beides.
+async function notifyFallback(subject, htmlOrText) {
+  const url = process.env.OWNER_FALLBACK_WEBHOOK_URL
+  if (!url) return false
+  try {
+    // Plain-Text Version (Webhooks rendern HTML nicht)
+    const plain = String(htmlOrText)
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 1500)
+    const message = `*${subject}*\n${plain}`
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message, text: message }),
+    })
+    return true
+  } catch (err) {
+    console.error('Owner-Fallback-Webhook fehlgeschlagen:', err.message)
+    return false
+  }
+}
+
+// E-Mail an Steffen senden (Benachrichtigung bei neuem Lead / Kaufanfrage).
+// Bei SMTP-Ausfall wird – falls konfiguriert – der Fallback-Webhook genutzt.
 export async function sendNotificationToOwner({ subject, html, attachments }) {
   const transporter = getTransporter()
   if (!transporter) {
-    console.error('E-Mail nicht konfiguriert – Nachricht konnte nicht gesendet werden')
-    return false
+    console.error('E-Mail nicht konfiguriert – versuche Fallback-Webhook')
+    return notifyFallback(subject, html)
   }
 
   try {
@@ -61,6 +97,8 @@ export async function sendNotificationToOwner({ subject, html, attachments }) {
     return true
   } catch (err) {
     console.error('Fehler beim E-Mail-Versand:', err.message)
+    // Fallback: Webhook benachrichtigen, damit Steffen es überhaupt erfährt.
+    notifyFallback(`[MAIL FAIL] ${subject}`, html).catch(() => {})
     return false
   }
 }
