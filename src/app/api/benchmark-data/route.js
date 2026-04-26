@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server'
 import { rateLimit } from '../../../lib/rate-limit'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
+import { escapeHtml, sanitizeEmail, isHoneypotTriggered } from '../../../lib/sanitize'
 
 const limiter = rateLimit({ maxRequests: 10, windowMs: 60 * 1000 })
-
-function escapeHtml(text) {
-  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
-  return String(text).replace(/[&<>"]/g, (m) => map[m])
-}
 
 const benchmarkData = {
   handwerk: { branche: 'Handwerk & Baugewerbe', avgScore: 32, teilnehmer: 14, topCategory: 'Bereitschaft & Mindset', weakCategory: 'Daten & Infrastruktur', trend: '+5% seit Q3 2025', topTools: ['ChatGPT fuer Angebotserstellung', 'Planungssoftware mit KI', 'Automatisierte Rechnungsstellung'], insights: ['Hohe Bereitschaft aber geringe digitale Infrastruktur', 'Groesstes Potenzial bei Angebots- und Rechnungsprozessen', 'Fachkraeftemangel treibt KI-Interesse'] },
@@ -32,16 +28,18 @@ export async function POST(request) {
   try {
     const { allowed } = limiter(request)
     if (!allowed) return NextResponse.json({ error: 'Zu viele Anfragen.' }, { status: 429 })
-    const { name, email, company, branche, message } = await request.json()
+    const body = await request.json()
+    if (isHoneypotTriggered(body)) return NextResponse.json({ success: true })
+    const { name, email, company, branche, message } = body
     if (!name || !email || !company || !branche) return NextResponse.json({ error: 'Alle Felder sind erforderlich' }, { status: 400 })
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: 'Ungueltige E-Mail' }, { status: 400 })
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return NextResponse.json({ error: 'Ungueltige E-Mail' }, { status: 400 })
     const safeName = escapeHtml((name || '').slice(0, 200))
-    const safeEmail = (email || '').slice(0, 254).replace(/[<>\r\n]/g, '')
+    const safeEmail = sanitizeEmail(email)
     const safeCompany = escapeHtml((company || '').slice(0, 200))
     const brancheLabel = benchmarkData[branche] ? benchmarkData[branche].branche : escapeHtml((branche || '').slice(0, 100))
     await sendNotificationToOwner({
       subject: 'Benchmark-Report Bestellung: ' + safeCompany + ' - ' + brancheLabel,
-      html: '<h2>Neue Benchmark-Report Bestellung</h2><table style="border-collapse:collapse;width:100%;max-width:500px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + safeEmail + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Branche</td><td style="padding:8px;border:1px solid #ddd;">' + brancheLabel + '</td></tr></table>',
+      html: '<h2>Neue Benchmark-Report Bestellung</h2><table style="border-collapse:collapse;width:100%;max-width:500px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + escapeHtml(safeEmail) + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Branche</td><td style="padding:8px;border:1px solid #ddd;">' + brancheLabel + '</td></tr></table>',
     })
     await sendConfirmationToCustomer({
       to: safeEmail,

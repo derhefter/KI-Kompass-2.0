@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { verifyAdminToken } from '../login/route'
+import { requireAdmin } from '../../../../lib/admin-auth'
 import { google } from 'googleapis'
 
 function extractSheetId(value) {
@@ -10,15 +10,15 @@ function extractSheetId(value) {
 }
 
 export async function POST(request) {
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
   try {
-    const token = request.headers.get('x-admin-token')
-    if (!verifyAdminToken(token)) {
-      return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+    const { code, days: rawDays } = await request.json()
+    const days = parseInt(rawDays, 10)
+    if (!code || !Number.isFinite(days) || days < 1 || days > 3650) {
+      return NextResponse.json({ error: 'Code und gueltige Tageszahl (1-3650) erforderlich' }, { status: 400 })
     }
-    const { code, days } = await request.json()
-    if (!code || !days || days < 1) {
-      return NextResponse.json({ error: 'Code und Tage erforderlich' }, { status: 400 })
-    }
+    const codeTrimmed = String(code).trim().slice(0, 100)
     const credentials = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
     if (!credentials) {
       return NextResponse.json({ error: 'Google Sheets nicht konfiguriert' }, { status: 500 })
@@ -35,7 +35,7 @@ export async function POST(request) {
     const rows = res.data.values || []
     let rowIndex = -1
     for (let i = 0; i < rows.length; i++) {
-      if (rows[i][0] && rows[i][0].trim() === code.trim()) { rowIndex = i; break }
+      if (rows[i][0] && rows[i][0].trim() === codeTrimmed) { rowIndex = i; break }
     }
     if (rowIndex === -1) {
       return NextResponse.json({ error: 'Zugangscode nicht gefunden' }, { status: 404 })
@@ -48,7 +48,7 @@ export async function POST(request) {
       spreadsheetId: sheetId, range: updateRange, valueInputOption: 'USER_ENTERED',
       requestBody: { values: [[newExpiry.toISOString(), 'aktiv']] },
     })
-    return NextResponse.json({ success: true, code, newExpiry: newExpiry.toISOString(), message: 'Code verlaengert bis ' + newExpiry.toLocaleDateString('de-DE') })
+    return NextResponse.json({ success: true, code: codeTrimmed, newExpiry: newExpiry.toISOString(), message: 'Code verlaengert bis ' + newExpiry.toLocaleDateString('de-DE') })
   } catch (err) {
     console.error('Extend-Code Fehler:', err.message)
     return NextResponse.json({ error: 'Serverfehler' }, { status: 500 })

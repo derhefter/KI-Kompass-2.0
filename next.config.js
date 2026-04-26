@@ -2,14 +2,13 @@
 const nextConfig = {
   async redirects() {
     return [
+      // Marketing-Redirects: alte SEO-/Promo-URLs auf aktuelle Funnels.
+      // ACHTUNG: Die *-zugang Pfade werden hier bewusst NICHT redirected –
+      // sie sind die Ziele der Mollie-Webhook-Zugangslinks (?code=...).
       { source: '/toolbox', destination: '/#preise', permanent: true },
-      { source: '/toolbox-zugang', destination: '/#preise', permanent: true },
       { source: '/kurs', destination: '/beratung', permanent: true },
-      { source: '/kurs-zugang', destination: '/beratung', permanent: true },
       { source: '/monitoring', destination: '/beratung', permanent: true },
-      { source: '/monitoring-zugang', destination: '/beratung', permanent: true },
       { source: '/benchmarking', destination: '/assessment', permanent: true },
-      { source: '/benchmark-zugang', destination: '/assessment', permanent: true },
       { source: '/white-label', destination: '/', permanent: true },
     ]
   },

@@ -3,14 +3,11 @@ import { NextResponse } from 'next/server'
 import { getPendingDrafts, publishArticle, updateDraftStatus, markLinkedInPosted } from '../../../../lib/blog-sheets'
 import { postToLinkedIn } from '../../../../lib/linkedin'
 import { revalidatePath } from 'next/cache'
-import { verifyAdminToken } from '../login/route'
-
-function auth(request) {
-  return verifyAdminToken(request.headers.get('x-admin-token'))
-}
+import { requireAdmin } from '../../../../lib/admin-auth'
 
 export async function POST(request) {
-  if (!auth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   const { rowIndex, postToLinkedIn: shareLinkedIn, customDate } = await request.json()
 

@@ -3,13 +3,9 @@ import { sendNotificationToOwner } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
 import { saveFreeAssessmentResult, saveDetailedAnswers, scheduleFollowUps } from '../../../lib/google-sheets'
 import { freeQuestions } from '../../../data/questions'
+import { escapeHtml, sanitizeEmail, sanitizeUserText, isHoneypotTriggered } from '../../../lib/sanitize'
 
 const limiter = rateLimit({ maxRequests: 5, windowMs: 60 * 1000 })
-
-function escapeHtml(text) {
-  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }
-  return String(text).replace(/[&<>"']/g, (m) => map[m])
-}
 
 export async function POST(request) {
   try {
@@ -18,14 +14,21 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Zu viele Anfragen.' }, { status: 429 })
     }
 
-    const { email, company, score, level, answers, categoryScores } = await request.json()
+    const body = await request.json()
 
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    // Honeypot: Bots füllen alles aus → still verwerfen, dem Bot 200 OK zurückgeben.
+    if (isHoneypotTriggered(body)) {
+      return NextResponse.json({ success: true })
+    }
+
+    const { email, company, score, level, answers, categoryScores } = body
+
+    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
 
-    const safeMail = email.slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safeCompany = (company || 'Nicht angegeben').slice(0, 200).replace(/[<>\r\n]/g, '')
+    const safeMail = sanitizeEmail(email)
+    const safeCompany = sanitizeUserText(company || 'Nicht angegeben', { maxLen: 200, escape: false })
 
     // Google Sheets: Erstumfrage-Ergebnis speichern
     const sheetsErrors = []
@@ -98,8 +101,8 @@ export async function POST(request) {
         ${sheetsWarning}
         <h2>Neuer Lead über den KI-Kompass</h2>
         <table style="border-collapse:collapse;width:100%;max-width:500px;">
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${safeCompany}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">${safeMail}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(safeCompany)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">${escapeHtml(safeMail)}</td></tr>
           <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">KI-Score</td><td style="padding:8px;border:1px solid #ddd;">${typeof score === 'number' ? score : '–'}%</td></tr>
           <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Level</td><td style="padding:8px;border:1px solid #ddd;">${typeof level === 'number' ? level : '–'}</td></tr>
           <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Datum</td><td style="padding:8px;border:1px solid #ddd;">${new Date().toLocaleString('de-DE')}</td></tr>

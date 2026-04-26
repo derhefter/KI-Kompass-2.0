@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import HoneypotField from '../../components/HoneypotField'
 
 export default function WhiteLabel() {
   const [sent, setSent] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', company: '', plan: 'professional', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', company: '', plan: 'professional', message: '', hp_field_xy: '' })
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -56,6 +57,7 @@ export default function WhiteLabel() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="card space-y-4">
+              <HoneypotField value={form.hp_field_xy} onChange={(v) => setForm({ ...form, hp_field_xy: v })} />
               <input type="text" placeholder="Ihr Name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
               <input type="email" placeholder="E-Mail" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
               <input type="text" placeholder="Unternehmen" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />

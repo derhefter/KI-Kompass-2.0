@@ -20,6 +20,14 @@ export default function Dashboard() {
   const load = useCallback(async () => {
     try {
       const r = await fetch('/api/admin/dashboard', { headers: { 'x-admin-token': token() } })
+      // 401 → Token ist abgelaufen oder ungültig: aus sessionStorage entfernen,
+      // damit nicht die ganze Tab-Lebenszeit ein totes Token liegen bleibt.
+      if (r.status === 401) {
+        if (typeof window !== 'undefined') sessionStorage.removeItem('adminToken')
+        setIsLoggedIn(false)
+        setData(null)
+        return
+      }
       const d = await r.json()
       if (d.error) { setIsLoggedIn(false); return }
       setData(d)
@@ -652,6 +660,7 @@ function QueueTab({ token, onCountChange }) {
               </div>
               {preview.htmlContent ? (
                 <div className="border border-slate-200 rounded-lg overflow-hidden">
+                  {/* sandbox="" = HTML5-Standard: maximale Sandbox (no scripts, no same-origin, no forms). NICHT auf "allow-*" erweitern. */}
                   <iframe srcDoc={preview.htmlContent} sandbox="" className="w-full min-h-[400px] border-0" title="E-Mail-Vorschau" />
                 </div>
               ) : (

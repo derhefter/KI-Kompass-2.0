@@ -8,17 +8,15 @@
 import { NextResponse } from 'next/server'
 import { getPendingItems, approveItem, rejectItem, getItemByRow } from '../../../../lib/content-queue'
 import { sendConfirmationToCustomer } from '../../../../lib/mail'
-import { verifyAdminToken } from '../login/route'
-
-function checkAuth(request) {
-  return verifyAdminToken(request.headers.get('x-admin-token'))
-}
+import { requireAdmin } from '../../../../lib/admin-auth'
+import { escapeHtml } from '../../../../lib/sanitize'
 
 // ── GET: Alle pendenden Items ODER Einzelitem für Vorschau ──
 // ?type=report|assessment|certificate|invoice  → Listenansicht (ohne HTML-Inhalte)
 // ?row=5                                       → Einzelansicht mit vollständigem htmlContent + attachmentHtml
 export async function GET(request) {
-  if (!checkAuth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   const { searchParams } = new URL(request.url)
   const rowParam = searchParams.get('row')
@@ -49,7 +47,8 @@ export async function GET(request) {
 
 // ── POST: Item freigeben & E-Mail senden ──
 export async function POST(request) {
-  if (!checkAuth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   try {
     const { rowIndex, personalNote = '', invoiceEdits = null } = await request.json()
@@ -70,7 +69,7 @@ export async function POST(request) {
       const noteBlock = `
         <div style="margin:0 0 24px;padding:20px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;">
           <p style="margin:0 0 8px;font-weight:bold;color:#92400e;">Persönliche Nachricht von Steffen Hefter:</p>
-          <p style="margin:0;color:#78350f;white-space:pre-line;">${personalNote.replace(/[<>]/g, '')}</p>
+          <p style="margin:0;color:#78350f;white-space:pre-line;">${escapeHtml(personalNote)}</p>
         </div>`
       // Nach dem öffnenden body-div einfügen
       emailHtml = emailHtml.replace(
@@ -143,7 +142,8 @@ export async function POST(request) {
 
 // ── DELETE: Item ablehnen ──
 export async function DELETE(request) {
-  if (!checkAuth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   try {
     const { rowIndex, reason = 'Abgelehnt' } = await request.json()

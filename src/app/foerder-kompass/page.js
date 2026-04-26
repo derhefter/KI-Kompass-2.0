@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { foerderprogrammeDB, matchFoerderprogramme } from '../../data/foerderprogramme'
+import HoneypotField from '../../components/HoneypotField'
 
 const BUNDESLAENDER = [
   'baden-wuerttemberg', 'bayern', 'berlin', 'brandenburg', 'bremen', 'hamburg',
@@ -38,6 +39,7 @@ export default function FoerderKompass() {
   const [email, setEmail] = useState('')
   const [company, setCompany] = useState('')
   const [emailSent, setEmailSent] = useState(false)
+  const [hp, setHp] = useState('')
 
   function handleSearch() {
     const matched = matchFoerderprogramme({ bundesland, branche: branche.toLowerCase(), mitarbeiter: groesse, vorhaben })
@@ -82,11 +84,12 @@ export default function FoerderKompass() {
               <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">F&ouml;rder-Fahrplan per E-Mail erhalten</h3>
               <p className="text-gray-600 text-center mb-4">Wir senden Ihnen eine Zusammenfassung mit allen passenden Programmen.</p>
               <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <HoneypotField value={hp} onChange={setHp} />
                 <input type="text" placeholder="Firma" value={company} onChange={(e) => setCompany(e.target.value)} className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
                 <input type="email" placeholder="ihre@email.de" value={email} onChange={(e) => setEmail(e.target.value)} className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 outline-none" />
                 <button onClick={async () => {
                   if (email && company) {
-                    try { await fetch('/api/foerder-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, company, bundesland, branche, groesse, vorhaben, matchedPrograms: results.map(r => r.name) }) }) } catch {}
+                    try { await fetch('/api/foerder-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, company, bundesland, branche, groesse, vorhaben, matchedPrograms: results.map(r => r.name), hp_field_xy: hp }) }) } catch {}
                     setEmailSent(true)
                   }
                 }} className="btn-primary !py-3">Senden</button>

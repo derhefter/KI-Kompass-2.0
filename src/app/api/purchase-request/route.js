@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
 import { saveCustomerData } from '../../../lib/google-sheets'
+import { escapeHtml, sanitizeEmail, isHoneypotTriggered } from '../../../lib/sanitize'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
 
-// Schutz gegen Doppel-Absendung (gleiche E-Mail + Plan innerhalb von 5 Minuten)
+// Schutz gegen Doppel-Absendung (gleiche E-Mail + Plan innerhalb von 5 Minuten).
+// Hinweis: In-Memory pro Serverless-Instanz – siehe Audit B1b H3.
 const recentRequests = new Map()
 const DEDUP_WINDOW = 5 * 60 * 1000
 
@@ -16,11 +18,6 @@ setInterval(() => {
   }
 }, 60 * 1000)
 
-function escapeHtml(text) {
-  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }
-  return String(text).replace(/[&<>"']/g, (m) => map[m])
-}
-
 export async function POST(request) {
   try {
     const { allowed } = limiter(request)
@@ -28,7 +25,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Zu viele Anfragen. Bitte warten Sie einen Moment.' }, { status: 429 })
     }
 
-    const { plan, name, email, company, phone } = await request.json()
+    const body = await request.json()
+    if (isHoneypotTriggered(body)) return NextResponse.json({ success: true })
+
+    const { plan, name, email, company, phone } = body
 
     // Validierung
     const validPlans = ['premium', 'strategie', 'zertifikat', 'zertifikat-basic', 'kurs', 'benchmark', 'toolbox-starter', 'toolbox-pro', 'monitoring-basic', 'monitoring-pro']
@@ -38,7 +38,7 @@ export async function POST(request) {
     if (!name || typeof name !== 'string' || name.length < 2) {
       return NextResponse.json({ error: 'Name erforderlich' }, { status: 400 })
     }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
 
@@ -54,7 +54,8 @@ export async function POST(request) {
     }
 
     const safeName = escapeHtml(name.slice(0, 200).replace(/[\r\n]/g, ''))
-    const safeMail = email.slice(0, 254).replace(/[<>\r\n"'&]/g, '')
+    const safeMail = sanitizeEmail(email)
+    const safeMailHtml = escapeHtml(safeMail)
     const safeCompany = escapeHtml((company || '–').slice(0, 200).replace(/[\r\n]/g, ''))
     const safePhone = escapeHtml((phone || '–').slice(0, 50).replace(/[\r\n]/g, ''))
 
@@ -95,13 +96,13 @@ export async function POST(request) {
           <tr style="background:#f0f9ff;"><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Produkt</td><td style="padding:10px;border:1px solid #ddd;font-weight:bold;color:#2563eb;">${planName}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:10px;border:1px solid #ddd;">${safeName}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:10px;border:1px solid #ddd;">${safeCompany}</td></tr>
-          <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:10px;border:1px solid #ddd;"><a href="mailto:${safeMail}">${safeMail}</a></td></tr>
+          <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:10px;border:1px solid #ddd;"><a href="mailto:${safeMailHtml}">${safeMailHtml}</a></td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:10px;border:1px solid #ddd;">${safePhone}</td></tr>
           <tr><td style="padding:10px;border:1px solid #ddd;font-weight:bold;">Datum</td><td style="padding:10px;border:1px solid #ddd;">${new Date().toLocaleString('de-DE')}</td></tr>
         </table>
         <div style="margin-top:16px;padding:12px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;">
           <strong>Hinweis:</strong> Dem Kunden wurde der PayPal-Link (<a href="${paypalLink}">${paypalLink}</a>) angezeigt.
-          Prüfe den PayPal-Eingang. Falls keine PayPal-Zahlung eingeht, sende eine Rechnung über ${planPrice} € an <a href="mailto:${safeMail}">${safeMail}</a>.
+          Prüfe den PayPal-Eingang. Falls keine PayPal-Zahlung eingeht, sende eine Rechnung über ${planPrice} € an <a href="mailto:${safeMailHtml}">${safeMailHtml}</a>.
         </div>
         <h3 style="margin-top:20px;">Nächste Schritte:</h3>
         <ol>

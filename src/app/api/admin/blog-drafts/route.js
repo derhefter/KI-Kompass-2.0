@@ -1,28 +1,41 @@
 // Admin: Entwürfe verwalten – GET: Liste | PUT: Inhalt bearbeiten | DELETE: ablehnen
 import { NextResponse } from 'next/server'
 import { getPendingDrafts, updateDraftStatus, updateDraftContent } from '../../../../lib/blog-sheets'
-import { verifyAdminToken } from '../login/route'
-
-function auth(request) {
-  return verifyAdminToken(request.headers.get('x-admin-token'))
-}
+import { requireAdmin } from '../../../../lib/admin-auth'
+import { sanitizeUserText } from '../../../../lib/sanitize'
 
 export async function GET(request) {
-  if (!auth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
   const drafts = await getPendingDrafts()
   return NextResponse.json({ drafts })
 }
 
 export async function PUT(request) {
-  if (!auth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
-  const { rowIndex, title, excerpt, content, category } = await request.json()
-  const ok = await updateDraftContent(rowIndex, { title, excerpt, content, category })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
+  const body = await request.json()
+  const rowIndex = parseInt(body.rowIndex, 10)
+  if (!Number.isFinite(rowIndex) || rowIndex < 0) {
+    return NextResponse.json({ error: 'Ungültiger rowIndex' }, { status: 400 })
+  }
+  const ok = await updateDraftContent(rowIndex, {
+    title: sanitizeUserText(body.title, { maxLen: 200, escape: false }),
+    excerpt: sanitizeUserText(body.excerpt, { maxLen: 500, escape: false }),
+    content: String(body.content ?? '').slice(0, 100000),
+    category: sanitizeUserText(body.category, { maxLen: 60, escape: false }),
+  })
   return NextResponse.json({ success: ok })
 }
 
 export async function DELETE(request) {
-  if (!auth(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
   const { rowIndex, notes } = await request.json()
-  const ok = await updateDraftStatus(rowIndex, 'rejected', notes || 'Abgelehnt')
+  const ok = await updateDraftStatus(
+    parseInt(rowIndex, 10),
+    'rejected',
+    sanitizeUserText(notes || 'Abgelehnt', { maxLen: 500, escape: false }),
+  )
   return NextResponse.json({ success: ok })
 }

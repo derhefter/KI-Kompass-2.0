@@ -5,13 +5,9 @@ import { saveToQueue } from '../../../lib/content-queue'
 import { rateLimit } from '../../../lib/rate-limit'
 import { savePremiumAssessmentResult, findAccessCode, saveDetailedAnswers, markCodeAsUsed } from '../../../lib/google-sheets'
 import { premiumQuestions } from '../../../data/questions'
+import { escapeHtml, sanitizeEmail, sanitizeUserText, isHoneypotTriggered } from '../../../lib/sanitize'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
-
-function escapeHtml(text) {
-  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
-  return String(text || '').replace(/[&<>"]/g, (m) => map[m])
-}
 
 export async function POST(request) {
   try {
@@ -20,7 +16,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Zu viele Versuche.' }, { status: 429 })
     }
 
-    const { code, companyName, contactName, contactEmail, results, productType } = await request.json()
+    const body = await request.json()
+    if (isHoneypotTriggered(body)) return NextResponse.json({ success: true })
+
+    const { code, companyName, contactName, contactEmail, results, productType } = body
 
     // Code erneut verifizieren
     if (!code || typeof code !== 'string') {
@@ -47,9 +46,13 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Zugangscode abgelaufen' }, { status: 403 })
     }
 
-    const safeName = (contactName || '').slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safeCompany = (companyName || '').slice(0, 200).replace(/[<>\r\n]/g, '')
-    const safeEmail = (contactEmail || '').slice(0, 200).replace(/[<>\r\n]/g, '')
+    const safeName = sanitizeUserText(contactName, { maxLen: 200, escape: false })
+    const safeCompany = sanitizeUserText(companyName, { maxLen: 200, escape: false })
+    const safeEmail = sanitizeEmail(contactEmail)
+    // HTML-sichere Varianten für Mail-Body
+    const safeNameHtml = escapeHtml(safeName)
+    const safeCompanyHtml = escapeHtml(safeCompany)
+    const safeEmailHtml = escapeHtml(safeEmail)
 
     const { percentage, level, levelTitle, categoryScores, quickWins, recommendations, answers } = results || {}
 
@@ -112,9 +115,9 @@ export async function POST(request) {
     const answersTableHtml = (answers && Array.isArray(answers) && answers.length > 0)
       ? answers.map((answer) => {
           const question = premiumQuestions.find((q) => q.id === answer.questionId)
-          const safeQ = question ? question.question.replace(/[<>]/g, '') : '–'
-          const safeCat = question ? question.categoryLabel.replace(/[<>]/g, '') : '–'
-          const safeAns = (answer.text || '–').replace(/[<>]/g, '')
+          const safeQ = question ? escapeHtml(question.question) : '–'
+          const safeCat = question ? escapeHtml(question.categoryLabel) : '–'
+          const safeAns = escapeHtml(answer.text || '–')
           return `<tr>
             <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;">${safeCat}</td>
             <td style="padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:12px;">${safeQ}</td>
@@ -146,21 +149,21 @@ export async function POST(request) {
         <table style="border-collapse:collapse;width:100%;font-size:13px;">
           ${brancheAnswers.map((ba) => `
             <tr>
-              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;color:#6b7280;width:40%;">${ba.question.replace(/[<>]/g, '')}</td>
-              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;font-weight:bold;">${ba.answer.replace(/[<>]/g, '')}</td>
+              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;color:#6b7280;width:40%;">${escapeHtml(ba.question)}</td>
+              <td style="padding:6px 8px;border-bottom:1px solid #bbf7d0;font-weight:bold;">${escapeHtml(ba.answer)}</td>
             </tr>
           `).join('')}
         </table>
         <div style="margin-top:12px;padding:12px;background:#ecfdf5;border-radius:6px;">
           <p style="margin:0 0 8px;font-weight:bold;color:#065f46;">Empfehlung für den Report:</p>
           <p style="margin:0;color:#064e3b;font-size:13px;">
-            <strong>Branche:</strong> ${brancheAnswers[0].answer.replace(/[<>]/g, '')} |
-            <strong>Größe:</strong> ${brancheAnswers[1].answer.replace(/[<>]/g, '')} |
-            <strong>Fachkräftemangel:</strong> ${brancheAnswers[2].answer.replace(/[<>]/g, '')}
+            <strong>Branche:</strong> ${escapeHtml(brancheAnswers[0].answer)} |
+            <strong>Größe:</strong> ${escapeHtml(brancheAnswers[1].answer)} |
+            <strong>Fachkräftemangel:</strong> ${escapeHtml(brancheAnswers[2].answer)}
           </p>
           <p style="margin:8px 0 0;color:#064e3b;font-size:13px;">
-            <strong>Externe Partner:</strong> ${brancheAnswers[3].answer.replace(/[<>]/g, '')} |
-            <strong>Digitalisierungsdruck:</strong> ${brancheAnswers[4].answer.replace(/[<>]/g, '')}
+            <strong>Externe Partner:</strong> ${escapeHtml(brancheAnswers[3].answer)} |
+            <strong>Digitalisierungsdruck:</strong> ${escapeHtml(brancheAnswers[4].answer)}
           </p>
           <p style="margin:12px 0 0;color:#065f46;font-size:13px;font-style:italic;">
             ➡️ Bitte nutze diese Informationen, um den PDF-Report mit branchenspezifischen Use-Cases, passenden Fördermitteln und individuellen Handlungsempfehlungen anzureichern.
@@ -174,10 +177,10 @@ export async function POST(request) {
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#1f2937;">
         <div style="background:linear-gradient(135deg,#2563eb,#7c3aed);padding:32px;border-radius:12px 12px 0 0;text-align:center;">
           <h1 style="color:white;margin:0;font-size:24px;">Ihr KI-Readiness Report</h1>
-          <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;">${safeCompany} &bull; ${datum}</p>
+          <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;">${safeCompanyHtml} &bull; ${datum}</p>
         </div>
         <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;">
-          <p>Hallo ${safeName},</p>
+          <p>Hallo ${safeNameHtml},</p>
           <p>vielen Dank f&uuml;r die Durchf&uuml;hrung des Premium KI-Readiness Assessments. Hier ist Ihre Zusammenfassung:</p>
 
           <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;text-align:center;margin:24px 0;">
@@ -245,9 +248,9 @@ export async function POST(request) {
         <div style="background:white;padding:24px;border:1px solid #e5e7eb;border-top:none;">
           ${sheetsWarning}
           <table style="width:100%;margin-bottom:20px;">
-            <tr><td style="padding:4px 0;color:#6b7280;">Firma:</td><td style="padding:4px 0;font-weight:bold;">${safeCompany}</td></tr>
-            <tr><td style="padding:4px 0;color:#6b7280;">Name:</td><td style="padding:4px 0;">${safeName}</td></tr>
-            <tr><td style="padding:4px 0;color:#6b7280;">E-Mail:</td><td style="padding:4px 0;"><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+            <tr><td style="padding:4px 0;color:#6b7280;">Firma:</td><td style="padding:4px 0;font-weight:bold;">${safeCompanyHtml}</td></tr>
+            <tr><td style="padding:4px 0;color:#6b7280;">Name:</td><td style="padding:4px 0;">${safeNameHtml}</td></tr>
+            <tr><td style="padding:4px 0;color:#6b7280;">E-Mail:</td><td style="padding:4px 0;"><a href="mailto:${safeEmailHtml}">${safeEmailHtml}</a></td></tr>
             <tr><td style="padding:4px 0;color:#6b7280;">Plan:</td><td style="padding:4px 0;">${customer.plan}</td></tr>
             <tr><td style="padding:4px 0;color:#6b7280;">Datum:</td><td style="padding:4px 0;">${datum}</td></tr>
           </table>

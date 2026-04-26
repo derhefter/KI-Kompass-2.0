@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { verifyAdminToken } from '../login/route'
+import { requireAdmin } from '../../../../lib/admin-auth'
 
 async function readSheetSafe(sheetId, range) {
   try {
@@ -31,11 +31,9 @@ async function readSheetSafe(sheetId, range) {
 }
 
 export async function GET(request) {
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
   try {
-    const token = request.headers.get('x-admin-token')
-    if (!verifyAdminToken(token)) {
-      return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
-    }
     const [customers, accessCodes, freeResults, premiumResults, followUps] = await Promise.all([
       readSheetSafe(process.env.GOOGLE_SHEET_CUSTOMERS, 'Kunden!A:I'),
       readSheetSafe(process.env.GOOGLE_SHEET_CUSTOMERS, 'Zugangscodes!A:H'),

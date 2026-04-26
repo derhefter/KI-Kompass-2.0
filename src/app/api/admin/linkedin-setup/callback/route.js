@@ -1,4 +1,10 @@
-// LinkedIn OAuth2 Callback – tauscht Authorization Code gegen Access Token
+// LinkedIn OAuth2 Callback – tauscht Authorization Code gegen Access Token.
+//
+// BEWUSST OHNE requireAdmin: LinkedIn ruft diesen Endpoint von außen auf
+// und sendet keinen Admin-Token mit. Der OAuth-State sollte prüfen, dass
+// der Aufruf zu einer initiierten Session gehört (TODO: state-Param signieren).
+// Aktuelles Risiko: Beliebige Person kann Endpoint mit Müll-Code aufrufen
+// und löst nur einen LinkedIn-Roundtrip-Error aus → kein Datenleck.
 import { NextResponse } from 'next/server'
 import { exchangeLinkedInCode } from '../../../../../lib/linkedin'
 

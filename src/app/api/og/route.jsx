@@ -4,10 +4,12 @@ export const runtime = 'edge';
 
 export async function GET(request) {
   const { searchParams, origin } = new URL(request.url);
-  const text = searchParams.get('text') || 'Wer auf die "perfekte" KI-Lösung wartet, wartet zu lange.';
-  
+  // Längen-Limit gegen Render-DoS via überlangem text-Param.
+  const rawText = searchParams.get('text') || 'Wer auf die "perfekte" KI-Lösung wartet, wartet zu lange.';
+  const text = String(rawText).slice(0, 200);
+
   const baseUrl = origin.includes('localhost') ? 'https://www.derhefter.com' : origin;
-  
+
   // Lade das Bild als Buffer für die Edge Runtime
   const avatarImageData = await fetch(new URL(`${baseUrl}/avatar-steffen-linkedin.jpg`)).then((res) => res.arrayBuffer());
 

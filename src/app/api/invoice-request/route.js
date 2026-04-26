@@ -3,6 +3,7 @@ import { sendNotificationToOwner } from '../../../lib/mail'
 import { saveToQueue } from '../../../lib/content-queue'
 import { rateLimit } from '../../../lib/rate-limit'
 import { saveAccessCode } from '../../../lib/google-sheets'
+import { isHoneypotTriggered } from '../../../lib/sanitize'
 import crypto from 'crypto'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
@@ -344,7 +345,10 @@ export async function POST(request) {
       )
     }
 
-    const { plan, name, email, company, street, plz, city } = await request.json()
+    const body = await request.json()
+    if (isHoneypotTriggered(body)) return NextResponse.json({ success: true })
+
+    const { plan, name, email, company, street, plz, city } = body
 
     const validPlans = ['premium', 'strategie', 'zertifikat', 'zertifikat-basic', 'kurs', 'benchmark', 'toolbox-starter', 'toolbox-pro', 'monitoring-basic', 'monitoring-pro']
     if (!plan || !validPlans.includes(plan)) {
@@ -353,7 +357,7 @@ export async function POST(request) {
     if (!name || typeof name !== 'string' || name.length < 2) {
       return NextResponse.json({ error: 'Name erforderlich' }, { status: 400 })
     }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Ungültige E-Mail' }, { status: 400 })
     }
 

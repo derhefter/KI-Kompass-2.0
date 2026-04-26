@@ -5,15 +5,10 @@
 // ============================================================
 import { NextResponse } from 'next/server'
 import { google } from 'googleapis'
-import { verifyAdminToken } from '../login/route'
+import { requireAdmin } from '../../../../lib/admin-auth'
 import { sendConfirmationToCustomer } from '../../../../lib/mail'
 import { generatePDFReportHTML } from '../../../../lib/pdf-report'
 import { premiumQuestions, foerderprogramme } from '../../../../data/questions'
-
-function verifyAdmin(request) {
-  const token = request.headers.get('x-admin-token')
-  return verifyAdminToken(token)
-}
 
 async function getSheets() {
   const key = process.env.GOOGLE_SERVICE_ACCOUNT_KEY
@@ -40,7 +35,8 @@ function extractSheetId(v) {
 
 // GET: Liste pendender Reports
 export async function GET(request) {
-  if (!verifyAdmin(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   const sheets = await getSheets()
   const sheetId = extractSheetId(process.env.GOOGLE_SHEET_PREMIUM_RESULTS)
@@ -82,7 +78,8 @@ export async function GET(request) {
 
 // POST: Report freigeben und senden
 export async function POST(request) {
-  if (!verifyAdmin(request)) return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   const { reportId, rowIndex, persNote } = await request.json()
 

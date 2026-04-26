@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import HoneypotField from '../../components/HoneypotField'
 
 const plans = {
   premium: {
@@ -145,6 +146,7 @@ export default function Anfrage() {
   const [street, setStreet] = useState('')
   const [plz, setPlz] = useState('')
   const [city, setCity] = useState('')
+  const [hp, setHp] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -174,7 +176,7 @@ export default function Anfrage() {
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan, name, email, company, phone }),
+        body: JSON.stringify({ plan, name, email, company, phone, hp_field_xy: hp }),
       })
       const data = await res.json()
       if (data.success && data.checkoutUrl) {
@@ -211,7 +213,7 @@ export default function Anfrage() {
       const res = await fetch('/api/invoice-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan, name, email, company, street: street.trim(), plz: plz.trim(), city: city.trim() }),
+        body: JSON.stringify({ plan, name, email, company, street: street.trim(), plz: plz.trim(), city: city.trim(), hp_field_xy: hp }),
       })
       const data = await res.json()
       if (data.success) {
@@ -456,6 +458,7 @@ export default function Anfrage() {
           {/* Formular */}
           <div className="md:col-span-3">
             <form onSubmit={handleSubmit} className="card">
+              <HoneypotField value={hp} onChange={setHp} />
               <h2 className="text-xl font-bold text-primary-700 mb-6">Ihre Kontaktdaten</h2>
 
               <div className="space-y-4">

@@ -1,23 +1,23 @@
 import { NextResponse } from 'next/server'
 import { sendNotificationToOwner, sendConfirmationToCustomer } from '../../../lib/mail'
 import { rateLimit } from '../../../lib/rate-limit'
+import { escapeHtml, sanitizeEmail, isHoneypotTriggered } from '../../../lib/sanitize'
 
 const limiter = rateLimit({ maxRequests: 3, windowMs: 60 * 1000 })
-
-function escapeHtml(text) {
-  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }
-  return String(text).replace(/[&<>"']/g, (m) => map[m])
-}
 
 export async function POST(request) {
   try {
     const { allowed } = limiter(request)
     if (!allowed) return NextResponse.json({ error: 'Zu viele Anfragen.' }, { status: 429 })
-    const { name, email, company, phone, plan, message, website } = await request.json()
+
+    const body = await request.json()
+    if (isHoneypotTriggered(body)) return NextResponse.json({ success: true })
+
+    const { name, email, company, phone, plan, message, website } = body
     if (!name || !email || !company) return NextResponse.json({ error: 'Name, E-Mail und Firma sind erforderlich' }, { status: 400 })
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: 'Ungueltige E-Mail' }, { status: 400 })
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return NextResponse.json({ error: 'Ungueltige E-Mail' }, { status: 400 })
     const safeName = escapeHtml((name || '').slice(0, 200))
-    const safeEmail = (email || '').slice(0, 200).replace(/[<>\r\n]/g, '')
+    const safeEmail = sanitizeEmail(email)
     const safeCompany = escapeHtml((company || '').slice(0, 200))
     const safePhone = escapeHtml((phone || '').slice(0, 50))
     const safePlan = escapeHtml((plan || 'Nicht angegeben').slice(0, 50))
@@ -26,7 +26,7 @@ export async function POST(request) {
     const planLabels = { starter: 'Starter (99/Monat)', professional: 'Professional (199/Monat)', enterprise: 'Enterprise (499/Monat)' }
     await sendNotificationToOwner({
       subject: 'White-Label Anfrage: ' + safeCompany + ' - ' + (planLabels[plan] || safePlan),
-      html: '<h2>Neue White-Label Anfrage</h2><p style="background:#f0fdf4;padding:12px;border-radius:8px;border-left:4px solid #22c55e;"><strong>Potenzielle Partnerschaft!</strong></p><table style="border-collapse:collapse;width:100%;max-width:500px;margin-top:16px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + safeEmail + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:8px;border:1px solid #ddd;">' + (safePhone || '-') + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Website</td><td style="padding:8px;border:1px solid #ddd;">' + (safeWebsite || '-') + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Paket</td><td style="padding:8px;border:1px solid #ddd;">' + (planLabels[plan] || safePlan) + '</td></tr></table>' + (safeMessage ? '<h3 style="margin-top:16px;">Nachricht:</h3><p style="background:#f3f4f6;padding:12px;border-radius:8px;">' + safeMessage + '</p>' : ''),
+      html: '<h2>Neue White-Label Anfrage</h2><p style="background:#f0fdf4;padding:12px;border-radius:8px;border-left:4px solid #22c55e;"><strong>Potenzielle Partnerschaft!</strong></p><table style="border-collapse:collapse;width:100%;max-width:500px;margin-top:16px;"><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">' + safeName + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">' + safeCompany + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;">' + escapeHtml(safeEmail) + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:8px;border:1px solid #ddd;">' + (safePhone || '-') + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Website</td><td style="padding:8px;border:1px solid #ddd;">' + (safeWebsite || '-') + '</td></tr><tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Paket</td><td style="padding:8px;border:1px solid #ddd;">' + (planLabels[plan] || safePlan) + '</td></tr></table>' + (safeMessage ? '<h3 style="margin-top:16px;">Nachricht:</h3><p style="background:#f3f4f6;padding:12px;border-radius:8px;">' + safeMessage + '</p>' : ''),
     })
     await sendConfirmationToCustomer({
       to: safeEmail,

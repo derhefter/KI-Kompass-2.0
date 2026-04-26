@@ -3,7 +3,7 @@
 // Nach dem Test die Einträge im Dashboard ablehnen/löschen.
 // ============================================================
 import { NextResponse } from 'next/server'
-import { verifyAdminToken } from '../login/route'
+import { requireAdmin } from '../../../../lib/admin-auth'
 import { saveToQueue } from '../../../../lib/content-queue'
 import { saveDraft } from '../../../../lib/blog-sheets'
 
@@ -220,10 +220,8 @@ const TEST_BLOG_DRAFTS = [
 // ── Handler ──────────────────────────────────────────────────
 
 export async function POST(request) {
-  const token = request.headers.get('x-admin-token')
-  if (!verifyAdminToken(token)) {
-    return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
-  }
+  const unauthorized = requireAdmin(request)
+  if (unauthorized) return unauthorized
 
   const queueResults = []
   const queueErrors = []

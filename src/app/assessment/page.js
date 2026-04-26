@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { freeQuestions, calculateScore, getRecommendations, getQuickWins } from '../../data/questions'
 import UpsellCards from '../../components/UpsellCards'
+import HoneypotField from '../../components/HoneypotField'
 
 // Microcopy for encouragement during the check
 function getMicrocopy(questionIndex, total) {
@@ -27,6 +28,7 @@ export default function Assessment() {
   const [company, setCompany] = useState('')
   const [name, setName] = useState('')
   const [emailError, setEmailError] = useState('')
+  const [hp, setHp] = useState('')
 
   const question = freeQuestions[currentQuestion]
   const progress = ((currentQuestion) / freeQuestions.length) * 100
@@ -79,6 +81,7 @@ export default function Assessment() {
           level: result.level,
           answers,
           categoryScores: result.categoryScores,
+          hp_field_xy: hp,
         }),
       })
     } catch {
@@ -118,6 +121,7 @@ export default function Assessment() {
             </div>
 
             <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <HoneypotField value={hp} onChange={setHp} />
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">E-Mail-Adresse *</label>
                 <input
