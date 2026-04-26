@@ -116,10 +116,11 @@
 | Dashboard fragt plötzlich nach Login (war eingeloggt)  | 24-h-Token abgelaufen → einfach neu einloggen.                                                                  |
 | „Mein Code geht nicht" (Kunde meldet sich)             | Tab Übersicht → Zugangscode verlängern. Wenn Code nicht existiert → siehe Kochbuch „Manuell Zugangscode anlegen". |
 | Mollie-Zahlung kam, aber **kein Mail an Kunden**       | Mollie-Dashboard → Zahlung → Tab Webhooks → „Erneut senden". (Idempotent, kein Risiko von doppeltem Code.)      |
-| Kunden bekommen gar keine Mails mehr                   | Gmail → in `Gesendet` schauen. Wenn leer → Gmail-Limit (500/Tag) oder Passwort-Problem. Vercel-ENV `EMAIL_PASS` prüfen. |
+| Kunden bekommen gar keine Mails mehr                   | **Erste Diagnose: Health-Check ausführen** (siehe Abschnitt 4 unten). Liefert sofort, ob SMTP, Sheets oder Mollie nicht erreichbar sind. |
 | Cron lief nicht (kein Mail Mo. früh, keine Follow-Ups) | Vercel → Functions → Logs → Filter `cron` oder `process-followups`. Manuell antriggern: siehe Handbuch D6.      |
 | Dashboard ist leer / lädt ewig                         | Browser-Tab schließen, neu öffnen. Wenn weiter leer → Vercel → Status-Page checken; Google Sheets API hängt manchmal kurz. |
-| GA zeigt keine Besucher                                | Aktuell **vor DSGVO-Banner-Update** noch normal. Sobald Banner kommt: Besucher müssen zustimmen, sonst keine Daten. |
+| GA zeigt weniger Besucher als früher                   | Normal: Seit DSGVO-Banner werden nur Besucher gezählt, die explizit "Einverstanden" klicken. Erwarte 30–60 % weniger Daten — dafür rechtskonform. |
+| Login geht nicht, obwohl Passwort stimmt               | Mehrfach falsch eingegeben? Persistenter Lock (≥ 5 Versuche pro IP / 15 Min). 15 Min warten oder anderen Browser/Netzwerk verwenden. |
 | Etwas anderes Komisches                                | Vercel-Logs sind die Wahrheit: vercel.com → Project → Functions → letzte 100 Aufrufe → nach `error` filtern.    |
 
 ---
@@ -128,9 +129,43 @@
 
 - **Admin-Passwort** alle ~6 Monate rotieren: in Vercel `ADMIN_PASSWORD` ändern → einmal Redeploy auslösen → einmal neu einloggen.
 - **Service-Account-Key** (Google Sheets) **niemals** in Repo, niemals per Mail teilen. Nur in Vercel als ENV.
-- **LinkedIn-Token** alle 60 Tage erneuern (siehe Monatsroutine).
+- **LinkedIn-Token** alle 60 Tage erneuern (du bekommst eine Reminder-Mail, sobald das System den Token-Ausfall bemerkt).
 - **Mollie-API-Key** nur in Vercel. Wenn jemals geleakt: my.mollie.com → neuen Key generieren → in Vercel ersetzen → Redeploy.
+- **SMTP-Postfach-Passwort** (Strato): nicht weitergeben. Bei Verdacht: Strato Communication Center → Postfach → Passwort ändern → in Vercel `EMAIL_PASS` aktualisieren → Redeploy.
 - **Niemals** Anhänge oder „komische" Inhalte aus der Freigabe-Queue auf eigene Faust freigeben. Lieber kurz nachfragen.
+
+---
+
+## 6a. Schnell-Diagnose: Der Health-Check
+
+Wenn dir irgendetwas komisch vorkommt (keine Mails, Dashboard zeigt 0 Kunden, etc.), gibt der **Health-Endpoint** in 2 Sekunden Bescheid:
+
+1. Im Dashboard eingeloggt bleiben.
+2. **F12** drücken → Tab **Console**.
+3. Diese Zeile reinkopieren und Enter:
+
+```js
+fetch('/api/health', { headers: { 'x-admin-token': sessionStorage.getItem('adminToken') } }).then(r => r.json()).then(j => console.log(JSON.stringify(j, null, 2)))
+```
+
+**Erwartet:**
+```json
+{
+  "ok": true,
+  "checks": { "sheets": { "ok": true }, "mail": { "ok": true }, "mollie": { "ok": true } }
+}
+```
+
+**Falls etwas `"ok": false` zeigt:** das `error`-Feld daneben sagt dir genau was. Häufige Fälle:
+
+| Bereich | Fehlertext-Snippet | Was tun |
+|---|---|---|
+| `mail` | `BadCredentials` / `LOGIN failed` | SMTP-Passwort in Vercel (`EMAIL_PASS`) erneuern + Redeploy. Strato-Postfach-Pwd findest du im Strato Communication Center. |
+| `mail` | `EBADNAME` / `ETIMEDOUT` | `EMAIL_HOST` in Vercel hat versehentlich Whitespace oder ist falsch. Wert manuell neu eintippen, Redeploy. |
+| `sheets` | `Permission denied` | Service-Account hat keinen Editor-Zugriff aufs Sheet. Sheet → Freigeben → Service-Account-E-Mail (steht im JSON-Key unter `client_email`) als Editor hinzufügen. |
+| `mollie` | `Invalid API key` | `MOLLIE_API_KEY` in Vercel falsch. In my.mollie.com → API-Keys neu kopieren (muss mit `live_` beginnen). |
+
+**Du musst das nicht aktiv machen** — der Server prüft sich seit 2026-04-26 **täglich um 06:00 UTC** selbst und schickt dir nur dann eine Mail, wenn etwas nicht ok ist (Subject beginnt mit `[HEALTH-FEHLER YYYY-MM-DD]`). Den manuellen Check brauchst du nur, wenn du **akut etwas vermutest** und nicht bis zum nächsten Tagescheck warten willst.
 
 ---
 
@@ -158,16 +193,28 @@
 
 ---
 
-## 9. Bekannte offene Themen (Stand 2026-04-26)
+## 9. Was sich seit dem Härtungs-Sprint geändert hat (Stand 2026-04-26)
 
-Damit du weißt, was im Hintergrund noch ansteht (Details im Admin-Handbuch B1b):
+**Erledigt** (musst du nichts tun, läuft im Hintergrund):
 
-1. **Kritisch:** Bestellungen für `kurs`, `toolbox-*`, `benchmark`, `monitoring-*` führen aktuell wegen eines Routing-Konflikts dazu, dass der Kunde nach Bezahlung **nicht** auf seiner Zugangsseite landet. Bis Fix: solche Käufe **manuell** per Mail mit Zugangscode bedienen.
-2. Blog-Inhalte werden derzeit unsanitisiert gerendert — solange du der einzige bist, der Sheet-Schreibrechte hat, ist das kein akutes Risiko, sollte aber gefixt werden.
-3. DSGVO-Consent-Banner für Google Analytics fehlt noch — rechtlich relevant.
-4. Backup der Google Sheets ist nicht eingerichtet — manuell ab und zu „Datei → Herunterladen → xlsx" zur Sicherheit.
+- ✅ **Routing-Konflikt bei Zugangsseiten** behoben — Mollie-Zugangslinks für `kurs`, `toolbox-*`, `benchmark`, `monitoring-*` funktionieren wieder.
+- ✅ **Blog-XSS-Schutz** (Allowlist-Sanitizer) aktiv.
+- ✅ **DSGVO-Consent-Banner** läuft. GA wird erst nach Opt-In geladen, mit IP-Anonymisierung.
+- ✅ **Brute-Force-Schutz** für Admin-Login persistent (Tab `LoginAttempts` in deinem Customers-Sheet — nicht löschen).
+- ✅ **Honeypot** in allen Lead-Forms gegen Spam-Bots.
+- ✅ **Health-Endpoint** verfügbar (`/api/health`, siehe Abschnitt 6a).
+- ✅ **SMTP** auf Strato umgestellt. Mails kommen jetzt nativ von `ki-kompass@derhefter.com`.
 
-Sobald die Härtungs-Phase 1 + 2 (siehe Plan im `~/.claude/plans/`-Ordner bzw. künftiger PR) durch ist, verschwinden diese Punkte aus der Liste.
+**Noch offen (deine Routine):**
+
+1. **Monatlich Sheets-Backup** (Abschnitt 4 → Punkt 5). 5 Minuten, schützt gegen versehentliches Löschen.
+2. **Alle 60 Tage LinkedIn-Token** erneuern. Du bekommst eine Reminder-Mail mit Anleitung — keine eigene Kalender-Erinnerung mehr nötig.
+3. **Bei Health-Fehler-Mail** (Subject `[HEALTH-FEHLER ...]`) die Diagnose-Tabelle in Abschnitt 6a befolgen.
+
+**Nice-to-have (kann beim nächsten freien Slot ergänzt werden):**
+
+- Discord/Slack Fallback-Webhook (`OWNER_FALLBACK_WEBHOOK_URL` in Vercel) — würde dir bei SMTP-Ausfall sofort eine Push-Benachrichtigung schicken, statt dass du es erst beim nächsten Health-Check merkst.
+- Sentry-Integration für detailliertes Error-Tracking (optional, free tier reicht).
 
 ---
 

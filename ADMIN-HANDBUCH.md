@@ -18,7 +18,7 @@
 | Frontend              | React 18.3 + Tailwind CSS 3.4                    |
 | Hosting               | Vercel (Serverless)                              |
 | Datenbank             | Google Sheets (4 Sheets, via Service Account)    |
-| E-Mail                | Gmail SMTP (Nodemailer)                          |
+| E-Mail                | SMTP via Nodemailer (aktuell: Strato `smtp.strato.de`)   |
 | Zahlungen             | Mollie (Kreditkarte, SEPA, PayPal, Klarna, etc.) |
 | KI-Artikelgenerierung | OpenAI GPT-4o-mini                               |
 | Social Media          | LinkedIn API (OAuth2, 60-Tage-Token)             |
@@ -95,8 +95,9 @@
 
 | Endpunkt                             | Methode         | Funktion                              |
 | ------------------------------------ | --------------- | ------------------------------------- |
-| `/api/admin/login`                   | POST            | Admin-Login → HMAC-Token (24h gültig) |
+| `/api/admin/login`                   | POST            | Admin-Login → HMAC-Token (24h gültig); persistenter Brute-Force-Lock via Sheets-Tab `LoginAttempts` |
 | `/api/admin/dashboard`               | GET             | KPIs und Übersicht                    |
+| `/api/health`                        | GET             | Health-Check (Sheets / Mail / Mollie). Liefert 200 ok bzw. 503 bei Teilausfall. |
 | `/api/admin/content-queue`           | GET/POST/DELETE | Freigabe-Queue verwalten              |
 | `/api/admin/reports`                 | GET/POST        | Pending Reports verwalten             |
 | `/api/admin/blog-posts`              | GET             | Veröffentlichte Artikel               |
@@ -110,8 +111,9 @@
 
 | Endpunkt                     | Schedule          | Funktion                                      |
 | ---------------------------- | ----------------- | --------------------------------------------- |
-| `/api/process-followups`     | Täglich 08:00 UTC | Follow-Up-E-Mails versenden (Tag 1, 3, 7, 14) |
+| `/api/process-followups`     | Täglich 08:00 UTC | Follow-Up-E-Mails versenden (Tag 1, 3, 7, 14) + wöchentlicher LinkedIn-Token-Check |
 | `/api/cron/generate-article` | Montags 07:00 UTC | KI-Artikel generieren → Entwurf in Sheets     |
+| `/api/cron/health-check`     | Täglich 06:00 UTC | Selbsttest Sheets/Mail/Mollie. **Owner-Mail nur bei Fehler** (kein Spam bei OK). |
 
 ### A4. Datenflüsse – Google Sheets
 
@@ -141,11 +143,12 @@ Es gibt **4 Google Sheets** als Datenbank:
 
 **Env-Var:** `GOOGLE_SHEET_CUSTOMERS`
 
-| Tab          | Spalten                                                                    |
-| ------------ | -------------------------------------------------------------------------- |
-| Kunden       | Datum, Sortierung, Name, E-Mail, Firma, Telefon, Plan, Zahlungsart, Betrag |
-| Zugangscodes | Code, Name, E-Mail, Firma, Plan, Erstellt, Ablaufdatum, Status             |
-| FollowUps    | E-Mail, Typ, Geplant, Fällig, Status, Gesendet, Firma, Name, Score, Level  |
+| Tab           | Spalten                                                                    |
+| ------------- | -------------------------------------------------------------------------- |
+| Kunden        | Datum, Sortierung, Name, E-Mail, Firma, Telefon, Plan, Zahlungsart, Betrag |
+| Zugangscodes  | Code, Name, E-Mail, Firma, Plan, Erstellt, Ablaufdatum, Status, PaymentId  |
+| FollowUps     | E-Mail, Typ, Geplant, Fällig, Status, Gesendet, Firma, Name, Score, Level  |
+| LoginAttempts | IP, Timestamp (ISO), Success (true/false), Reason. **Wird beim ersten Admin-Login automatisch angelegt** – nicht manuell anfassen. Dient als persistenter Brute-Force-Schutz (≥ 5 Fehlversuche pro IP/15 Min ⇒ Lock). Alte Einträge dürfen monatlich gelöscht werden. |
 
 #### Sheet 4: Blog
 
@@ -180,7 +183,7 @@ Es gibt **4 Google Sheets** als Datenbank:
 
 | Service               | Zweck                                             | Token-Laufzeit                  |
 | --------------------- | ------------------------------------------------- | ------------------------------- |
-| **Gmail SMTP**        | Transaktions-E-Mails (Leads, Reports, Follow-Ups) | App-Passwort, unbegrenzt        |
+| **SMTP (Strato)**     | Transaktions-E-Mails (Leads, Reports, Follow-Ups) | Postfach-Passwort, unbegrenzt   |
 | **Google Sheets API** | Datenspeicherung (Service Account)                | Service Account Key, unbegrenzt |
 | **Mollie**            | Zahlungsabwicklung                                | API-Key, unbegrenzt             |
 | **OpenAI**            | Blog-Artikel generieren (GPT-4o-mini)             | API-Key, unbegrenzt             |
@@ -245,43 +248,48 @@ Es gibt **4 Google Sheets** als Datenbank:
 
 > Alle Limits laufen In-Memory pro Serverless-Instanz (siehe nächster Abschnitt).
 
-### B1b. Offene Findings (Stand: 2026-04-26 – siehe Konsolidierungs-Plan)
+### B1b. Audit-Findings (Stand: 2026-04-26)
 
-| ID  | Severity | Finding                                                                            |
-| --- | -------- | ---------------------------------------------------------------------------------- |
-| H0  | KRITISCH | Konflikt Redirects ↔ Zugang-Pages → Kunden verlieren Code (siehe Abschnitt A2)     |
-| H1  | HOCH     | Blog `dangerouslySetInnerHTML` ohne HTML-Sanitizer (`src/app/blog/[slug]/page.js`) |
-| H2  | ~~HOCH~~ ✅ FALSCHALARM | `sandbox=""` ist **HTML5-Standard für maximale** Sandbox – kein Fix nötig (im Code dokumentiert). |
-| H3  | HOCH     | In-Memory Rate-Limits → bei Cold-Start zurückgesetzt; Login-Brute-Force schwach    |
-| H4  | HOCH     | Inkonsistentes HTML-Escaping in E-Mail-Templates (manche Routes nur `[<>\r\n]`)   |
-| H5  | HOCH     | Kein zentraler Auth-Wrapper für Admin-Routes (Risiko vergessener Check bei neuer Route) |
-| H6  | HOCH     | Kein Honeypot/Bot-Schutz auf Public Forms → Mail-Limit-Risiko                      |
-| M1  | MITTEL   | `sessionStorage` Admin-Token wird bei 401 nicht entfernt                           |
-| M2  | MITTEL   | E-Mail-Validierung zu permissiv (`a@b.c` akzeptiert)                               |
-| M3  | MITTEL   | OG-Image-Route ohne Längen-Limit für `text`-Param → Render-DoS möglich             |
-| M5  | MITTEL   | Kein `/api/health` Endpoint → Ausfälle erst bei Kunden-Beschwerde sichtbar         |
-| M6  | MITTEL   | Kein Sentry/Alerting → Fehler versickern in Vercel-Logs                            |
-| M8  | MITTEL   | DSGVO: Google Analytics ohne Consent-Banner                                        |
-| M10 | MITTEL   | Owner-Notifications und Kundenmail teilen sich Gmail → Single-Point-of-Failure    |
+| ID  | Severity | Status | Finding & Maßnahme |
+| --- | -------- | ------ | ------------------ |
+| H0  | KRITISCH | ✅ behoben | Konflikt Redirects ↔ Zugang-Pages. **Fix:** Redirects für `/*-zugang` aus `next.config.js` entfernt. |
+| H1  | HOCH     | ✅ behoben | Blog `dangerouslySetInnerHTML` ohne Sanitizer. **Fix:** `sanitizeBlogHtml` (Allowlist via `sanitize-html`) in `src/app/blog/[slug]/page.js`. |
+| H2  | —        | ✅ Falschalarm | `sandbox=""` ist HTML5-Standard für **maximale** Sandbox. Im Code dokumentiert. |
+| H3  | HOCH     | ✅ behoben | In-Memory Rate-Limit. **Fix:** Persistenter Brute-Force-Lock via Sheets-Tab `LoginAttempts` (`src/lib/login-attempts.js`). |
+| H4  | HOCH     | ✅ behoben | Inkonsistentes HTML-Escape. **Fix:** Zentrales `escapeHtml`/`sanitizeUserText` in `src/lib/sanitize.js`, in 7 Public-Routes ausgerollt. |
+| H5  | HOCH     | ✅ behoben | Kein zentraler Auth-Wrapper. **Fix:** `requireAdmin()` in `src/lib/admin-auth.js`, alle 8 Admin-Routes umgestellt. |
+| H6  | HOCH     | ✅ behoben | Kein Honeypot. **Fix:** `HoneypotField`-Komponente + `isHoneypotTriggered`, in 4 Lead-Forms aktiv. |
+| M1  | MITTEL   | ✅ behoben | sessionStorage-Token bei 401 nicht gelöscht. **Fix:** `dashboard/page.js` löscht Token bei 401. |
+| M2  | MITTEL   | ✅ behoben | E-Mail-Regex zu permissiv. **Fix:** TLD-Mindestlänge in allen Public-Routes. |
+| M3  | MITTEL   | ✅ behoben | OG-Image-Längen-Limit. **Fix:** `text.slice(0,200)` in `og/route.jsx`. |
+| M5  | MITTEL   | ✅ behoben | Kein Health-Check. **Fix:** `/api/health` (Sheets/Mail/Mollie), Admin-only. |
+| M6  | MITTEL   | 🟡 offen | Kein Sentry/Alerting. Optional, später. |
+| M7  | MITTEL   | 🟡 teilweise | CSP `unsafe-inline` für Scripts. **Fix-1:** `frame-ancestors`, `base-uri`, `form-action` ergänzt. **Offen:** Inline-Scripts via Nonce/`next/third-parties`. |
+| M8  | MITTEL   | ✅ behoben | DSGVO-Consent-Banner. **Fix:** `ConsentBanner` lädt GA erst nach Opt-In, IP anonymisiert. |
+| M10 | MITTEL   | ✅ behoben (Code) | Mail-SPOF. **Fix-1:** `OWNER_FALLBACK_WEBHOOK_URL` ENV (Discord/Slack-Backup, optional). **Fix-2:** SMTP provider-agnostisch + ENV-Trim gegen Copy-Paste-Whitespace. **Fix-3:** Wechsel von Gmail (`steffenhefter@…`) auf nativen Strato-SMTP für `ki-kompass@derhefter.com`. |
+| —   | —        | 🟡 TODO User | LinkedIn-Token: Liveness-Check baut wöchentlich Reminder-Mail bei 401. Konfiguration Owner-Aufgabe. |
+| —   | —        | 🟡 TODO User | Google-Sheets-Backup: monatlicher Export (Datei → Herunterladen → .xlsx). Siehe BEDIENUNGSANLEITUNG. |
 
-Vollständige Beschreibung & Maßnahmen siehe `~/.claude/plans/encapsulated-swinging-bumblebee.md` bzw. künftiger `SECURITY-CHANGELOG.md`.
+**Bilanz:** 11 von 14 Findings behoben (inkl. Falschalarm H2). Verbleibend: M6 (Sentry, optional), M7 (CSP-Vollhärtung) und 2 wiederkehrende User-Aufgaben.
 
 ### B2. Akzeptierte Risiken
 
-#### In-Memory Rate-Limiting
+#### In-Memory Rate-Limiting (für Public-Endpoints)
+**Hinweis:** Für **Login** wurde dies ersetzt durch persistenten Sheets-Lock (siehe H3). Für die übrigen Public-Endpoints (lead, send-results, create-checkout etc.) gilt weiterhin:
 
 **Risiko:** Rate-Limits werden bei Vercel Cold Starts zurückgesetzt.  
 **Begründung:** Bei Low-Traffic-Seite ausreichend. Schützt weiterhin vor Rapid-Fire-Attacken innerhalb warmer Instanzen. Zusätzlicher Schutz durch Vercel's integrierte WAF möglich.
 
-#### `unsafe-inline` in CSP
+#### `unsafe-inline` in CSP (script-src)
 
-**Risiko:** Content-Security-Policy erlaubt `unsafe-inline` für Scripts und Styles.  
-**Begründung:** Nötig für Tailwind CSS (inline styles) und Google Analytics. Standard für diesen Tech-Stack.
+**Risiko:** Inline-Scripts werden weiterhin akzeptiert.
+**Begründung:** Aktuell für das GA-Init-Snippet im `ConsentBanner` nötig. Vollharting via Nonce oder `next/third-parties/google` ist als TODO M7 offen.
+**Mitigation:** XSS-Vektoren stark reduziert durch Blog-Sanitizer (H1), Honeypot+Escape (H4/H6) und gehärtete Header (`frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self' https://www.mollie.com`).
 
 #### sessionStorage für Admin-Token
 
-**Risiko:** Token im Browser-Speicher zugänglich bei XSS.  
-**Begründung:** Admin-Dashboard wird nur von Steffen genutzt. XSS-Risiko durch iframe-Sandbox stark reduziert. Token ist 24h gültig und wird bei Browser-Schließen gelöscht.
+**Risiko:** Token im Browser-Speicher zugänglich bei XSS.
+**Begründung:** Admin-Dashboard wird nur von Steffen genutzt. XSS-Risiko durch Blog-Sanitizer + maximal restriktiven `sandbox=""` für iframe-Previews stark reduziert. Token ist 24h gültig, wird bei Browser-Schließen automatisch gelöscht **und** seit Phase 1 zusätzlich bei jedem 401-Response der Dashboard-API entfernt.
 
 ### B3. Bestehende Schutzmaßnahmen
 
@@ -567,15 +575,38 @@ Jede Frage hat:
 
 #### E-Mails kommen nicht an
 
-1. **Prüfe Gmail App-Passwort:** Google → Sicherheit → App-Passwörter
-   - Muss 16 Zeichen lang sein, keine Leerzeichen
-2. **Prüfe Env-Vars in Vercel:**
-   - `EMAIL_HOST=smtp.gmail.com`
-   - `EMAIL_PORT=587`
-   - `EMAIL_USER=ki-kompass@derhefter.com`
-   - `EMAIL_PASS=<16-stelliges App-Passwort>`
-3. **Vercel Logs prüfen:** Vercel Dashboard → Deployments → Functions → Logs
-4. **Gmail Limit:** Max. 500 E-Mails/Tag (Gmail Standard)
+**Schnelldiagnose über Health-Endpoint** (am Dashboard angemeldet, F12-Console):
+
+```js
+fetch('/api/health', { headers: { 'x-admin-token': sessionStorage.getItem('adminToken') } }).then(r => r.json()).then(j => console.log(JSON.stringify(j, null, 2)))
+```
+
+Liefert ein konkretes `mail.error`-Feld. Häufige Werte:
+
+| Fehlertext | Ursache | Fix |
+|---|---|---|
+| `535-5.7.8 BadCredentials` (Gmail) | App-Passwort widerrufen oder Konto-Pwd geändert | Neues App-Passwort, in Vercel `EMAIL_PASS` aktualisieren, Redeploy |
+| `535 LOGIN failed` (Strato) | Postfach-Passwort falsch oder Postfach existiert nicht | Im Strato Communication Center Postfach + Passwort prüfen / neu setzen |
+| `queryA EBADNAME ...` | **Whitespace** in `EMAIL_HOST` (Tab/Leerzeichen aus Copy/Paste) | In Vercel den Wert manuell neu eintippen, Redeploy. Code trimmt seit Phase 4.x defensiv. |
+| `ETIMEDOUT` / `ECONNREFUSED` | Falscher Port oder Provider blockt | Bei Strato Port `465` statt `587` versuchen, ggf. zusätzlich `EMAIL_SECURE=true` |
+| `connect ETIMEDOUT` aus Vercel | Provider blockt Vercel-IPs | Anderen SMTP-Provider erwägen (Mailgun, Postmark) |
+
+**Prüfe ENV-Vars in Vercel** (Settings → Environment Variables):
+
+```
+EMAIL_HOST=smtp.strato.de       # oder anderer Provider
+EMAIL_PORT=587                  # 465 oder 587
+EMAIL_USER=ki-kompass@derhefter.com
+EMAIL_PASS=<Postfach-Passwort>
+EMAIL_FROM=KI-Kompass | frimalo <ki-kompass@derhefter.com>
+EMAIL_REPLY_TO=ki-kompass@derhefter.com
+```
+
+**Hinweise:**
+- `EMAIL_USER` muss ein **echtes Postfach-Login** beim SMTP-Provider sein (kein Alias).
+- Bei Gmail muss zudem `EMAIL_USER` ein vollständiges Google-Konto sein (`@gmail.com` / `@googlemail.com`).
+- Strato-Standard: 1.000 E-Mails/Tag, 50/Stunde (großzügiger als Gmail).
+- Vercel-Logs: Dashboard → Deployments → Functions → Logs → nach `Fehler beim E-Mail-Versand` filtern.
 
 #### Google Sheets-Fehler
 
@@ -691,8 +722,9 @@ Empfohlen: alle vier setzen, dann arbeitet jede Stelle wie vorgesehen.
 
 | Variable         | Wert/Beschreibung                            | Wo zu finden     |
 | ---------------- | -------------------------------------------- | ---------------- |
-| `ADMIN_PASSWORD` | Sicheres Passwort für /dashboard             | Selbst gewählt   |
-| `CRON_SECRET`    | Zufälliger String für Cron-Authentifizierung | Selbst generiert |
+| `ADMIN_PASSWORD`              | Sicheres Passwort für /dashboard                                                                  | Selbst gewählt   |
+| `CRON_SECRET`                 | Zufälliger String für Cron-Authentifizierung                                                      | Selbst generiert |
+| `OWNER_FALLBACK_WEBHOOK_URL`  | **Optional.** Discord-/Slack-Webhook-URL. Wird genutzt, wenn SMTP fehlschlägt, damit Owner-Notifications nicht verloren gehen. Ohne Wert: kein Fallback aktiv (no-op). | Discord: Channel → ⚙ → Integrationen → Webhooks. Slack: Apps → Incoming Webhooks. |
 
 ### Zahlungen (Mollie)
 
@@ -720,7 +752,7 @@ Empfohlen: alle vier setzen, dann arbeitet jede Stelle wie vorgesehen.
 | Was                        | Wann                 | Wie                                                                      |
 | -------------------------- | -------------------- | ------------------------------------------------------------------------ |
 | LinkedIn Access Token      | Alle 60 Tage         | Dashboard → Blog → LinkedIn verbinden → Token in Vercel aktualisieren    |
-| Gmail App-Passwort         | Bei Kompromittierung | Google → Sicherheit → App-Passwörter → altes widerrufen, neues erstellen |
+| SMTP-Postfach-Passwort     | Bei Kompromittierung | Strato Communication Center → Postfach → Passwort ändern; in Vercel `EMAIL_PASS` aktualisieren + Redeploy |
 | Google Service Account Key | Bei Kompromittierung | Google Cloud Console → IAM → Service Accounts → Key rotieren             |
 | Mollie API Key             | Bei Kompromittierung | my.mollie.com → neuen Key generieren                                     |
 | Admin-Passwort             | Regelmäßig empfohlen | In Vercel ändern → Redeploy                                              |
