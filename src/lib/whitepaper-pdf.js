@@ -279,20 +279,22 @@ export function generateWhitepaperHTML() {
     .tree-no { background: #FEF2F2; color: #B91C1C; }
     .tree-yes b, .tree-no b { font-weight: 700; margin-right: 4pt; }
 
-    /* Roof / Foundation diagram */
+    /* Roof / Foundation diagram — Dach so breit wie Fundament (380pt) */
     .house { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 6pt 0; }
     .roof {
       width: 0; height: 0;
-      border-left: 130pt solid transparent;
-      border-right: 130pt solid transparent;
-      border-bottom: 70pt solid #D97706;
+      border-left: 190pt solid transparent;
+      border-right: 190pt solid transparent;
+      border-bottom: 120pt solid #D97706;
       position: relative;
+      z-index: 2;
     }
     .roof-content {
-      position: absolute; top: 28pt; left: -100pt; width: 200pt;
-      text-align: center; color: white; font-size: 9.5pt; font-weight: 600; line-height: 1.4;
+      position: absolute; top: 65pt; left: -115pt; width: 230pt;
+      text-align: center; color: white; font-size: 9.5pt; font-weight: 600; line-height: 1.35;
+      z-index: 3;
     }
-    .roof-content b { display: block; font-size: 11pt; margin-bottom: 2pt; }
+    .roof-content b { display: block; font-size: 11pt; margin-bottom: 3pt; }
     .building {
       width: 380pt; padding: 18pt;
       background: #1E293B; color: white;
