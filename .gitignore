@@ -14,3 +14,8 @@ nul
 .~lock.*
 setup.bat
 .vercel
+
+# PDF preview artifacts (lokale Test-Outputs, nicht committen)
+preview-pdf.mjs
+preview-report.html
+preview-report.pdf

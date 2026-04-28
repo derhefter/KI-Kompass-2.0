@@ -3,10 +3,17 @@
 // ============================================================
 // Generiert einen umfassenden, druckfertigen HTML-Report (20+ Seiten)
 // der als PDF gespeichert werden kann (Strg+P → PDF speichern)
+//
+// Brand-Tokens (aus tailwind.config.js Variante C "Mittelstand Modern"):
+//   primary-50 #F0F9FF  primary-200 #BAE6FD  primary-500 #0369A1
+//   primary-600 #075985  primary-700 #1E293B
+//   accent-50  #ECFDF5  accent-200  #A7F3D0  accent-500 #059669  accent-600 #047857
+//   warm-50    #FFFBEB  warm-100    #FEF3C7  warm-500   #D97706
+//   slate-700  #374151  slate-500   #64748B  slate-300  #CBD5E1
 // ============================================================
 
 // frimalo Logo Base64 (gleich wie in invoice-request)
-const FRIMALO_LOGO_BASE64 = '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'
+const FRIMALO_LOGO_BASE64 = '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'
 
 // Tool-Empfehlungen nach Level
 const toolEmpfehlungen = {
@@ -36,10 +43,11 @@ const toolEmpfehlungen = {
   ],
 }
 
+// Brand-aligned Score-Farben (Variante C: Mittelstand Modern)
 function getScoreColor(percentage) {
-  if (percentage > 60) return '#22c55e'
-  if (percentage > 35) return '#f59e0b'
-  return '#ef4444'
+  if (percentage > 60) return '#059669'  // accent-500 (Erfolg, Checks)
+  if (percentage > 35) return '#D97706'  // warm-500 (Warme Akzente, Aufmerksamkeit)
+  return '#DC2626'                       // red-600 (Handlungsbedarf, brand-aligned)
 }
 
 function getScoreLabel(percentage) {
@@ -60,7 +68,7 @@ export function generatePDFReportHTML(data) {
     level = 1,
     levelTitle = 'Einsteiger',
     levelDescription = '',
-    levelColor = '#ef4444',
+    levelColor = '#DC2626',
     categoryScores = [],
     recommendations = [],
     quickWins = [],
@@ -96,96 +104,115 @@ export function generatePDFReportHTML(data) {
   <meta charset="UTF-8">
   <title>KI-Readiness Report - ${companyName}</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
     @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
     @media print {
       .page-break { page-break-before: always; }
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.6; color: #1f2937; max-width: 210mm; margin: 0 auto; }
+    body { font-family: 'Inter', Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.6; color: #374151; max-width: 210mm; margin: 0 auto; }
 
-    /* Cover Page */
-    .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #0c2340 0%, #0369a1 60%, #0ea5e9 100%); color: white; text-align: center; padding: 40px; position: relative; }
+    /* ===== Cover Page ===== */
+    .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #1E293B 0%, #075985 50%, #0369A1 100%); color: white; text-align: center; padding: 40px; position: relative; }
     .cover::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08) 0%, transparent 60%); pointer-events: none; }
     .cover-logo { height: 60px; margin-bottom: 30px; position: relative; z-index: 1; }
-    .cover h1 { font-size: 32pt; margin-bottom: 10px; letter-spacing: -0.5px; position: relative; z-index: 1; }
-    .cover h2 { font-size: 16pt; font-weight: normal; opacity: 0.85; margin-bottom: 40px; position: relative; z-index: 1; }
-    .cover-company { font-size: 24pt; font-weight: bold; margin-bottom: 8px; position: relative; z-index: 1; }
-    .cover-meta { font-size: 11pt; opacity: 0.8; position: relative; z-index: 1; }
-    .cover-badge { display: inline-block; padding: 12px 32px; border-radius: 50px; font-size: 16pt; font-weight: bold; margin: 30px 0; border: 3px solid rgba(255,255,255,0.5); position: relative; z-index: 1; }
-    .cover-score { font-size: 64pt; font-weight: bold; margin: 20px 0; position: relative; z-index: 1; }
-    .cover-url { font-size: 10pt; opacity: 0.6; margin-top: 12px; letter-spacing: 1px; position: relative; z-index: 1; }
+    .cover h1 { font-size: 32pt; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; position: relative; z-index: 1; }
+    .cover h2 { font-size: 16pt; font-weight: 400; opacity: 0.85; margin-bottom: 40px; position: relative; z-index: 1; }
+    .cover-company { font-size: 24pt; font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
+    .cover-meta { font-size: 11pt; opacity: 0.85; position: relative; z-index: 1; }
+    .cover-badge { display: inline-block; padding: 12px 32px; border-radius: 50px; font-size: 16pt; font-weight: 600; margin: 30px 0; border: 3px solid rgba(255,255,255,0.5); position: relative; z-index: 1; }
+    .cover-score { font-size: 64pt; font-weight: 700; margin: 20px 0; position: relative; z-index: 1; letter-spacing: -1px; }
+    .cover-url { font-size: 10pt; opacity: 0.65; margin-top: 12px; letter-spacing: 1px; position: relative; z-index: 1; }
 
-    /* Content Pages */
+    /* ===== Content Pages ===== */
     .content { padding: 20mm; }
-    .page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 2px solid #2563eb; margin-bottom: 20px; font-size: 8pt; color: #6b7280; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 2px solid #0369A1; margin-bottom: 20px; font-size: 8pt; color: #64748B; }
     .page-header img { height: 24px; }
 
-    h2 { font-size: 18pt; color: #1e3a8a; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb; }
-    h3 { font-size: 13pt; color: #2563eb; margin: 16px 0 8px; }
+    h1, h2, h3, h4 { font-weight: 600; }
+    h2 { font-size: 18pt; color: #1E293B; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #BAE6FD; letter-spacing: -0.3px; }
+    h3 { font-size: 13pt; color: #0369A1; margin: 16px 0 8px; letter-spacing: -0.2px; }
     h4 { font-size: 11pt; color: #374151; margin: 12px 0 6px; }
     p { margin-bottom: 8px; }
+    strong { font-weight: 600; color: #1E293B; }
 
-    .summary-box { background: #eff6ff; border: 2px solid #bfdbfe; border-radius: 8px; padding: 20px; margin: 16px 0; }
-    .score-big { font-size: 48pt; font-weight: bold; color: #2563eb; text-align: center; }
-    .level-badge { display: inline-block; padding: 8px 24px; border-radius: 50px; color: white; font-weight: bold; font-size: 12pt; }
+    /* ===== Cards & Boxes ===== */
+    .summary-box { background: #F0F9FF; border: 2px solid #BAE6FD; border-radius: 8px; padding: 20px; margin: 16px 0; }
+    .score-big { font-size: 48pt; font-weight: 700; color: #0369A1; text-align: center; letter-spacing: -1px; }
+    .level-badge { display: inline-block; padding: 8px 24px; border-radius: 50px; color: white; font-weight: 600; font-size: 12pt; }
 
-    .progress-bar-container { background: #e5e7eb; border-radius: 8px; height: 16px; margin: 6px 0 4px; overflow: hidden; }
+    .progress-bar-container { background: #E2E8F0; border-radius: 8px; height: 16px; margin: 6px 0 4px; overflow: hidden; }
     .progress-bar-fill { height: 100%; border-radius: 8px; transition: width 0.3s; }
 
-    .category-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; }
-    .category-score { font-size: 18pt; font-weight: bold; float: right; }
+    .category-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .category-score { font-size: 18pt; font-weight: 700; float: right; }
 
+    /* ===== Tables ===== */
     table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 9pt; }
-    th { background: #f3f4f6; padding: 8px 10px; text-align: left; font-weight: bold; border-bottom: 2px solid #2563eb; }
-    td { padding: 6px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
-    tr:nth-child(even) { background: #f9fafb; }
+    th { background: #F1F5F9; padding: 8px 10px; text-align: left; font-weight: 600; color: #1E293B; border-bottom: 2px solid #0369A1; }
+    td { padding: 6px 10px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
+    tr:nth-child(even) { background: #F8FAFC; }
 
-    .rec-card { border-left: 4px solid; padding: 12px 16px; margin: 12px 0; background: #f9fafb; border-radius: 0 8px 8px 0; }
-    .rec-high { border-color: #ef4444; }
-    .rec-medium { border-color: #f59e0b; }
-    .rec-low { border-color: #22c55e; }
-    .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 8pt; font-weight: bold; text-transform: uppercase; color: white; }
-    .priority-hoch { background: #ef4444; }
-    .priority-mittel { background: #f59e0b; }
+    /* ===== Recommendations (left-bordered cards) ===== */
+    .rec-card { border-left: 4px solid; padding: 12px 16px; margin: 12px 0; background: #F8FAFC; border-radius: 0 8px 8px 0; }
+    .rec-high { border-color: #DC2626; }
+    .rec-medium { border-color: #D97706; }
+    .rec-low { border-color: #059669; }
+    .priority-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 8pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: white; }
+    .priority-hoch { background: #DC2626; }
+    .priority-mittel { background: #D97706; }
+    .priority-niedrig { background: #059669; }
 
-    .quickwin-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px; margin: 8px 0; }
-    .quickwin-effort { font-size: 8pt; color: #16a34a; font-weight: bold; text-transform: uppercase; }
+    /* ===== Quick-Wins (accent-50/200, brand green) ===== */
+    .quickwin-card { background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 14px; margin: 8px 0; }
+    .quickwin-effort { font-size: 8pt; color: #047857; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
+    /* ===== Roadmap ===== */
     .roadmap-phase { display: flex; margin: 16px 0; }
-    .roadmap-number { width: 40px; height: 40px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14pt; flex-shrink: 0; margin-right: 16px; }
+    .roadmap-number { width: 40px; height: 40px; background: #0369A1; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14pt; flex-shrink: 0; margin-right: 16px; }
     .roadmap-content { flex: 1; }
-    .roadmap-line { width: 2px; background: #bfdbfe; margin: 4px 19px; min-height: 20px; }
+    .roadmap-line { width: 2px; background: #BAE6FD; margin: 4px 19px; min-height: 20px; }
 
-    .foerder-card { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px; margin: 8px 0; }
-    .foerder-betrag { display: inline-block; background: #2563eb; color: white; padding: 2px 10px; border-radius: 12px; font-size: 9pt; font-weight: bold; }
+    /* ===== Förderkarten ===== */
+    .foerder-card { background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 8px; padding: 14px; margin: 8px 0; }
+    .foerder-betrag { display: inline-block; background: #0369A1; color: white; padding: 2px 10px; border-radius: 12px; font-size: 9pt; font-weight: 600; }
 
-    .tool-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin: 8px 0; }
-    .tool-name { font-weight: bold; color: #1e3a8a; }
-    .tool-cat { font-size: 8pt; color: #6b7280; text-transform: uppercase; }
-    .tool-cost { font-size: 9pt; color: #2563eb; font-weight: bold; }
+    /* ===== Tool-Empfehlungen ===== */
+    .tool-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin: 8px 0; }
+    .tool-name { font-weight: 600; color: #1E293B; }
+    .tool-cat { font-size: 8pt; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tool-cost { font-size: 9pt; color: #0369A1; font-weight: 600; }
 
-    .footer { text-align: center; padding: 16px; color: #9ca3af; font-size: 8pt; border-top: 1px solid #e5e7eb; margin-top: 20px; }
-    .page-footer { text-align: center; padding: 8px 0; color: #9ca3af; font-size: 7pt; border-top: 1px solid #e5e7eb; margin-top: 24px; }
-    .page-footer a { color: #0369a1; text-decoration: none; }
+    /* ===== Tipp-Boxen (warmer Akzent) ===== */
+    .tip-box { background: #FFFBEB; border-left: 4px solid #D97706; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; }
+    .tip-box .tip-label { font-size: 8pt; color: #B45309; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 
-    /* Business Card Kontakt */
-    .contact-card { background: linear-gradient(135deg, #0c2340 0%, #0369a1 100%); color: white; border-radius: 12px; padding: 32px; margin-top: 20px; }
+    /* ===== Footer ===== */
+    .footer { text-align: center; padding: 16px; color: #94A3B8; font-size: 8pt; border-top: 1px solid #E2E8F0; margin-top: 20px; }
+    .page-footer { text-align: center; padding: 8px 0; color: #94A3B8; font-size: 7pt; border-top: 1px solid #E2E8F0; margin-top: 24px; }
+    .page-footer a { color: #0369A1; text-decoration: none; }
+
+    /* ===== Business Card Kontakt ===== */
+    .contact-card { background: linear-gradient(135deg, #1E293B 0%, #0369A1 100%); color: white; border-radius: 12px; padding: 32px; margin-top: 20px; }
     .contact-card h3 { color: white; margin: 0 0 16px; font-size: 14pt; border: none; }
-    .contact-card .contact-name { font-size: 16pt; font-weight: bold; margin-bottom: 4px; }
-    .contact-card .contact-role { font-size: 10pt; opacity: 0.8; margin-bottom: 16px; }
+    .contact-card .contact-name { font-size: 16pt; font-weight: 700; margin-bottom: 4px; }
+    .contact-card .contact-role { font-size: 10pt; opacity: 0.85; margin-bottom: 16px; }
     .contact-card .contact-info { display: flex; gap: 24px; flex-wrap: wrap; font-size: 10pt; }
     .contact-card .contact-item { display: flex; align-items: center; gap: 6px; }
     .contact-card .contact-item span { opacity: 0.7; }
-    .contact-card .contact-url { margin-top: 16px; font-size: 12pt; font-weight: bold; letter-spacing: 0.5px; opacity: 0.9; }
+    .contact-card .contact-url { margin-top: 16px; font-size: 12pt; font-weight: 600; letter-spacing: 0.5px; opacity: 0.95; }
 
+    /* ===== Lists ===== */
     ul { padding-left: 20px; margin: 6px 0; }
     li { margin-bottom: 4px; }
 
+    /* ===== TOC ===== */
     .toc { margin: 20px 0; }
-    .toc-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #d1d5db; }
-    .toc-item span:first-child { color: #1e3a8a; font-weight: 500; }
-    .toc-item span:last-child { color: #6b7280; }
+    .toc-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted #CBD5E1; }
+    .toc-item span:first-child { color: #1E293B; font-weight: 500; }
+    .toc-item span:last-child { color: #64748B; }
   </style>
 </head>
 <body>
@@ -231,10 +258,10 @@ export function generatePDFReportHTML(data) {
     <div class="toc-item"><span>10. N&auml;chste Schritte &amp; Kontakt</span><span>Seite 23</span></div>
   </div>
 
-  <div class="summary-box" style="margin-top: 30px;">
-    <h3 style="margin-top: 0;">Hinweis zur Nutzung dieses Reports</h3>
-    <p>Dieser Report wurde auf Basis Ihrer Antworten im KI-Readiness Assessment erstellt. Er gibt Ihnen einen umfassenden &Uuml;berblick &uuml;ber den aktuellen KI-Reifegrad Ihres Unternehmens und liefert konkrete, umsetzbare Handlungsempfehlungen.</p>
-    <p><strong>Tipp:</strong> Speichern Sie diesen Report als PDF (Strg+P &rarr; &bdquo;Als PDF speichern&ldquo;) f&uuml;r Ihre Unterlagen.</p>
+  <div class="tip-box" style="margin-top: 30px;">
+    <div class="tip-label">Hinweis zur Nutzung</div>
+    <p style="margin-bottom: 8px;">Dieser Report wurde auf Basis Ihrer Antworten im KI-Readiness Assessment erstellt. Er gibt Ihnen einen umfassenden &Uuml;berblick &uuml;ber den aktuellen KI-Reifegrad Ihres Unternehmens und liefert konkrete, umsetzbare Handlungsempfehlungen.</p>
+    <p style="margin: 0;"><strong>Tipp:</strong> Speichern Sie diesen Report als PDF (Strg+P &rarr; &bdquo;Als PDF speichern&ldquo;) f&uuml;r Ihre Unterlagen.</p>
   </div>
 </div>
 
@@ -248,7 +275,7 @@ export function generatePDFReportHTML(data) {
   <h2>1. Executive Summary</h2>
 
   <div class="summary-box" style="text-align: center;">
-    <p style="font-size: 12pt; color: #6b7280; margin-bottom: 12px;">Ihr KI-Readiness Score</p>
+    <p style="font-size: 12pt; color: #64748B; margin-bottom: 12px;">Ihr KI-Readiness Score</p>
     <div class="score-big">${percentage}%</div>
     <div style="margin: 12px 0;">
       <span class="level-badge" style="background: ${levelColor};">Level ${level}: ${levelTitle}</span>
@@ -274,7 +301,7 @@ export function generatePDFReportHTML(data) {
     <div style="margin: 8px 0;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <strong>${cat.label}</strong>
-        <span style="color: ${getScoreColor(cat.percentage)}; font-weight: bold; font-size: 12pt;">${cat.percentage}%</span>
+        <span style="color: ${getScoreColor(cat.percentage)}; font-weight: 700; font-size: 12pt;">${cat.percentage}%</span>
       </div>
       <div class="progress-bar-container">
         <div class="progress-bar-fill" style="width: ${cat.percentage}%; background: ${getScoreColor(cat.percentage)};"></div>
@@ -312,7 +339,7 @@ ${categoryScores.map((cat, idx) => `
         <tr>
           <td>${a.questionText}</td>
           <td>${a.text}</td>
-          <td style="text-align: center; font-weight: bold; color: ${a.score >= 3 ? '#22c55e' : a.score >= 2 ? '#f59e0b' : '#ef4444'};">${a.score}/4</td>
+          <td style="text-align: center; font-weight: 700; color: ${a.score >= 3 ? '#059669' : a.score >= 2 ? '#D97706' : '#DC2626'};">${a.score}/4</td>
         </tr>
         `).join('')}
       </tbody>
@@ -336,7 +363,7 @@ ${categoryScores.map((cat, idx) => `
   <div class="rec-card rec-${rec.priority === 'hoch' ? 'high' : rec.priority === 'mittel' ? 'medium' : 'low'}">
     <div style="margin-bottom: 6px;">
       <span class="priority-badge priority-${rec.priority}">${rec.priority}</span>
-      <span style="font-size: 9pt; color: #6b7280; margin-left: 8px;">${rec.category}</span>
+      <span style="font-size: 9pt; color: #64748B; margin-left: 8px;">${rec.category}</span>
     </div>
     <h4 style="margin: 4px 0 8px;">${rec.title}</h4>
     <ul>
@@ -360,13 +387,13 @@ ${categoryScores.map((cat, idx) => `
   <div class="quickwin-card">
     <div class="quickwin-effort">Quick-Win ${i + 1} &bull; ${qw.effort}</div>
     <h4 style="margin: 4px 0;">${qw.title}</h4>
-    <p>${qw.desc}</p>
+    <p style="margin-bottom: 0;">${qw.desc}</p>
   </div>
   `).join('')}
 
-  <div class="summary-box" style="margin-top: 20px;">
-    <h4 style="margin-top: 0;">Empfohlene Reihenfolge</h4>
-    <p>Beginnen Sie mit Quick-Win 1 und arbeiten Sie sich schrittweise vor. Jeder Quick-Win baut auf dem vorherigen auf und bereitet Ihr Unternehmen systematisch auf den n&auml;chsten KI-Reifegrad vor.</p>
+  <div class="tip-box" style="margin-top: 20px;">
+    <div class="tip-label">Empfohlene Reihenfolge</div>
+    <p style="margin: 0;">Beginnen Sie mit Quick-Win 1 und arbeiten Sie sich schrittweise vor. Jeder Quick-Win baut auf dem vorherigen auf und bereitet Ihr Unternehmen systematisch auf den n&auml;chsten KI-Reifegrad vor.</p>
   </div>
 </div>
 
@@ -384,7 +411,7 @@ ${categoryScores.map((cat, idx) => `
     <div class="roadmap-number">1</div>
     <div class="roadmap-content">
       <h3 style="margin-top: 0;">Phase 1: AI Awareness (Monat 1&ndash;2)</h3>
-      <p style="color: #6b7280; font-size: 9pt;">Grundlagen schaffen &amp; Bewusstsein erzeugen</p>
+      <p style="color: #64748B; font-size: 9pt;">Grundlagen schaffen &amp; Bewusstsein erzeugen</p>
       <ul>
         <li>KI-Awareness-Schulung f&uuml;r F&uuml;hrungskr&auml;fte und Schl&uuml;sselmitarbeiter durchf&uuml;hren</li>
         <li>Interne KI-Richtlinie erstellen (Nutzung, Datenschutz, Verantwortlichkeiten)</li>
@@ -400,7 +427,7 @@ ${categoryScores.map((cat, idx) => `
     <div class="roadmap-number">2</div>
     <div class="roadmap-content">
       <h3 style="margin-top: 0;">Phase 2: AI Readiness (Monat 3&ndash;4)</h3>
-      <p style="color: #6b7280; font-size: 9pt;">Infrastruktur aufbauen &amp; erste Projekte starten</p>
+      <p style="color: #64748B; font-size: 9pt;">Infrastruktur aufbauen &amp; erste Projekte starten</p>
       <ul>
         <li>Datenqualit&auml;t analysieren und Datensilos identifizieren</li>
         <li>Digitale Infrastruktur pr&uuml;fen (Cloud-Readiness, API-F&auml;higkeit)</li>
@@ -416,7 +443,7 @@ ${categoryScores.map((cat, idx) => `
     <div class="roadmap-number">3</div>
     <div class="roadmap-content">
       <h3 style="margin-top: 0;">Phase 3: AI Steadiness (Monat 5&ndash;6)</h3>
-      <p style="color: #6b7280; font-size: 9pt;">Skalieren &amp; verstetigen</p>
+      <p style="color: #64748B; font-size: 9pt;">Skalieren &amp; verstetigen</p>
       <ul>
         <li>Pilotprojekte umsetzen und Ergebnisse messen</li>
         <li>Erfolge intern kommunizieren und Change-Management betreiben</li>
@@ -444,14 +471,14 @@ ${categoryScores.map((cat, idx) => `
       <h4 style="margin: 0;">${fp.name}</h4>
       <span class="foerder-betrag">${fp.betrag}</span>
     </div>
-    <p style="margin-top: 8px;">${fp.beschreibung}</p>
+    <p style="margin-top: 8px; margin-bottom: 0;">${fp.beschreibung}</p>
   </div>
   `).join('')}
 
   <div class="summary-box" style="margin-top: 20px;">
     <h4 style="margin-top: 0;">F&ouml;rdermittelberatung</h4>
     <p>Sie m&ouml;chten wissen, welche F&ouml;rderprogramme konkret f&uuml;r Ihr Unternehmen in Frage kommen? Im Rahmen unseres <strong>Strategie-Pakets (€497)</strong> erhalten Sie eine individuelle F&ouml;rdermittelberatung inklusive Unterst&uuml;tzung bei der Antragstellung.</p>
-    <p><strong>Kontakt:</strong> ki-kompass@derhefter.com &bull; <strong>Web:</strong> www.derhefter.com</p>
+    <p style="margin: 0;"><strong>Kontakt:</strong> ki-kompass@derhefter.com &bull; <strong>Web:</strong> www.derhefter.com</p>
   </div>
 </div>
 
@@ -474,13 +501,13 @@ ${categoryScores.map((cat, idx) => `
       </div>
       <span class="tool-cost">${tool.kosten}</span>
     </div>
-    <p style="margin-top: 6px; font-size: 9pt; color: #4b5563;">${tool.beschreibung}</p>
+    <p style="margin-top: 6px; margin-bottom: 0; font-size: 9pt; color: #475569;">${tool.beschreibung}</p>
   </div>
   `).join('')}
 
-  <div class="summary-box" style="margin-top: 20px;">
-    <h4 style="margin-top: 0;">Hinweis</h4>
-    <p>Die genannten Preise sind Richtwerte und k&ouml;nnen sich &auml;ndern. Viele Tools bieten kostenlose Testphasen an. Wir empfehlen, mit den kostenlosen Versionen zu starten und bei Bedarf zu upgraden.</p>
+  <div class="tip-box" style="margin-top: 20px;">
+    <div class="tip-label">Hinweis</div>
+    <p style="margin: 0;">Die genannten Preise sind Richtwerte und k&ouml;nnen sich &auml;ndern. Viele Tools bieten kostenlose Testphasen an. Wir empfehlen, mit den kostenlosen Versionen zu starten und bei Bedarf zu upgraden.</p>
   </div>
 </div>
 
@@ -544,10 +571,10 @@ ${categoryScores.map((cat, idx) => `
         const q = questions.find(qu => qu.id === a.questionId)
         return `
         <tr>
-          <td style="font-size: 8pt; color: #6b7280;">${q ? q.categoryLabel : ''}</td>
+          <td style="font-size: 8pt; color: #64748B;">${q ? q.categoryLabel : ''}</td>
           <td style="font-size: 9pt;">${q ? q.question : ''}</td>
           <td style="font-size: 9pt;">${a.text}</td>
-          <td style="text-align: center; font-weight: bold; color: ${a.score >= 3 ? '#22c55e' : a.score >= 2 ? '#f59e0b' : '#ef4444'};">${a.score}/4</td>
+          <td style="text-align: center; font-weight: 700; color: ${a.score >= 3 ? '#059669' : a.score >= 2 ? '#D97706' : '#DC2626'};">${a.score}/4</td>
         </tr>`
       }).join('')}
     </tbody>

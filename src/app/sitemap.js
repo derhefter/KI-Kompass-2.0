@@ -29,6 +29,12 @@ export default function sitemap() {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/whitepaper`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${BASE_URL}/ueber-mich`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
