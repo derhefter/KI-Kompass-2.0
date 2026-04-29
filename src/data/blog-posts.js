@@ -17,6 +17,54 @@
 
 export const blogPosts = [
   {
+    id: 22,
+    slug: 'ki-im-mittelstand-keine-zeit-zum-lesen-hoeren-sie-das-neue-whitepaper-in-20-minuten',
+    title: 'KI im Mittelstand: Keine Zeit zum Lesen? Hören Sie das neue Whitepaper in 20 Minuten!',
+    excerpt: '„KI klingt ja ganz nett, aber wer soll das im Tagesgeschäft eigentlich machen?“ – Eine Frage, die wir oft hören. Zwischen Personalmangel, Lieferketten-Stress und dem normalen Wahnsinn im Mittelstand bleibt für 60-seitige Berater-PDFs meistens keine Zeit.',
+    content: `
+<p>„KI klingt ja ganz nett, aber wer soll das im Tagesgeschäft eigentlich machen?“ – Eine Frage, die wir oft hören. Zwischen Personalmangel, Lieferketten-Stress und dem normalen Wahnsinn im Mittelstand bleibt für 60-seitige Berater-PDFs meistens keine Zeit.</p><p>Genau deshalb haben wir den KI-Kompass für Betriebe von 5 bis 50 Mitarbeitern entwickelt. Und weil wir wissen, dass Ihre Zeit knapp ist, gibt es das neue Whitepaper jetzt auch als kompaktes 20-Minuten-Audio.</p><h3>Was Sie im Audio (oder PDF) erwartet:</h3><p>Wir reden Klartext. Ohne IT-Latein und ohne Visionen, die erst in zehn Jahren relevant werden. Stattdessen fokussieren wir uns auf das, was nächsten Montag in Ihrem Betrieb den Unterschied macht:</p><ol><li><strong>Die 3 Hebel für sofortige Entlastung:</strong> Wo KI in Routine, Wissen und Kommunikation wirklich Stunden zurückgibt – ohne dass Sie Ihre IT umbauen müssen.</li><li><strong>Förder-Check 2026:</strong> go-digital, Digital Jetzt oder BAFA? Wir erklären verständlich, wer Ihre KI-Investitionen zwischen 5.000 € und 50.000 € bezuschusst.</li><li><strong>Die 90-Tage-Roadmap:</strong> Ein pragmatischer Fahrplan mit Tools, die meist weniger als 50 € im Monat kosten.</li></ol><h3>3 Minuten reinhören – ganz ohne Anmeldung</h3><p>Wir machen es Ihnen einfach: Die ersten 3 Minuten des Audios können Sie direkt auf unserer Landingpage hören. Ohne E-Mail-Adresse, ohne Account, einfach auf „Play“ drücken.</p><p>Wenn Sie danach überzeugt sind, dass die restlichen 17 Minuten gut investierte Zeit für Ihren Betrieb sind, schalten wir Ihnen das komplette Audio und das 32-seitige Begleit-PDF gegen eine kurze E-Mail-Eintragung frei.</p><p><strong>Jetzt reinhören:</strong> <a href="https://www.derhefter.com/whitepaper">www.derhefter.com/whitepaper</a></p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-29',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
+    id: 21,
+    slug: 'der-dreifache-druck-mittelstand-hausaufgaben',
+    title: 'Der dreifache Druck – Warum der regionale Mittelstand jetzt dringend seine Hausaufgaben machen muss',
+    excerpt: 'Wir reden oft über Fachkräftemangel oder die wachsende Konkurrenz. Doch die Realität vor Ort ist viel konkreter. Wer als regionales Unternehmen in den nächsten Jahren nicht nur überleben, sondern wachsen will, muss sich drei harten Wahrheiten stellen.',
+    content: `
+<p>Es braut sich etwas zusammen im mitteldeutschen Mittelstand. Wer heute durch die Werkhallen, Büros und Betriebe unserer Region läuft – völlig egal ob beim Handwerker um die Ecke, in der Logistik oder im produzierenden Betrieb – spürt ihn: den dreifachen Druck.</p>
+
+<p>Wir reden oft über Fachkräftemangel oder die wachsende Konkurrenz. Doch die Realität vor Ort ist viel konkreter. Wer als regionales Unternehmen in den nächsten Jahren nicht nur überleben, sondern wachsen will, muss sich drei harten Wahrheiten stellen.</p>
+
+<h2>1. Die demografische Uhr tickt (und sie ist laut)</h2>
+<p>Die Babyboomer gehen in Rente. Das ist keine abstrakte Statistik mehr, sondern bittere Realität auf dem Dienstplan. Wenn der erfahrene Vorarbeiter im Schlachthof oder die langjährige Meisterin im Friseursalon in den Ruhestand geht, nehmen sie Jahrzehnte an Prozesswissen mit. Wissen, das oft in keinem Handbuch steht. Gleichzeitig rücken viel zu wenige junge Fachkräfte nach. Die Konsequenz? Die verbleibende Mannschaft muss die gleiche Arbeit schaffen. Ohne eine massive Steigerung der Effizienz ist das unmöglich.</p>
+
+<h2>2. Der Wettbewerb wartet nicht</h2>
+<p>Egal ob lokaler Handwerksbetrieb oder mittelständischer Zulieferer: Kunden erwarten heute schnelle Reaktionen und fehlerfreie Abläufe. Wer drei Tage braucht, um ein Angebot zu schreiben, weil die Daten händisch aus verschiedenen Systemen kopiert werden müssen, verliert den Auftrag. Effizienz ist kein "Nice-to-have" mehr, sondern ein harter Wettbewerbsvorteil.</p>
+
+<h2>3. Das Chaos der Alt-Systeme</h2>
+<p>In vielen Betrieben hat sich über Jahre eine gefährliche Schatten-IT gebildet. Zettelwirtschaft trifft auf Excel-Tapeten aus dem Jahr 2012 und eine Branchensoftware, die schon lange kein Update mehr gesehen hat. Diese Alt-Systeme sind Zeitfresser par excellence. Bevor wir auch nur ansatzweise über Automatisierung nachdenken können, muss aufgeräumt werden. Wer kaputte Prozesse digitalisiert, hat am Ende nur einen teuren, kaputten digitalen Prozess.</p>
+
+<h2>Die Lösung? Erst der Change, dann die Technik</h2>
+<p>Die Reaktion auf diesen dreifachen Druck ist oft falsch: Es wird hastig nach dem heißesten Technologie-Trend gerufen. Doch Technologie ist höchstens 20 Prozent der Lösung.</p>
+
+<p>Die restlichen 80 Prozent sind harte Hausaufgaben: Wir müssen den Mut haben, gewohnte Abläufe in Frage zu stellen. Wir müssen unsere Mitarbeiter auf diese Reise mitnehmen. Und wir müssen verstehen, dass echte Transformation kein IT-Projekt ist, sondern ein Kulturwandel.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-04-26',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 20,
     slug: 'ki-revolution-im-deutschen-mittelstand-2026-der-durchbruch-der-ki-agenten',
     title: 'KI-Revolution im deutschen Mittelstand 2026: Der Durchbruch der KI-Agenten',
