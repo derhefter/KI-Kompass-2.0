@@ -17,6 +17,36 @@
 
 export const blogPosts = [
   {
+    id: 24,
+    slug: 'ki-readiness-im-mittelstand-schluss-mit-den-buzzwords-ab-in-die-praxis',
+    title: 'KI-Readiness im Mittelstand: Schluss mit den Buzzwords, ab in die Praxis',
+    excerpt: 'Echte Wertschöpfung durch KI, Digitalisierung und Prozessautomatisierung braucht kein Berater-Sprech, sondern ein solides Fundament. Erfahren Sie, warum KI-Readiness entscheidend ist.',
+    content: `
+<p>Hallo zusammen,</p>
+<p>KI ist überall. Wenn man den ganzen Hochglanz-Magazinen glaubt, druckt künstliche Intelligenz heutzutage von ganz allein das Geld im Keller. Wir im Mittelstand wissen: So ein Quatsch. Echte Wertschöpfung durch KI, Digitalisierung und Prozessautomatisierung braucht kein Berater-Sprech, sondern ein solides Fundament.</p>
+<p>Die Frage lautet deshalb nicht "Was kann KI alles?", sondern "Wie bereit ist Ihr Betrieb eigentlich dafür?" – wir sprechen von <strong>KI-Readiness</strong>.</p>
+<p>Nach hunderten Gesprächen in Produktionshallen, auf dem Bau und in der Logistik hat sich gezeigt: Es gibt genau 5 Dimensionen, an denen sich entscheidet, ob KI bei Ihnen ein teures Spielzeug oder ein echter Motor wird:</p>
+<ol>
+<li><strong>Use Cases (Echte Anwendungsfälle):</strong> Keine Spielereien. Wo hakt es in der Fertigung? Wo verschlingt die Logistik zu viel Zeit? Wir lösen echte Probleme.</li>
+<li><strong>Kultur (Der Wandel):</strong> Die beste Software bringt nichts, wenn die Mannschaft nicht mitzieht. Veränderung beginnt im Kopf, nicht im Serverraum.</li>
+<li><strong>Daten (Das Fundament):</strong> Das wichtigste Thema überhaupt. <strong>Datenqualität ist das Fundament</strong> für jede KI. Ohne saubere Daten im ERP-System oder im Lagerbestand liefert die KI nur automatisierten Müll.</li>
+<li><strong>DSGVO & Sicherheit:</strong> Klar, die Daten müssen geschützt sein. Das ist kein Hindernis, sondern Voraussetzung für sauberes Arbeiten.</li>
+<li><strong>Form (Bereitstellung & Pflege):</strong> Wie kommt die KI zum Mitarbeiter an die Maschine oder ins Büro? Pragmatisch und pflegeleicht muss es sein.</li>
+</ol>
+<p><strong>Und wer kümmert sich darum?</strong><br>
+Hier kommt das organisatorische Setup (wir nennen es intern Cluster II) ins Spiel: Ohne klare <strong>Struktur</strong> und eine <strong>Plattform für die Zusammenarbeit</strong> verpufft jede Initiative. Es braucht keine Riesen-Abteilung, aber eine clevere Verteilung über Ihre Arbeitsgruppen.</p>
+<p>Digitalisierung ist Handwerk. Packen wir's an.</p>
+<p>Viele Grüße!</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-05-01',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 23,
     slug: 'ki-news-radar-automatisierung-im-mittelstand-2026',
     title: 'KI-News-Radar: Automatisierung im Mittelstand 2026',
