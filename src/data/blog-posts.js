@@ -17,6 +17,34 @@
 
 export const blogPosts = [
   {
+    id: 27,
+    slug: 'ki-piloten-in-der-produktion-ab-wann-rechnet-sich-der-spass',
+    title: 'KI-Piloten in der Produktion: Ab wann rechnet sich der Spaß?',
+    excerpt: 'KI ist in aller Munde. Aber mal Klartext: Als mittelständischer Unternehmer in der Produktion oder Logistik interessiert uns am Ende des Tages vor allem eine Frage: Was bringt das in Euro?',
+    content: `
+<p>Moin zusammen,</p>
+<p>KI ist in aller Munde. Aber mal Klartext: Als mittelständischer Unternehmer in der Produktion oder Logistik interessiert uns am Ende des Tages vor allem eine Frage: Was bringt das in Euro?</p>
+<p>Niemand braucht noch ein abgehobenes Theorie-Projekt. Wenn wir im Mittelstand über Digitalisierung und KI reden, dann geht es um harte KPIs. Weniger Stillstandzeiten an der Maschine, reduzierter Ausschuss, schnellere Durchlaufzeiten im Lager durch kluge Prozessautomatisierung. Das ist der handfeste ROI (Return on Investment), an dem sich jeder KI-Pilot messen lassen muss.</p>
+<p>Aber Vorsicht vor der Euphorie-Falle. Bevor Sie den Taschenrechner zücken, müssen wir über das absolute Fundament reden: Ihre Datenqualität. KI ist keine Magie, sondern schlichtweg Mathematik. Wenn Sie Müll in den Algorithmus kippen, kommt auch nur Müll raus. Ein Tool zur vorausschauenden Wartung (Predictive Maintenance) bringt Ihnen exakt null Euro Ersparnis, wenn Ihre Sensordaten lückenhaft oder fehlerhaft sind.</p>
+<p>Deshalb gilt für die ersten KI-Projekte:</p>
+<ol>
+<li><strong>Klein anfangen, scharf zielen:</strong> Suchen Sie sich einen konkreten, abgegrenzten Prozess, der heute richtig Zeit oder Geld frisst.</li>
+<li><strong>Daten-Hausaufgaben machen:</strong> Prüfen Sie schonungslos, ob die Daten für diesen einen Prozess verlässlich, sauber und abrufbar vorliegen.</li>
+<li><strong>Erfolg messbar machen:</strong> Legen Sie <em>vorher</em> fest, welche Metrik (z.B. Fehlerquote) sich um wie viel Prozent verbessern muss, damit das Projekt kein Geldgrab, sondern ein Erfolg ist.</li>
+</ol>
+<p>Das klingt nach Arbeit? Ist es auch. Aber es ist der einzige Weg, wie KI im Betrieb kein teures Hobby bleibt, sondern zum echten Wettbewerbsvorteil wird.</p>
+<p>Sie wollen wissen, ob Ihr Betrieb bereit für den ersten profitablen KI-Schritt ist? Lassen Sie uns das abkürzen. Buchen Sie unseren <strong>KI Readiness Check</strong>. In einem kompakten, direkten Erstgespräch klären wir, wo Sie stehen, ob Ihre Datenbasis taugt und welcher Use Case bei Ihnen wirklich Sinn macht.</p>
+<p>Schreiben Sie mir direkt eine Nachricht und wir packen es an.</p>
+`,
+    category: 'Praxisbeispiele',
+    author: 'Steffen Hefter',
+    date: '2026-05-19',
+    status: 'published',
+    image: '',
+    readTime: 3
+  },
+
+  {
     id: 26,
     slug: 'demokratisierung-des-rechts-warum-standard-ki-nicht-reicht-und-rag-systeme-die-loesung-sind',
     title: 'Demokratisierung des Rechts: Warum Standard-KI nicht reicht und RAG-Systeme die Lösung sind',
